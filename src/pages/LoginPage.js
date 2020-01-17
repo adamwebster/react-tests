@@ -24,6 +24,7 @@ color: #6d6d6d;
 
 const ErrorMessage = styled.div`
 width: 100%;
+border-radius: ${variables.borderRadius};
 padding: 5px;
 box-sizing: border-box;
 background-color: #ffbebe;
