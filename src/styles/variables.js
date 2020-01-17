@@ -1,6 +1,6 @@
 const variables = {
   
-  accentColor: '#0090EA',
+  accentColor: '#4799ff',
   borderRadius: '5px'
  }
  

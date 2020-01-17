@@ -25,22 +25,62 @@ const GlobalStyle = createGlobalStyle`
   
  }
 
-#root,
-.App{
+#root{
   height: 100vh;
 }
+
+.App{
+  height:calc(100vh - 50px);
+  width: 100vw;
+  float:left;
+}
+
+a{
+  color: ${props => props.theme.accentColor}
+}
+ `
+
+ const Navigation = styled.ul`
+ background-color:#333;
+ list-style:none;
+ padding:0;
+ margin:0;
+ width:100%;
+ display:block;
+ float:left;
+ height:50px;
+ li{
+   float:left;
+   a{
+     padding: 15px;
+     display:block;
+     border-right: solid 1px #545454;
+     width: auto;
+     text-decoration:none;
+
+   }
+ }
  `
 function App() {
   const [theme, setTheme] = useState(themes.default);
   return (
     <ThemeProvider theme={theme}>
               <GlobalStyle />
-
+   
+    <Navigation>
+    <li>
+      <Link to="/">Home</Link>
+      </li>
+      <li>
+      <Link to="/login">Login</Link>
+      </li>
+      </Navigation>
     <div className="App">
       <Switch>
         <Route exact path="/">
-          <LoginPage />
+        Click on of the pages about to show examples
         </Route>
+        <Route path="/login"><LoginPage /></Route>
         <Route path="/about">
           <About />
         </Route>

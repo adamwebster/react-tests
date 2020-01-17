@@ -2,11 +2,12 @@
 const themes = {
   default:{
     backgroundColor: "#f1f1f1",
-    foregroundColor: "#333",
+    foregroundColor: "#6d6d6d",
     cardColor: "#fff",
     borderColor: "#ccc",
-    accentColor: "tomato",
+    accentColor: "rgb(41, 161, 156)",
     buttonTextColor: "#fff",
+    green: "#7dcc4b",
   },
   
     dark:{
