@@ -11,9 +11,9 @@ box-sizing:border-box;
 box-shadow: 0 0 5px rgba(0,0,0,.25);
 `
 
-const Card = ({children}) => {
+const Card = ({...rest}) => {
   return(
-    <StyledCard>{children}</StyledCard>
+    <StyledCard {...rest} />
   )
 }
 export default Card;

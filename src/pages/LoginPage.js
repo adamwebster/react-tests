@@ -8,6 +8,7 @@ import Card from '../components/UI/Card';
 import Input from '../components/UI/Input';
 import AnimatedButton from '../components/UI/AnimatedButton';
 import TextButton from '../components/UI/TextButton';
+import HelpText from '../components/UI/HelpText';
 
 const LoginWrapper = styled.div`
   position: relative;
@@ -33,11 +34,6 @@ border: solid 1px #c34242;
 margin-bottom: 10px;
 `
 
-const HelpText = styled.span`
-font-size:11px;
-margin-top: 10px;
-display:inline-block;
-`
 const Header = styled.h3`
 margin: 5px 0 15px 0;
 text-align:center;
