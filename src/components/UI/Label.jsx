@@ -5,6 +5,7 @@ import styled from 'styled-components';
 const LabelStyled = styled.label`
 display:block;
 color: #6d6d6d;
+margin-bottom:5px;
 `
 
 const Label = ({...rest}) => {
