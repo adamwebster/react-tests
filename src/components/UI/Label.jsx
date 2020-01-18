@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const LabelStyled = styled.label`
-display:block;
+display:inline-block;
 color: #6d6d6d;
 margin-bottom:5px;
 `
