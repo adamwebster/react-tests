@@ -8,6 +8,9 @@ const themes = {
     accentColor: "rgb(41, 161, 156)",
     buttonTextColor: "#fff",
     green: "#7dcc4b",
+    dangerBG: "#ffbebe",
+    dangerBorder: "#c34242",
+    dangerText: "#c34242",
   },
   
     dark:{
