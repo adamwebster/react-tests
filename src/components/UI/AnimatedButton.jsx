@@ -1,13 +1,15 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import { darken } from 'polished';
 
 import variables from '../../styles/variables';
 
 const Button = styled.button`
-  background-color: ${props => props.theme.accentColor};
-  color: ${props => props.theme.buttonTextColor};
-  border:none;
+
+
+  background-color: transparent ;
+  color: ${props => props.theme.accentColor};
+  border:solid 1px ${props => props.theme.accentColor};
   border-radius: ${variables.borderRadius};
   padding: 5px 10px;
   box-sizing: border-box;
@@ -18,10 +20,15 @@ const Button = styled.button`
   transition: all 0.2s ease;
   outline: 0;
   position:relative;
-
+  ${props => props.primary && css`
+  background-color: ${props => props.theme.accentColor};
+  color: ${props => props.theme.buttonTextColor};
+  border:none;
+  `}
   &[disabled]{
     background-color: #ccc;
     color: #a0a0a0;
+    border:none;
   }
   &:hover:not([disabled]){
     background-color: ${props => darken(0.1, props.theme.accentColor)};
@@ -73,10 +80,10 @@ const Button = styled.button`
 }
 `
 
-const AnimatedButton = ({ ...rest }) => {
+const AnimatedButton = ({primary, ...rest }) => {
   return (
     <>
-    <Button {...rest} />
+      <Button primary={primary} {...rest} />
     </>
   );
 }
