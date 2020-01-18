@@ -20,21 +20,38 @@ const Button = styled.button`
   transition: all 0.2s ease;
   outline: 0;
   position:relative;
+
+  &:hover:not([disabled]){
+    border-color: ${props =>  darken(0.2,props.theme.accentColor)};
+    color: ${props =>  darken(0.2,props.theme.accentColor)};
+    transform: scale(1.02);
+    ${props => !props.primary && css`
+    .button-icon{
+      background-color: ${props => darken(0.2, props.theme.accentColor)};
+    }
+    `
+    }
+  }
+  
   ${props => props.primary && css`
   background-color: ${props => props.theme.accentColor};
   color: ${props => props.theme.buttonTextColor};
   border:none;
+
+  &:hover:not([disabled]){
+    background-color: ${props => darken(0.1, props.theme.accentColor)};
+    transform: scale(1.02);
+    box-shadow: 0 0 5px rgba(0,0,0,.5);
+    color: #fff;
+  }
+
   `}
   &[disabled]{
     background-color: #ccc;
     color: #a0a0a0;
     border:none;
   }
-  &:hover:not([disabled]){
-    background-color: ${props => darken(0.1, props.theme.accentColor)};
-    transform: scale(1.02);
-    box-shadow: 0 0 5px rgba(0,0,0,.5);
-  }
+
   &.transforming{
     width:34px;
     margin: 0 auto;
@@ -77,6 +94,9 @@ const Button = styled.button`
   left: 5px;
   top: 5px;
   color:#fff;
+  ${props => !props.primary && css`
+  background-color: ${props => props.theme.accentColor};
+ `
 }
 `
 

@@ -52,6 +52,9 @@ const GitHubButton = styled.a`
   }
 `
 
+const BackToLoginBTN = styled(AnimatedButton)`
+  margin-top: 10px;
+`
 
 const ToggleWrapper = styled.div`
 margin-bottom:15px;
@@ -137,7 +140,7 @@ const LoginPage = () => {
             </>
             }
             <AnimatedButton primary disabled={buttonDisabled} onClick={(e) => clickButton(e)}>
-              {!loading && <span><FontAwesomeIcon className="button-icon" icon="key" /></span>}
+              {!loading && <span><FontAwesomeIcon className="button-icon" icon="lock" /></span>}
               {(!loading && !loaded) && <> Login</>}
 
               {loaded ? <><FontAwesomeIcon className="button-icon" icon="check" /> Logged in</> : ''}
@@ -149,11 +152,13 @@ const LoginPage = () => {
         <Label>Email Address</Label>
         <Input type="email" placeholder="Enter your email address" />
         <AnimatedButton primary>
+        <FontAwesomeIcon className="button-icon" icon="key"/>
           Reset Password
         </AnimatedButton>
-        <AnimatedButton onClick={() => setForgotPassword(false)}>
+        <BackToLoginBTN onClick={() => setForgotPassword(false)}>
+        <FontAwesomeIcon className="button-icon" icon="arrow-left" />
           Back to Login
-        </AnimatedButton>
+        </BackToLoginBTN>
         </>
         }
         {(!loaded  && !forgotPassword) && <>
