@@ -10,9 +10,9 @@ import themes from './themes/'
 import LoginPage from './pages/LoginPage';
 import About from './pages/About';
 import { device } from './styles/mediaqueries';
+import CSSGrid from './pages/CSSGrid';
 
 const GlobalStyle = createGlobalStyle`
-
   body {
     color: ${props => props.theme.foregroundColor};
     margin: 0;
@@ -20,11 +20,7 @@ const GlobalStyle = createGlobalStyle`
     font: 13px/1.5 'Helvetica Neue', Arial, 'Liberation Sans', FreeSans, sans-serif;
    background-color: ${props => props.theme.backgroundColor};
    width:100%;
- 
-   @media ${device.mobileS} {
-  
- }
-
+  }
 #root{
   height: 100vh;
 }
@@ -38,9 +34,8 @@ const GlobalStyle = createGlobalStyle`
 a{
   color: ${props => props.theme.accentColor}
 }
- `
-
- const Navigation = styled.ul`
+`
+const Navigation = styled.ul`
  background-color:#333;
  list-style:none;
  padding:0;
@@ -83,6 +78,9 @@ function App() {
         <Route path="/login"><LoginPage /></Route>
         <Route path="/about">
           <About />
+        </Route>
+        <Route path="/grid">
+          <CSSGrid />
         </Route>
       </Switch>
     </div>
