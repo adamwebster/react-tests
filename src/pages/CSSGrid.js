@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const Grid = styled.div`
   display:grid;
   grid-gap: 10px;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto;
   background-color: tomato;
   padding:10px;
 `
@@ -16,19 +16,42 @@ const GridItem = styled.div`
 `
 const CSSGrid = () => {
   const numberOfItems = 9;
-const createGridItem = () => {
-  let items = [];
+  const createGridItem = () => {
+    let items = [];
 
-  for (let i = 0; i < numberOfItems; i++){
-    items.push(<GridItem>{i + 1}</GridItem>)
+    for (let i = 0; i < numberOfItems; i++) {
+      items.push(<GridItem>{i + 1}</GridItem>)
+    }
+    return items;
+
   }
-  return items;
-
-}
   return (
     <Grid>
-      {createGridItem()}
-  
+      {/* {createGridItem()} */}
+      <GridItem />
+      <GridItem />
+      <GridItem />
+      <GridItem />
+      <GridItem />
+      <GridItem />
+      <GridItem />
+      <GridItem />
+      <GridItem />
+      <GridItem />
+      <GridItem />
+      <GridItem />
+      <GridItem />
+      <GridItem />
+      <GridItem />
+      <GridItem />
+      <GridItem />
+      <GridItem />
+      <GridItem />
+      <GridItem />
+      <GridItem />
+      <GridItem />
+      <GridItem />
+      <GridItem />
     </Grid>
   )
 };
