@@ -11,6 +11,7 @@ import LoginPage from './pages/LoginPage';
 import About from './pages/About';
 import { device } from './styles/mediaqueries';
 import CSSGrid from './pages/CSSGrid';
+import { FollowPage } from './pages/FollowPage';
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -81,6 +82,9 @@ function App() {
         </Route>
         <Route path="/grid">
           <CSSGrid />
+        </Route>
+        <Route path="/follow">
+          <FollowPage />
         </Route>
       </Switch>
     </div>
