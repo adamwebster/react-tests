@@ -12,7 +12,8 @@ import About from './pages/About';
 import { device } from './styles/mediaqueries';
 import CSSGrid from './pages/CSSGrid';
 import { FollowPage } from './pages/FollowPage';
-
+import followImg from './static/follow.png';
+import loginImg from './static/login.png';
 const GlobalStyle = createGlobalStyle`
   body {
     color: ${props => props.theme.foregroundColor};
@@ -36,58 +37,89 @@ a{
   color: ${props => props.theme.accentColor}
 }
 `
-const Navigation = styled.ul`
- background-color:#333;
- list-style:none;
- padding:0;
- margin:0;
- width:100%;
- display:block;
- float:left;
- height:50px;
- li{
-   float:left;
-   a{
-     padding: 15px;
-     display:block;
-     border-right: solid 1px #545454;
-     width: auto;
-     text-decoration:none;
 
-   }
- }
- `
+const Grid = styled.div`
+  display:grid;
+  grid-gap: 20px;
+  width: 330px;
+  margin: 0 auto;
+  grid-template-columns: auto auto;
+  grid-template-rows: 300px;
+
+  padding:10px;
+  justify-items: center;
+`
+
+const GridItem = styled.div`
+  box-sizing:border-box;
+  ${props => props.gridColumn && css`
+    grid-column: ${props.gridColumn};
+  `}
+
+  ${props => props.gridRow && css`
+    grid-row: ${props.gridRow};
+  `}
+  h3{
+    width: 100%;
+    text-align:center;
+  }
+`
+
+const StyledLink = styled(Link)`
+  background-image: url(${(props) => props.image});
+  background-size: cover;
+    background-position:top center;
+    width: 150px;
+    height: 150px;
+    display: inline-block;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+    transition: all 0.2s ease;
+    &:hover{
+      transform: scale(1.02);
+    }
+`
+
+const WelcomeMessage = styled.div`
+  width: 100%;
+  text-align:center;
+  margin: 50px auto;
+`
 function App() {
   const [theme, setTheme] = useState(themes.default);
   return (
     <ThemeProvider theme={theme}>
-              <GlobalStyle />
-   
-    <Navigation>
-    <li>
-      <Link to="/">Home</Link>
-      </li>
-      <li>
-      <Link to="/login">Login</Link>
-      </li>
-      </Navigation>
-    <div className="App">
-      <Switch>
-        <Route exact path="/">
-        Click on of the pages about to show examples
-        </Route>
-        <Route path="/login"><LoginPage /></Route>
-        <Route path="/about">
-          <About />
-        </Route>
-        <Route path="/grid">
-          <CSSGrid />
-        </Route>
-        <Route path="/follow">
-          <FollowPage />
-        </Route>
-      </Switch>
-    </div>
+      <GlobalStyle />
+
+      <div className="App">
+        <Switch>
+          <Route exact path="/">
+            <WelcomeMessage>
+            Click on of the pages to show examples
+            </WelcomeMessage>
+            <Grid>
+              <GridItem>
+        <StyledLink image={loginImg} to="/login" />
+        <Link to="/Login"><h3>Login Card</h3></Link>
+        </GridItem>
+        <GridItem>
+            <StyledLink image={followImg} to="/follow" />
+            <Link to="/follow"><h3>Social Profile Card</h3></Link>
+            </GridItem>
+            </Grid>
+          </Route>
+          <Route path="/login"><LoginPage /></Route>
+          <Route path="/about">
+            <About />
+          </Route>
+          <Route path="/grid">
+            <CSSGrid />
+          </Route>
+          <Route path="/follow">
+            <FollowPage />
+          </Route>
+        </Switch>
+      </div>
     </ThemeProvider>
   );
 }
