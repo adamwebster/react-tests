@@ -70,18 +70,19 @@ export const FollowPage = () => {
   const [buttonText, setButtonText] = useState('Follow');
   const [following, setFollowing] = useState(false);
   const [buttonIcon, setButtonIcon ] = useState('check');
-
+  const [completed, setCompleted] = useState(false);
   const followUser = () => {
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-      setButtonColor('#47b33a');
       setButtonText('Following');
       setFollowing(true);
+      setCompleted(true);
     }, 1000)
     setTimeout(() => {
       setButtonColor('#ff253a');
       setButtonText('Unfollow');
+      setCompleted(false);
       setButtonIcon('times');
     }, 3000)
   }
@@ -120,7 +121,8 @@ export const FollowPage = () => {
         <AnimatedButton
           onClick={!following ? () => followUser() : () => unFollowUser()}
           isLoading={isLoading} 
-          buttonColor={buttonColor}        
+          buttonColor={buttonColor}
+          completed={completed}        
           loadingIcon={<FontAwesomeIcon spin icon="circle-notch" />}
           icon={<FontAwesomeIcon icon={buttonIcon} />}
           primary
