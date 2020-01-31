@@ -14,6 +14,7 @@ import CSSGrid from './pages/CSSGrid';
 import { FollowPage } from './pages/FollowPage';
 import followImg from './static/follow.png';
 import loginImg from './static/login.png';
+import NewsFeed from './pages/NewsFeed';
 const GlobalStyle = createGlobalStyle`
   body {
     color: ${props => props.theme.foregroundColor};
@@ -117,6 +118,9 @@ function App() {
           </Route>
           <Route path="/follow">
             <FollowPage />
+          </Route>
+          <Route path="/newsfeed">
+            <NewsFeed />  
           </Route>
         </Switch>
       </div>
