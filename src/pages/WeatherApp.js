@@ -13,7 +13,7 @@ const Wrapper = styled(Card)`
 export const WeatherApp = () => {
   const [weatherData, setWeatherData] = useState([]);
   const [forecast, setForecast] = useState([]);
-  const [city, setCity ] = useState('Guelph, CA');
+  const [city, setCity] = useState('Guelph, CA');
   useEffect(() => {
     GetWeatherData(`${city}&units=metric`)
     GetForecastData(`${city}&units=metric`)
@@ -30,9 +30,9 @@ export const WeatherApp = () => {
     axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=${param}&appid=${process.env.REACT_APP_OPENWEATHER_APIKEY}`)
       .then(res => {
         const grouped = _(res.data.list)
-        .groupBy(x => x.dt_txt.slice(0, -9))
-        .map((value, key) => ({date: key, weather: value}))
-        .value();
+          .groupBy(x => x.dt_txt.slice(0, -9))
+          .map((value, key) => ({ date: key, weather: value }))
+          .value();
 
         setForecast(grouped);
         console.log(grouped)
@@ -64,14 +64,17 @@ export const WeatherApp = () => {
       <h2>Five day forecast</h2>
       {forecast && forecast.map(item => {
         return (
-          <>
+          <Card boxShadow padding={'5px'}>
             <div>{moment(item.date).format('MMM Do YYYY').toString()}</div>
             {item.weather.map(dayWeather => {
-              return(
-                <div>{moment(dayWeather.dt_txt).format('hh:mm a').toString()} {dayWeather.main.temp}</div>
+              return (
+                <div>
+                  <img src={`http://openweathermap.org/img/w/${dayWeather.weather[0].icon}.png`} />
+
+                  {moment(dayWeather.dt_txt).format('hh:mm a').toString()} {dayWeather.main.temp}</div>
               )
             })}
-</>
+          </Card>
         )
       })}
     </Wrapper>
