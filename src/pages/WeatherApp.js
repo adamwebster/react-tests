@@ -10,6 +10,30 @@ const Wrapper = styled(Card)`
   margin: 50px auto;
 `
 
+const Row = styled.div`
+display: flex;
+flex: 1 1;
+flex-flow: column;
+`
+const Day = styled(Card)`
+  display: flex;
+  flex: 1 1;
+  flex-flow: column;
+  margin-bottom: 15px;
+  overflow:hidden;
+  &:last-child{
+    margin-bottom: 0;
+  }
+`
+const Date = styled.div`
+  font-size:11px;
+  background-color: #666;
+  color: #ccc;
+  padding: 5px;
+`
+const DayInner = styled.div`
+ padding: 5px;
+`
 export const WeatherApp = () => {
   const [weatherData, setWeatherData] = useState([]);
   const [forecast, setForecast] = useState([]);
@@ -62,11 +86,12 @@ export const WeatherApp = () => {
         </>
       }
       <h2>Five day forecast</h2>
+      <Row>
       {forecast && forecast.map(item => {
         return (
-          <Card boxShadow padding={'5px'}>
-            <div>{moment(item.date).format('MMM Do YYYY').toString()}</div>
-            {item.weather.map(dayWeather => {
+          <Day>
+            <Date>{moment(item.date).format('MMM Do YYYY').toString()}</Date>
+            <DayInner>            {item.weather.map(dayWeather => {
               return (
                 <div>
                   <img src={`http://openweathermap.org/img/w/${dayWeather.weather[0].icon}.png`} />
@@ -74,9 +99,12 @@ export const WeatherApp = () => {
                   {moment(dayWeather.dt_txt).format('hh:mm a').toString()} {dayWeather.main.temp}</div>
               )
             })}
-          </Card>
+            </DayInner>
+
+          </Day>
         )
       })}
+      </Row>
     </Wrapper>
   )
 }
