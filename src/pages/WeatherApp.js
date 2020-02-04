@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card } from '@adamwebster/fused-components';
+import { Card, Input, Button } from '@adamwebster/fused-components';
 import styled from 'styled-components';
 import axios from 'axios';
 import _ from 'lodash';
@@ -13,10 +13,10 @@ const Wrapper = styled(Card)`
 export const WeatherApp = () => {
   const [weatherData, setWeatherData] = useState([]);
   const [forecast, setForecast] = useState([]);
-
+  const [city, setCity ] = useState('Guelph, CA');
   useEffect(() => {
-    GetWeatherData('Guelph,ca&units=metric')
-    GetForecastData('Guelph,ca&units=metric')
+    GetWeatherData(`${city}&units=metric`)
+    GetForecastData(`${city}&units=metric`)
   }, [])
 
   const GetWeatherData = (param) => {
@@ -38,13 +38,18 @@ export const WeatherApp = () => {
         console.log(grouped)
       })
   }
+  const getCity = () => {
+    GetWeatherData(`${city}&units=metric`)
+    GetForecastData(`${city}&units=metric`)
+  }
   return (
     <Wrapper boxShadow padding="20px">
 
       <h1>WeatherApp</h1>
       <h2>{weatherData.name}</h2>
       <br />
-
+      <Input value={city} onChange={(e) => setCity(e.target.value)} />
+      <Button onClick={() => getCity()}>Get City</Button>
       {weatherData.weather &&
         <>
           <img src={`http://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`} />
