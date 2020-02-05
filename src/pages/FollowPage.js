@@ -100,7 +100,7 @@ export const FollowPage = () => {
   return (
     <StyledCard boxShadow>
       <CoverImage image="https://adamwebster.me/static/avatar.jpg" />
-      <StyledAvatar boxShadow size="96px" borderRadius='80px' image="https://adamwebster.me/static/avatar.jpg" />
+      <StyledAvatar boxShadow size="large" borderRadius='round' image="https://adamwebster.me/static/avatar.jpg" />
       <CardInner>
         <UserName>Adam Webster</UserName>
         <UserHandle>@adamwebster</UserHandle>

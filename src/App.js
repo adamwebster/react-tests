@@ -14,6 +14,7 @@ import CSSGrid from './pages/CSSGrid';
 import { FollowPage } from './pages/FollowPage';
 import followImg from './static/follow.png';
 import loginImg from './static/login.png';
+import { WeatherApp } from './pages/WeatherApp';
 import NewsFeed from './pages/NewsFeed';
 const GlobalStyle = createGlobalStyle`
   body {
@@ -118,6 +119,9 @@ function App() {
           </Route>
           <Route path="/follow">
             <FollowPage />
+          </Route>
+          <Route path="/weather">
+            <WeatherApp />
           </Route>
           <Route path="/newsfeed">
             <NewsFeed />  
