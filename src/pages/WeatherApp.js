@@ -80,6 +80,14 @@ const StyledInput = styled(Input)`
   border-top-right-radius: 0;
 `
 
+const CurrentTemp = styled.div`
+    color: #4799ff;
+    font-size: 4em;
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+`
+
 export const WeatherApp = () => {
   const [weatherData, setWeatherData] = useState([]);
   const [forecast, setForecast] = useState([]);
@@ -139,7 +147,7 @@ export const WeatherApp = () => {
               src={`http://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`}
             />
             <br />
-            Current Temperature: {weatherData.main.temp}
+            <CurrentTemp>{weatherData.main.temp}&deg;</CurrentTemp> 
             <br />
             Feels Like: {weatherData.main.feels_like}
             <br />
