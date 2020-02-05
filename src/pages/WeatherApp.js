@@ -138,6 +138,8 @@ export const WeatherApp = () => {
   const [weatherData, setWeatherData] = useState([]);
   const [forecast, setForecast] = useState([]);
   const [city, setCity] = useState("Guelph, CA");
+  const [currentForecastShown, setCurrentForecastShown] = useState([]);
+
   useEffect(() => {
     GetWeatherData(`${city}&units=metric`);
     GetForecastData(`${city}&units=metric`);
@@ -166,6 +168,11 @@ export const WeatherApp = () => {
           .value();
 
         setForecast(grouped);
+        const filteredForecast = grouped.filter(item => item.date === moment().add(1, 'days').format('YYYY-MM-DD').toString());
+        const filterForecastTime = filteredForecast[0].weather.filter(item => item.dt_txt.indexOf('06:00') !== -1 || item.dt_txt.indexOf('12:00') !== -1 || item.dt_txt.indexOf('18:00') !== -1);
+        console.log(filterForecastTime);
+        
+        setCurrentForecastShown(filterForecastTime);
         console.log(grouped);
       });
   };
@@ -206,8 +213,38 @@ export const WeatherApp = () => {
           <li>Tomorrow</li>
           <li>{moment().add(2, 'days').format('dddd')}</li>
         </DayToggle>
-        <SubTitle>Five day forecast</SubTitle>
+        <div>
+          {console.log(currentForecastShown)}
+          {currentForecastShown && currentForecastShown.map(item => {
+            return(
+           
+              <>
+                {item.dt_txt.includes('06:00') && (
+                <div>
+                  Morning
+                {item.main.temp}
+                </div>
+                )}
+                {item.dt_txt.includes('12:00') && (
+                <div>
+                Afternoon
+                {item.main.temp}
+                </div>
+                )}
+                {item.dt_txt.includes('18:00') && (
+                <div>
+                Evening
+                {item.main.temp}
+                </div>
+                )}
+              </>
+            )
+          })}
+        </div>
       </Inner>
+      <div>
+
+      </div>
       <FiveDayForecast>
         {forecast &&
           forecast.map(item => {
