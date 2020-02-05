@@ -5,6 +5,7 @@ import axios from "axios";
 import _ from "lodash";
 import moment from "moment";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { darken } from 'polished';
 
 const Wrapper = styled(Card)`
   width: 600px;
@@ -86,6 +87,51 @@ const CurrentTemp = styled.div`
     margin: 0 auto;
     width: 100%;
     text-align: center;
+    line-height: 1;
+`
+const FeelsLike = styled.div`
+  font-size: 1.2em;
+  width: 100%;
+  text-align:center;
+`
+
+const ForecastImage = styled.img`
+  width: 100px;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+  background-color: #4799ff;
+  border-radius:50%;
+  border: solid 5px #fff;
+  box-shadow: 0 0 15px #ccc;
+`
+const DayToggle = styled.ul`
+margin: 10px 0;
+display: flex;
+flex: 1 1;
+list-style: none;
+border: solid 1px #c5c5c5;
+border-radius: 15px;
+padding: 0;
+overflow: hidden;
+  li{
+    display: inline-block;
+    flex: 1 1;
+    text-align: center;
+    border-right: solid 1px #c5c5c5;
+    padding: 10px 0;
+    &:last-child{
+      border-right: none;
+    }
+    &.active{
+      background-color: #4799ff;
+      color:#fff;
+    }
+    &:hover:not(.active){
+      cursor: pointer;
+      background-color: ${darken(0.1, '#fff')}
+    }
+  }
 `
 
 export const WeatherApp = () => {
@@ -130,59 +176,70 @@ export const WeatherApp = () => {
   return (
     <Wrapper boxShadow>
       <AppHeader>
-      <AppTitle>Fused Weather</AppTitle>
+        <AppTitle>Fused Weather</AppTitle>
       </AppHeader>
       <Inner>
         <ButtonGroup>
           <StyledInput icon={<FontAwesomeIcon icon="search" />} width='70%' value={city} onChange={e => setCity(e.target.value)} />
           <Button primary onClick={() => getCity()}>
-            Get City
+            Search
           </Button>
         </ButtonGroup>
         <SubTitle>{weatherData.name}</SubTitle>
         <br />
         {weatherData.weather && (
           <>
-            <img
-              src={`http://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`}
+            <ForecastImage
+              src={`http://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`}
             />
             <br />
-            <CurrentTemp>{weatherData.main.temp}&deg;</CurrentTemp> 
-            <br />
-            Feels Like: {weatherData.main.feels_like}
-            <br />
-            Condition: {weatherData.weather[0].main}
+            <CurrentTemp>{weatherData.main.temp}&deg;c</CurrentTemp>
+            <FeelsLike>Feels Like {weatherData.main.feels_like}&deg;
+           <br />
+              {weatherData.weather[0].main}
+            </FeelsLike>
+
           </>
         )}
+        <DayToggle>
+          <li className={'active'}>Today</li>
+          <li>Tomorrow</li>
+          <li>{moment().add(2, 'days').format('dddd')}</li>
+        </DayToggle>
         <SubTitle>Five day forecast</SubTitle>
       </Inner>
       <FiveDayForecast>
         {forecast &&
           forecast.map(item => {
             return (
-              <Day>
-                <Date>
-                  {moment(item.date)
-                    .format("MMM Do YYYY")
-                    .toString()}
-                </Date>
-                <DayInner>
-                  {" "}
-                  {item.weather.map(dayWeather => {
-                    return (
-                      <div>
-                        <img
-                          src={`http://openweathermap.org/img/w/${dayWeather.weather[0].icon}.png`}
-                        />
-                        {moment(dayWeather.dt_txt)
-                          .format("hh:mm a")
-                          .toString()}{" "}
-                        {dayWeather.main.temp}
-                      </div>
-                    );
-                  })}
-                </DayInner>
-              </Day>
+              <>
+                {moment(item.date) < moment().add(2, 'days') && (
+                  <Day>
+                    <Date>
+                      {moment(item.date)
+                        .format("MMM Do YYYY")
+                        .toString()}
+                    </Date>
+                    <DayInner>
+                      {" "}
+                      {item.weather.map(dayWeather => {
+                        return (
+                          <div>
+                            <img
+                              src={`http://openweathermap.org/img/wn/${dayWeather.weather[0].icon}.png`}
+                            />
+                            {moment(dayWeather.dt_txt)
+                              .format("hh:mm a")
+                              .toString()}{" "}
+                            {dayWeather.main.temp}
+                          </div>
+                        );
+                      })}
+                    </DayInner>
+                  </Day>
+                )
+                }
+              </>
             );
           })}
       </FiveDayForecast>
