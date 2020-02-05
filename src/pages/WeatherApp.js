@@ -8,19 +8,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { darken } from 'polished';
 
 const Wrapper = styled(Card)`
-  width: 600px;
+  width: 320px;
   margin: 50px auto;
   overflow: hidden;
 `;
 
-const AppHeader = styled.div`
-  background-color: #4799ff;
-  
-`;
-
-const SubTitle = styled.h2`
+const City = styled.h2`
   margin-bottom: 0;
-  color: #4799ff;
+  text-align:center;
+  font-size:1.2em;
+  margin-top: 0;
+  font-weight: 100;
 `
 
 const AppTitle = styled.h1`
@@ -36,37 +34,6 @@ const Inner = styled.div`
   padding: 20px;
 `;
 
-const FiveDayForecast = styled.div`
-  background-color: #666;
-  height: 300px;
-  overflow: auto;
-  color: #fff;
-  padding: 20px;
-  box-sizing: border-box;
-`;
-
-const Day = styled.div`
-  margin-bottom: 15px;
-  color: #fff;
-  &:last-child {
-    margin-bottom: 0;
-    border-bottom: none;
-
-  }
-  border-bottom: solid 1px #868686;
-  padding-bottom: 10px;
-`;
-
-const Date = styled.div`
-  font-size: 18px;
-  color: #ccc;
-  padding: 5px;
-`;
-
-const DayInner = styled.div`
-  padding: 5px;
-`;
-
 const ButtonGroup = styled.div`
   display:flex;
   button{
@@ -76,13 +43,12 @@ const ButtonGroup = styled.div`
 `
 
 const StyledInput = styled(Input)`
-  width: 450px;
+  width: 210px;
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
 `
 
 const CurrentTemp = styled.div`
-    color: #4799ff;
     font-size: 4em;
     margin: 0 auto;
     width: 100%;
@@ -100,26 +66,24 @@ const ForecastImage = styled.img`
   height: auto;
   margin: 0 auto;
   display: block;
-  background-color: #4799ff;
-  border-radius:50%;
-  border: solid 5px #fff;
-  box-shadow: 0 0 15px #ccc;
+ 
 `
 const DayToggle = styled.ul`
-margin: 10px 0;
+margin: 10px auto;
 display: flex;
 flex: 1 1;
 list-style: none;
 border: solid 1px #c5c5c5;
-border-radius: 15px;
+border-radius: 5px;
 padding: 0;
 overflow: hidden;
+width: 250px;
   li{
     display: inline-block;
     flex: 1 1;
     text-align: center;
     border-right: solid 1px #c5c5c5;
-    padding: 10px 0;
+    padding: 5px 0;
     &:last-child{
       border-right: none;
     }
@@ -138,6 +102,7 @@ const DayTimeForecast = styled.div`
   flex: 1 1;
 `
 const DayTimeForecastItem = styled.div `
+text-align: center;
   display:flex;
   flex: 1 1;
   flex-flow:column;
@@ -146,6 +111,12 @@ const DayTimeForecastItem = styled.div `
   padding: 5px;
   border-radius: 5px;
   color: #fff;
+  img{
+    width: 50px;
+    border: none;
+    background-color:  transparent;
+    box-shadow:none;
+  }
   &:last-child{ 
     margin-right: 0;
   }
@@ -202,23 +173,22 @@ export const WeatherApp = () => {
 
       });
   };
-  const getCity = () => {
+  const getCity = (e) => {
+    e.preventDefault();
     GetWeatherData(`${city}&units=metric`);
     GetForecastData(`${city}&units=metric`);
   };
   return (
     <Wrapper boxShadow>
-      <AppHeader>
-        <AppTitle>Fused Weather</AppTitle>
-      </AppHeader>
       <Inner>
+        <form onSubmit={(e) => getCity(e)}>
         <ButtonGroup>
           <StyledInput icon={<FontAwesomeIcon icon="search" />} width='70%' value={city} onChange={e => setCity(e.target.value)} />
-          <Button primary onClick={() => getCity()}>
+          <Button primary >
             Search
           </Button>
         </ButtonGroup>
-        <SubTitle>{weatherData.name}</SubTitle>
+        </form>
         <br />
         {weatherData.weather && (
           <>
@@ -231,7 +201,7 @@ export const WeatherApp = () => {
            <br />
               {weatherData.weather[0].main}
             </FeelsLike>
-
+            <City>{weatherData.name}</City>
           </>
         )}
         <DayToggle>
@@ -251,7 +221,7 @@ export const WeatherApp = () => {
                   <ForecastImage
                       src={`http://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
                     />
-                    {item.main.temp}
+                    {item.main.temp}&deg;c
                   </DayTimeForecastItem>
                 )}
                 {item.dt_txt.includes('12:00') && (
@@ -261,7 +231,7 @@ export const WeatherApp = () => {
                      <ForecastImage
                       src={`http://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
                     />
-                    {item.main.temp}
+                    {item.main.temp}&deg;c
                   </DayTimeForecastItem>
                 )}
                 {item.dt_txt.includes('18:00') && (
@@ -270,7 +240,7 @@ export const WeatherApp = () => {
                       <ForecastImage
                       src={`http://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
                     />
-                    {item.main.temp}
+                    {item.main.temp}&deg;c
                   </DayTimeForecastItem>
                 )}
               </Fragment>
@@ -278,44 +248,6 @@ export const WeatherApp = () => {
           })}
         </DayTimeForecast>
       </Inner>
-      <div>
-
-      </div>
-      <FiveDayForecast>
-        {forecast &&
-          forecast.map(item => {
-            return (
-              <Fragment key={item.date}>
-                {moment(item.date) < moment().add(2, 'days') && (
-                  <Day >
-                    <Date>
-                      {moment(item.date)
-                        .format("MMM Do YYYY")
-                        .toString()}
-                    </Date>
-                    <DayInner>
-                      {" "}
-                      {item.weather.map(dayWeather => {
-                        return (
-                          <div key={dayWeather.dt_txt}>
-                            <img
-                              src={`http://openweathermap.org/img/wn/${dayWeather.weather[0].icon}.png`}
-                            />
-                            {moment(dayWeather.dt_txt)
-                              .format("hh:mm a")
-                              .toString()}{" "}
-                            {dayWeather.main.temp}
-                          </div>
-                        );
-                      })}
-                    </DayInner>
-                  </Day>
-                )
-                }
-              </Fragment>
-            );
-          })}
-      </FiveDayForecast>
     </Wrapper>
   );
 };
