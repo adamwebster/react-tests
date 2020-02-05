@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { Card, Input, Button } from "@adamwebster/fused-components";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import axios from "axios";
 import _ from "lodash";
 import moment from "moment";
@@ -133,7 +133,34 @@ overflow: hidden;
     }
   }
 `
+const DayTimeForecast = styled.div`
+  display:flex;
+  flex: 1 1;
+`
+const DayTimeForecastItem = styled.div `
+  display:flex;
+  flex: 1 1;
+  flex-flow:column;
+  border: solid 1px #ccc;
+  margin-right: 10px;
+  padding: 5px;
+  border-radius: 5px;
+  color: #fff;
+  &:last-child{ 
+    margin-right: 0;
+  }
+  ${props => props.morning && css`
+    background-color: #14445a;
+  `}
 
+  ${props => props.afternoon && css`
+    background-color: #fd683c;
+  `}
+
+  ${props => props.evening && css`
+    background-color: #3a1e46;
+  `}
+`
 export const WeatherApp = () => {
   const [weatherData, setWeatherData] = useState([]);
   const [forecast, setForecast] = useState([]);
@@ -170,10 +197,9 @@ export const WeatherApp = () => {
         setForecast(grouped);
         const filteredForecast = grouped.filter(item => item.date === moment().add(1, 'days').format('YYYY-MM-DD').toString());
         const filterForecastTime = filteredForecast[0].weather.filter(item => item.dt_txt.indexOf('06:00') !== -1 || item.dt_txt.indexOf('12:00') !== -1 || item.dt_txt.indexOf('18:00') !== -1);
-        console.log(filterForecastTime);
-        
+
         setCurrentForecastShown(filterForecastTime);
-        console.log(grouped);
+
       });
   };
   const getCity = () => {
@@ -213,34 +239,44 @@ export const WeatherApp = () => {
           <li>Tomorrow</li>
           <li>{moment().add(2, 'days').format('dddd')}</li>
         </DayToggle>
-        <div>
+        <DayTimeForecast>
           {console.log(currentForecastShown)}
           {currentForecastShown && currentForecastShown.map(item => {
-            return(
-           
-              <>
+            return (
+
+              <Fragment key={item.dt_txt}>
                 {item.dt_txt.includes('06:00') && (
-                <div>
-                  Morning
-                {item.main.temp}
-                </div>
+                  <DayTimeForecastItem morning>
+                    Morning
+                  <ForecastImage
+                      src={`http://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
+                    />
+                    {item.main.temp}
+                  </DayTimeForecastItem>
                 )}
                 {item.dt_txt.includes('12:00') && (
-                <div>
-                Afternoon
-                {item.main.temp}
-                </div>
+                  <DayTimeForecastItem afternoon>
+
+                    Afternoon
+                     <ForecastImage
+                      src={`http://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
+                    />
+                    {item.main.temp}
+                  </DayTimeForecastItem>
                 )}
                 {item.dt_txt.includes('18:00') && (
-                <div>
-                Evening
-                {item.main.temp}
-                </div>
+                  <DayTimeForecastItem evening>
+                    Evening
+                      <ForecastImage
+                      src={`http://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
+                    />
+                    {item.main.temp}
+                  </DayTimeForecastItem>
                 )}
-              </>
+              </Fragment>
             )
           })}
-        </div>
+        </DayTimeForecast>
       </Inner>
       <div>
 
@@ -249,9 +285,9 @@ export const WeatherApp = () => {
         {forecast &&
           forecast.map(item => {
             return (
-              <>
+              <Fragment key={item.date}>
                 {moment(item.date) < moment().add(2, 'days') && (
-                  <Day>
+                  <Day >
                     <Date>
                       {moment(item.date)
                         .format("MMM Do YYYY")
@@ -261,7 +297,7 @@ export const WeatherApp = () => {
                       {" "}
                       {item.weather.map(dayWeather => {
                         return (
-                          <div>
+                          <div key={dayWeather.dt_txt}>
                             <img
                               src={`http://openweathermap.org/img/wn/${dayWeather.weather[0].icon}.png`}
                             />
@@ -276,7 +312,7 @@ export const WeatherApp = () => {
                   </Day>
                 )
                 }
-              </>
+              </Fragment>
             );
           })}
       </FiveDayForecast>
