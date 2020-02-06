@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, Fragment, useRef } from "react";
 import { Card, Input, Button } from "@adamwebster/fused-components";
 import styled, { css } from "styled-components";
 import axios from "axios";
@@ -78,7 +78,10 @@ border-radius: 5px;
 padding: 0;
 overflow: hidden;
 width: 250px;
-  li{
+`
+
+const DayToggleItem = styled.li`
+
     display: inline-block;
     flex: 1 1;
     text-align: center;
@@ -87,21 +90,21 @@ width: 250px;
     &:last-child{
       border-right: none;
     }
-    &.active{
+    ${props => props.active && css `
       background-color: #4799ff;
       color:#fff;
-    }
+    `}
     &:hover:not(.active){
       cursor: pointer;
       background-color: ${darken(0.1, '#fff')}
     }
-  }
+  
 `
 const DayTimeForecast = styled.div`
   display:flex;
   flex: 1 1;
 `
-const DayTimeForecastItem = styled.div `
+const DayTimeForecastItem = styled.div`
 text-align: center;
   display:flex;
   flex: 1 1;
@@ -132,15 +135,30 @@ text-align: center;
     background-color: #3a1e46;
   `}
 `
+
+const WeatherEmptyState = styled.div`
+  display:flex;
+  flex: 1 1;
+  background-color: #ccc;
+  border-radius: 5px;
+  padding: 25px 5px;
+  text-align: center;
+  font-size: 11px;
+  line-height: 1.5;
+`
 export const WeatherApp = () => {
   const [weatherData, setWeatherData] = useState([]);
   const [forecast, setForecast] = useState([]);
   const [city, setCity] = useState("Guelph, CA");
   const [currentForecastShown, setCurrentForecastShown] = useState([]);
+  const [activeToggle, setActiveToggle] = useState(null);
+  const inputEl = useRef(null);
 
   useEffect(() => {
     GetWeatherData(`${city}&units=metric`);
-    GetForecastData(`${city}&units=metric`);
+    GetForecastData(`${city}&units=metric`, 0);
+    console.log(inputEl.current);
+    setActiveToggle(inputEl);
   }, []);
 
   const GetWeatherData = param => {
@@ -154,7 +172,7 @@ export const WeatherApp = () => {
       });
   };
 
-  const GetForecastData = param => {
+  const GetForecastData = (param, addDays) => {
     axios
       .get(
         `https://api.openweathermap.org/data/2.5/forecast?q=${param}&appid=${process.env.REACT_APP_OPENWEATHER_APIKEY}`
@@ -166,10 +184,10 @@ export const WeatherApp = () => {
           .value();
 
         setForecast(grouped);
-        const filteredForecast = grouped.filter(item => item.date === moment().add(1, 'days').format('YYYY-MM-DD').toString());
-        const filterForecastTime = filteredForecast[0].weather.filter(item => item.dt_txt.indexOf('06:00') !== -1 || item.dt_txt.indexOf('12:00') !== -1 || item.dt_txt.indexOf('18:00') !== -1);
-
-        setCurrentForecastShown(filterForecastTime);
+        const filteredForecast = grouped.filter(item => item.date === moment().add(addDays, 'days').format('YYYY-MM-DD').toString());
+        // const filterForecastTime = filteredForecast[0].weather.filter(item => item.dt_txt.indexOf('06:00') !== -1 || item.dt_txt.indexOf('12:00') !== -1 || item.dt_txt.indexOf('18:00') !== -1);
+        console.log(filteredForecast)
+        setCurrentForecastShown(filteredForecast);
 
       });
   };
@@ -178,16 +196,21 @@ export const WeatherApp = () => {
     GetWeatherData(`${city}&units=metric`);
     GetForecastData(`${city}&units=metric`);
   };
+
+  const refreshData = (daysToAdd) => {
+    GetForecastData(`${city}&units=metric`, daysToAdd);
+  }
+
   return (
     <Wrapper boxShadow>
       <Inner>
         <form onSubmit={(e) => getCity(e)}>
-        <ButtonGroup>
-          <StyledInput icon={<FontAwesomeIcon icon="search" />} width='70%' value={city} onChange={e => setCity(e.target.value)} />
-          <Button primary >
-            Search
+          <ButtonGroup>
+            <StyledInput icon={<FontAwesomeIcon icon="search" />} width='70%' value={city} onChange={e => setCity(e.target.value)} />
+            <Button primary >
+              Search
           </Button>
-        </ButtonGroup>
+          </ButtonGroup>
         </form>
         <br />
         {weatherData.weather && (
@@ -205,47 +228,29 @@ export const WeatherApp = () => {
           </>
         )}
         <DayToggle>
-          <li className={'active'}>Today</li>
-          <li>Tomorrow</li>
-          <li>{moment().add(2, 'days').format('dddd')}</li>
+          <DayToggleItem ref={inputEl}  onClick={() => refreshData(0)} isActive={e => {return(e === activeToggle)} }>Today</DayToggleItem>
+          <DayToggleItem onClick={() => refreshData(1)}>Tomorrow</DayToggleItem>
+          <DayToggleItem>{moment().add(2, 'days').format('dddd')}</DayToggleItem>
         </DayToggle>
         <DayTimeForecast>
-          {console.log(currentForecastShown)}
-          {currentForecastShown && currentForecastShown.map(item => {
+          {console.log(currentForecastShown[0])}
+          {currentForecastShown[0] && currentForecastShown[0].weather.slice(0, 3).map(item => {
             return (
-
               <Fragment key={item.dt_txt}>
-                {item.dt_txt.includes('06:00') && (
-                  <DayTimeForecastItem morning>
-                    Morning
-                  <ForecastImage
-                      src={`http://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
-                    />
-                    {item.main.temp}&deg;c
-                  </DayTimeForecastItem>
-                )}
-                {item.dt_txt.includes('12:00') && (
-                  <DayTimeForecastItem afternoon>
-
-                    Afternoon
-                     <ForecastImage
-                      src={`http://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
-                    />
-                    {item.main.temp}&deg;c
-                  </DayTimeForecastItem>
-                )}
-                {item.dt_txt.includes('18:00') && (
-                  <DayTimeForecastItem evening>
-                    Evening
-                      <ForecastImage
-                      src={`http://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
-                    />
-                    {item.main.temp}&deg;c
-                  </DayTimeForecastItem>
-                )}
+              <DayTimeForecastItem evening >
+                {moment(item.dt_txt).format('h:mm a')}
+                <ForecastImage
+                  src={`http://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
+                />
+                {item.main.temp}&deg;c
+              </DayTimeForecastItem>
+           
               </Fragment>
             )
           })}
+             {(currentForecastShown[0] && currentForecastShown[0].weather.slice(0, 3).length < 3) && 
+                <WeatherEmptyState>No more weather for today</WeatherEmptyState>
+             }
         </DayTimeForecast>
       </Inner>
     </Wrapper>
