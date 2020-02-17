@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, AnimatedButton, Input, Label, Avatar } from '@adamwebster/fused-components';
+import { Card, Button, Input, Label, Avatar } from '@adamwebster/fused-components';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -118,7 +118,7 @@ export const FollowPage = () => {
             <StatValue>157</StatValue>
           </Stat>
         </Stats>
-        <AnimatedButton
+        <Button
           onClick={!following ? () => followUser() : () => unFollowUser()}
           isLoading={isLoading} 
           buttonColor={buttonColor}
@@ -128,7 +128,7 @@ export const FollowPage = () => {
           primary
         >
           {buttonText}
-        </AnimatedButton>
+        </Button>
       </CardInner>
     </StyledCard>
   )

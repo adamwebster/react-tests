@@ -3,7 +3,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import {
   Card,
-  AnimatedButton,
+  Button,
   Avatar,
   Label
 } from "@adamwebster/fused-components";
@@ -125,13 +125,13 @@ const NewsFeed = () => {
       <NewPost>
         <Label htmlFor="NewPost">New Post</Label>
         <textarea onChange={e => setFeedText(e.target.value)} id="NewPost" />
-        <AnimatedButton
+        <Button
           icon={<FontAwesomeIcon icon="plus" />}
           onClick={() => addFeedItem()}
           primary
         >
           Post
-        </AnimatedButton>
+        </Button>
       </NewPost>
       {FeedItems &&
         FeedItems.map(item => {
