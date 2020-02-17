@@ -22,6 +22,17 @@ const FeedItem = styled(Card)`
   box-sizing: border-box;
   margin-bottom: 10px;
   overflow: hidden;
+  position: relative;
+  animation: slideCardDown 0.5s ease-in-out;
+
+  @keyframes slideCardDown {
+    0%{
+      opacity: 0;
+    }
+    100%{
+      opacity: 1;
+    }
+  }
 `;
 
 const Profile = styled.div`
