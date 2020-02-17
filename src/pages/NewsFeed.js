@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import {
@@ -6,7 +6,9 @@ import {
   Button,
   Avatar,
   Label,
-  DropdownButton
+  DropdownButton,
+  Dialog,
+  CornerDialog,
 } from "@adamwebster/fused-components";
 import FeedData from "../data/Feed.json";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -121,7 +123,14 @@ const NewsFeed = () => {
   const [FeedItems, setFeedItems] = useState(FeedData);
   const [FeedText, setFeedText] = useState("");
   const [privacyText, setPrivacyText] = useState("Who can see this?");
+  const [dialogVisible, setDialogVisible] = useState(false);
+  const [cornerDialogVisible, setCornerDialogVisible] = useState(true);
+  let textAreaRef = useRef(null);
   const addFeedItem = () => {
+    if(textAreaRef.value.length === 0){
+      setDialogVisible(true)
+      return;
+    }
     const FeedItemCopy = FeedItems.slice();
     const d = new Date();
     FeedItemCopy.unshift({
@@ -134,10 +143,31 @@ const NewsFeed = () => {
     setFeedItems(FeedItemCopy);
   };
   return (
+    <>
+    <Dialog
+    visible={dialogVisible}
+    confirmText="Okay I will type something"
+    cancelText="Oops sorry"
+    onCloseClick={() => setDialogVisible(false)}
+      title="Hey you..."
+      fcStyle='warning'
+
+    >
+      You must enter some text.
+
+    </Dialog>
+    <CornerDialog 
+    visible={cornerDialogVisible}
+    confirmText="Read now"
+    closeText="Read later"
+    onCloseClick={() => setCornerDialogVisible(false)}
+    title="New message">
+      You friend <strong>James</strong> just send you a new message.
+    </CornerDialog>
     <Feed>
       <NewPost>
         <Label htmlFor="NewPost">New Post</Label>
-        <textarea onChange={e => setFeedText(e.target.value)} id="NewPost" />
+        <textarea ref={ref => {textAreaRef = ref}} onChange={e => setFeedText(e.target.value)} id="NewPost" />
         <Button
           icon={<FontAwesomeIcon icon="plus" />}
           onClick={() => addFeedItem()}
@@ -190,6 +220,7 @@ const NewsFeed = () => {
           );
         })}
     </Feed>
+    </>
   );
 };
 
