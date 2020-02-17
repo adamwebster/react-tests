@@ -1,11 +1,11 @@
 import React, { useState, useEffect, Fragment, useRef } from "react";
 import { Card, Input, Button } from "@adamwebster/fused-components";
-import styled from "styled-components";
+import styled, {css} from "styled-components";
 import axios from "axios";
 import _ from "lodash";
 import moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import {darken } from 'polished';
 const Wrapper = styled(Card)`
   width: 600px;
   margin: 50px auto;
@@ -16,6 +16,9 @@ const AppHeader = styled.div`
   background-color: #4799ff;
 `;
 
+const ForecastImage = styled.img`
+
+`
 const SubTitle = styled.h2`
   margin-bottom: 0;
   color: #4799ff;
