@@ -62,11 +62,15 @@ const GitHubButton = styled.a`
 `;
 
 const BackToLoginBTN = styled(Button)`
-  margin-top: 10px;
 `;
 
 const LoginButton = styled(Button)`
-  margin-top: 10px;
+  width: 100%;
+  .button-icon{
+    position:absolute;
+    left: 5px;
+    top: 5px;
+  }
 `;
 
 const ToggleWrapper = styled.div`
@@ -110,7 +114,7 @@ const LoginPage = () => {
       setCompleted(true);
       setShowError(false);
       setIcon("check");
-      setButtonText("Logged in");
+      setButtonText("Back to login");
     } else {
       setShowError(true);
       setInError(true);

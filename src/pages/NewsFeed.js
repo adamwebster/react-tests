@@ -5,7 +5,8 @@ import {
   Card,
   Button,
   Avatar,
-  Label
+  Label,
+  DropdownButton
 } from "@adamwebster/fused-components";
 import FeedData from "../data/Feed.json";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -35,8 +36,8 @@ const UserName = styled.div`
   font-weight: bold;
   margin-bottom: 10px;
   font-size: 16px;
-  padding:20px 0px;
-`
+  padding: 13px 0px;
+`;
 
 const AvatarStyled = styled(Avatar)`
   border: solid 3px #fff;
@@ -108,6 +109,7 @@ const Actions = styled.div`
 const NewsFeed = () => {
   const [FeedItems, setFeedItems] = useState(FeedData);
   const [FeedText, setFeedText] = useState("");
+  const [privacyText, setPrivacyText] = useState("Who can see this?");
   const addFeedItem = () => {
     const FeedItemCopy = FeedItems.slice();
     const d = new Date();
@@ -132,6 +134,21 @@ const NewsFeed = () => {
         >
           Post
         </Button>
+        <DropdownButton label={privacyText}>
+          <DropdownButton.Menu>
+            <DropdownButton.MenuItem onClick={() => setPrivacyText("Friends")}>
+              Friends
+            </DropdownButton.MenuItem>
+            <DropdownButton.MenuItem onClick={() => setPrivacyText("Family")}>
+              Family
+            </DropdownButton.MenuItem>
+            <DropdownButton.MenuItem
+              onClick={() => setPrivacyText("Everybody")}
+            >
+              Everybody
+            </DropdownButton.MenuItem>
+          </DropdownButton.Menu>
+        </DropdownButton>
       </NewPost>
       {FeedItems &&
         FeedItems.map(item => {
@@ -140,7 +157,8 @@ const NewsFeed = () => {
               <Profile>
                 <AvatarStyled
                   boxShadow
-                  borderRadius="50px"
+                  size="medium"
+                  borderRadius="round"
                   image={item.avatar}
                 />
                 <UserName>{item.user}</UserName>

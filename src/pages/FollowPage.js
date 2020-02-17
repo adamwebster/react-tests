@@ -64,6 +64,10 @@ const UserHandle = styled.span`
   margin-bottom: 30px;
 `
 
+const ButtonStyled = styled(Button)`
+  width: 100%;
+`
+
 export const FollowPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [buttonColor, setButtonColor] =useState();
@@ -118,7 +122,7 @@ export const FollowPage = () => {
             <StatValue>157</StatValue>
           </Stat>
         </Stats>
-        <Button
+        <ButtonStyled
           onClick={!following ? () => followUser() : () => unFollowUser()}
           isLoading={isLoading} 
           buttonColor={buttonColor}
@@ -128,7 +132,7 @@ export const FollowPage = () => {
           primary
         >
           {buttonText}
-        </Button>
+        </ButtonStyled>
       </CardInner>
     </StyledCard>
   )
