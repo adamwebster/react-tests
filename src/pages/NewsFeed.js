@@ -136,9 +136,8 @@ const Toasts = () => {
         "Frank just commented on your post",
         "Nice photo. Looks like you had a great trip"
       );
-    }, 8000);
+    }, 3000);
     return () => {
-      clearTimeout(message);
       clearTimeout(newComment);
     };
   }, []);
