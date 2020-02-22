@@ -26,6 +26,9 @@ const LoginWrapper = styled.div`
   transform: translateY(-50%);
 `;
 
+const StyledCard = styled(Card)`
+  padding: 10px;
+`
 const Header = styled.h3`
   margin: 5px 0 15px 0;
   text-align: center;
@@ -125,7 +128,7 @@ const LoginPage = () => {
 
   return (
     <LoginWrapper>
-      <Card boxShadow padding="10px">
+      <StyledCard boxShadow>
         {!loaded && (
           <>
             <Header>
@@ -171,7 +174,7 @@ const LoginPage = () => {
             )}
             <LoginButton
               loadingIcon={<FontAwesomeIcon spin icon="circle-notch" />}
-              icon={completed ? "" : <Icon icon="lock-locked" />}
+              icon={completed ? "" : "lock-locked"}
               buttonColor={completed ? Colors.green : "#29a19c"}
               primary
               isLoading={loading}
@@ -219,7 +222,7 @@ const LoginPage = () => {
             </HelpText>
           </>
         )}
-      </Card>
+      </StyledCard>
       <div>
         <GitHubButton href="https://github.com/adamwebster/react-tests/">
           <FontAwesomeIcon icon={["fab", "github"]} /> View the code on GitHub{" "}
