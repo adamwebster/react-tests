@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, Button, Input, Label, Avatar } from '@adamwebster/fused-components';
+import { Card, Button, Avatar } from '@adamwebster/fused-components';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -20,7 +20,11 @@ const UserName = styled.h2`
   text-align: center;
   margin-bottom: 0px;
 `
-const CoverImage = styled.div`
+
+interface ICoverImage {
+  image:string,
+}
+const CoverImage = styled.div<ICoverImage>`
 position:absolute;
 width: 100%;
 height: 150px;
@@ -70,7 +74,7 @@ const ButtonStyled = styled(Button)`
 
 export const FollowPage = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [buttonColor, setButtonColor] =useState();
+  const [buttonColor, setButtonColor] =useState('');
   const [buttonText, setButtonText] = useState('Follow');
   const [following, setFollowing] = useState(false);
   const [buttonIcon, setButtonIcon ] = useState('check');
@@ -95,7 +99,7 @@ export const FollowPage = () => {
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-      setButtonColor();
+      setButtonColor('');
       setButtonText('Follow');
       setFollowing(false);
       setButtonIcon('check');
@@ -126,9 +130,6 @@ export const FollowPage = () => {
           onClick={!following ? () => followUser() : () => unFollowUser()}
           isLoading={isLoading} 
           buttonColor={buttonColor}
-          completed={completed}        
-          loadingIcon={<FontAwesomeIcon spin icon="circle-notch" />}
-          icon={<FontAwesomeIcon icon={buttonIcon} />}
           primary
         >
           {buttonText}
