@@ -16,6 +16,7 @@ import followImg from './static/follow.png';
 import loginImg from './static/login.png';
 import { WeatherApp } from './pages/WeatherApp';
 import NewsFeed from './pages/NewsFeed';
+import PricingTable from './pages/PricingTable/PricingTable';
 const GlobalStyle = createGlobalStyle`
   body {
     color: ${props => props.theme.foregroundColor};
@@ -125,6 +126,9 @@ function App() {
           </Route>
           <Route path="/newsfeed">
             <NewsFeed />  
+          </Route>
+          <Route path="/pricingtable">
+            <PricingTable />
           </Route>
         </Switch>
       </div>

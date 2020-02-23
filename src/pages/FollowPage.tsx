@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Card, Button, Avatar } from '@adamwebster/fused-components';
 import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+ 
 const StyledCard = styled(Card)`
   width: 300px;
   margin: 50px auto 0 auto;
