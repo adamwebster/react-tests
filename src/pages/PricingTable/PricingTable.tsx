@@ -8,35 +8,74 @@ import {
   StyledList,
   ToggleWrapper,
   StyledToggle,
-  Price
+  Price,
+  StyledTextarea
 } from "./styles";
-import { useToast, ToastProvider } from "@adamwebster/fused-components";
+import {
+  CornerDialog,
+  ToastProvider,
+  useToast,
+} from "@adamwebster/fused-components";
 
-const Toasts = () => {
+const NeedHelp = () => {
+  const [dialogVisible, setDialogVisible] = useState(true);
+
   const toast = useToast();
-  useEffect(() => {
-    const message = setTimeout(() => {
-      toast?.addInfo(
-        "Need Help?",
-        "Give us an email at info@companyname.me"
-      );
-    }, 1000);
-    return () => {
-      clearTimeout(message);
-    };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  return null;
+
+ const sendMessage = () => {
+     setDialogVisible(false);
+    toast?.addInfo("Thanks for your message", "We will get back to you soon.", {
+      duration: 5
+    });
+  };
+  return (
+    <CornerDialog
+      confirmText="Send"
+      visible={dialogVisible}
+      onCloseClick={() => setDialogVisible(false)}
+      onConfirmClick={() => sendMessage()}
+      cancelText="Not Now"
+      icon="info-circle"
+      fcStyle="info"
+      title="Need Help?"
+    >
+      Need help feel free to send us a message and we will get back to you soon.
+      <StyledTextarea placeholder="Enter your message here..." />
+    </CornerDialog>
+  );
 };
+
+interface ButtonProps extends React.HtmlHTMLAttributes<HTMLButtonElement> {
+  children?: any;
+  primary?: boolean;
+  buttonColor?: string;
+}
+const CardButton = ({children, primary, buttonColor}:ButtonProps) =>{
+  const toast = useToast();
+
+  const ButtonClick = () =>{
+    toast?.addInfo("This is where your an sales pitch would be shown", undefined, {
+      id: "1",
+      duration: 5
+    });
+  }
+
+  return (
+    <StyledButton primary={primary} buttonColor={buttonColor} onClick={() => ButtonClick()}>
+      {children}
+    </StyledButton>
+  )
+}
 
 const PricingTable = () => {
   const ButtonText = "LEARN MORE";
   const [active, setActive] = useState(false);
+
+ 
   return (
     <>
-      <ToastProvider position="bottom-right">
-        <Toasts />
-      </ToastProvider>
+      <ToastProvider>
+        <NeedHelp />
       <PricingWrapper>
         <Header>
           <h1>Our Pricing</h1>
@@ -55,7 +94,7 @@ const PricingTable = () => {
               <li>2 Users Allowed</li>
               <li>Send up to 3 GB</li>
             </StyledList>
-            <StyledButton primary>{ButtonText}</StyledButton>
+            <CardButton primary>{ButtonText}</CardButton>
           </PricingCard>
           <PricingCard bgColor="purple">
             <h2> Professional</h2>
@@ -65,9 +104,9 @@ const PricingTable = () => {
               <li>5 Users Allowed</li>
               <li>Send up to 10 GB</li>
             </StyledList>
-            <StyledButton primary buttonColor="#fff">
+            <CardButton primary buttonColor="#fff">
               {ButtonText}
-            </StyledButton>
+            </CardButton>
           </PricingCard>
           <PricingCard primaryButton>
             <h2> Master</h2>
@@ -77,10 +116,12 @@ const PricingTable = () => {
               <li>10 Users Allowed</li>
               <li>Send up to 20 GB</li>
             </StyledList>
-            <StyledButton primary>{ButtonText}</StyledButton>
+            <CardButton primary>{ButtonText}</CardButton>
           </PricingCard>
         </PricingTableStyled>
       </PricingWrapper>
+      </ToastProvider>
+
     </>
   );
 };

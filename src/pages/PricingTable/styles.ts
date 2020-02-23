@@ -1,12 +1,12 @@
 import styled, { css } from 'styled-components'
-import { Card, Button, Toggle } from '@adamwebster/fused-components'
+import { Card, Button, Toggle, Textarea } from '@adamwebster/fused-components'
 
 
-interface IStyledCard {
+interface StyledCard {
     bgColor?: string;
     scale?: string;
 }
-export const StyledCard = styled(Card)<IStyledCard>`
+export const StyledCard = styled(Card)<StyledCard>`
     width: 300px;
     padding: 30px;
     float:left;
@@ -14,6 +14,9 @@ export const StyledCard = styled(Card)<IStyledCard>`
     background-image: linear-gradient(to right, hsl(21.31, 100%, 61.45%), hsl(6.05, 73.54%, 49.16%));
         color: #fff;
     `};
+    &&{ 
+        border-color: hsla(6.05, 73.54%, 49.16%, 0.3);
+    }
     @media (max-width: 768px) {
     margin-bottom: 20px;
     width: 100%;
@@ -24,6 +27,17 @@ export const StyledCard = styled(Card)<IStyledCard>`
         font-size: 16px;
         margin: 0;
         font-weight: 400;
+    }
+    &:first-child{
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        border-right: none;
+
+    }
+    &:last-child{
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        border-left: none;
     }
 `
 export const StyledList = styled.ul`
@@ -40,12 +54,14 @@ export const StyledList = styled.ul`
     }
 `
 export const StyledButton = styled(Button)`
+&&{
     width: 100%;
     background-image: linear-gradient(to right, hsl(21.31, 100%, 61.45%), hsl(6.05, 73.54%, 49.16%));
     ${props => (props.primary && props.buttonColor === "#fff") && css`
-        color:  hsl(6.05, 73.54%, 49.16%)!important;
+        color:  hsl(6.05, 73.54%, 49.16%);
         background-image: none;
     `}
+}
 `
 
 export const PricingWrapper = styled.div`
@@ -106,4 +122,12 @@ margin: 0 10px;
 export const Price = styled.h3`
 font-size: 32px;
 margin-top: 10px;
+`
+export const StyledTextarea = styled(Textarea)`
+ width: 100%;
+resize: none;
+box-sizing:border-box;
+margin-top: 10px;
+height: 100px;
+padding:10px;
 `
