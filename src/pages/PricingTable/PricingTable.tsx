@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PricingCard from "./PricingCard";
 import {
   PricingWrapper,
@@ -15,16 +15,25 @@ import {
   CornerDialog,
   ToastProvider,
   useToast,
+  FormField,
 } from "@adamwebster/fused-components";
 
 const NeedHelp = () => {
   const [dialogVisible, setDialogVisible] = useState(true);
+  const [vMessage, setVMessage] = useState('');
+  const [textValue, setTextValue] = useState('');
 
   const toast = useToast();
 
  const sendMessage = () => {
+   console.log(textValue)
+   if(!textValue){
+     setVMessage('You did not enter a message');
+     return;
+   }
      setDialogVisible(false);
-    toast?.addInfo("Thanks for your message", "We will get back to you soon.", {
+    toast?.addInfo("Thanks for your message", 
+    `The following message has been sent. <p><strong>${textValue}</strong></p> We will get back to you soon.`, {
       duration: 5
     });
   };
@@ -40,7 +49,11 @@ const NeedHelp = () => {
       title="Need Help?"
     >
       Need help feel free to send us a message and we will get back to you soon.
-      <StyledTextarea placeholder="Enter your message here..." />
+    <br />    <br />
+
+     <FormField htmlFor="message" validationMessage={vMessage} label="Enter your message">
+      <StyledTextarea value={textValue} onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setTextValue(e.target.value)} id="message" placeholder="Enter your message here..." />
+      </FormField>
     </CornerDialog>
   );
 };
@@ -61,7 +74,7 @@ const CardButton = ({children, primary, buttonColor}:ButtonProps) =>{
   }
 
   return (
-    <StyledButton primary={primary} buttonColor={buttonColor} onClick={() => ButtonClick()}>
+    <StyledButton  primary={primary} buttonColor={buttonColor} onClick={() => ButtonClick()}>
       {children}
     </StyledButton>
   )
