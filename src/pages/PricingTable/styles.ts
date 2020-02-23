@@ -7,17 +7,15 @@ interface StyledCard {
     scale?: string;
 }
 export const StyledCard = styled(Card)<StyledCard>`
-    width: 300px;
+    width: 275px;
     padding: 30px;
     float:left;
     ${props => props.bgColor && css`
-    background-image: linear-gradient(to right, hsl(21.31, 100%, 61.45%), hsl(6.05, 73.54%, 49.16%));
+    background-image: linear-gradient(136deg, hsl(212.24, 80.9%, 39.66%), hsl(200.73, 41.64%, 49.16%));
         color: #fff;
     `};
-    &&{ 
-        border-color: hsla(6.05, 73.54%, 49.16%, 0.3);
-    }
-    @media (max-width: 768px) {
+
+    @media (max-width: 825px) {
     margin-bottom: 20px;
     width: 100%;
     float: left;
@@ -56,35 +54,35 @@ export const StyledList = styled.ul`
 export const StyledButton = styled(Button)`
 &&{
     width: 100%;
-    background-image: linear-gradient(to right, hsl(21.31, 100%, 61.45%), hsl(6.05, 73.54%, 49.16%));
+    background-image: linear-gradient(136deg, hsl(212.24, 80.9%, 39.66%), hsl(200.73, 41.64%, 49.16%));
     ${props => (props.primary && props.buttonColor === "#fff") && css`
-        color:  hsl(6.05, 73.54%, 49.16%);
+        color:  hsl(212.24, 80.9%, 39.66%);
         background-image: none;
     `}
 }
 `
 
 export const PricingWrapper = styled.div`
-    width:900px;
+    width:825px;
     margin: 40px auto;
     ${StyledCard}{
         :nth-child(2){
             position:relative;
             padding: 55px 30px;
             top: -25px;
-            @media (max-width: 768px) {
+            @media (max-width: 825px) {
                 padding: 30px;
 
             top: 0;
             }
             ul{
                 li{
-                    border-color: hsl(35.7, 100%, 49.16%);
+                    border-color: hsl(212.24, 80.9%, 76.72%);
                 }
             }
         }
     }
-    @media (max-width: 768px) {
+    @media (max-width: 825px) {
     width: 100%;
     padding: 0 30px;
     box-sizing:border-box;
@@ -115,7 +113,7 @@ export const StyledToggle = styled(Toggle)`
 top: 10px;
 margin: 0 10px;
  display: inline-block;
- background-image: linear-gradient(to right, hsl(21.31, 100%, 61.45%), hsl(6.05, 73.54%, 49.16%));
+ background-image: linear-gradient(136deg, hsl(212.24, 80.9%, 39.66%), hsl(200.73, 41.64%, 49.16%));
 
 `
 
