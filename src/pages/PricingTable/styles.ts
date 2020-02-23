@@ -14,6 +14,11 @@ export const StyledCard = styled(Card)<IStyledCard>`
     background-image: linear-gradient(to right, hsl(21.31, 100%, 61.45%), hsl(6.05, 73.54%, 49.16%));
         color: #fff;
     `};
+    @media (max-width: 768px) {
+    margin-bottom: 20px;
+    width: 100%;
+    float: left;
+  }
     text-align:center;
     h2{ 
         font-size: 16px;
@@ -51,6 +56,11 @@ export const PricingWrapper = styled.div`
             position:relative;
             padding: 55px 30px;
             top: -25px;
+            @media (max-width: 768px) {
+                padding: 30px;
+
+            top: 0;
+            }
             ul{
                 li{
                     border-color: hsl(35.7, 100%, 49.16%);
@@ -58,9 +68,15 @@ export const PricingWrapper = styled.div`
             }
         }
     }
+    @media (max-width: 768px) {
+    width: 100%;
+    padding: 0 30px;
+    box-sizing:border-box;
+  }
 `
 
 export const PricingTableStyled = styled.div`
+
 `
 
 export const Header = styled.header`
