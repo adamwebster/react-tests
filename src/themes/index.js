@@ -1,3 +1,4 @@
+import {Colors } from '@adamwebster/fused-components';
 
 const themes = {
   default:{
@@ -5,7 +6,7 @@ const themes = {
     foregroundColor: "#6d6d6d",
     cardColor: "#fff",
     borderColor: "#ccc",
-    accentColor: "#29a19c",
+    accentColor: Colors.primary,
     buttonTextColor: "#fff",
     green: "#7dcc4b",
     dangerBG: "#ffbebe",
