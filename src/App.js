@@ -13,6 +13,7 @@ import { device } from './styles/mediaqueries';
 import CSSGrid from './pages/CSSGrid';
 import { FollowPage } from './pages/FollowPage';
 import followImg from './static/follow.png';
+import priceTableImg from './static/pricetable.jpg'
 import loginImg from './static/login.png';
 import { WeatherApp } from './pages/WeatherApp';
 import NewsFeed from './pages/NewsFeed';
@@ -47,7 +48,7 @@ const Grid = styled.div`
   width: 330px;
   margin: 0 auto;
   grid-template-columns: auto auto;
-  grid-template-rows: 300px;
+  grid-template-rows: auto;
 
   padding:10px;
   justify-items: center;
@@ -108,6 +109,11 @@ function App() {
         <GridItem>
             <StyledLink image={followImg} to="/follow" />
             <Link to="/follow"><h3>Social Profile Card</h3></Link>
+            </GridItem>
+
+            <GridItem>
+            <StyledLink image={priceTableImg} to="/pricingtable" />
+            <Link to="/pricingtable"><h3>Pricing Table</h3></Link>
             </GridItem>
             </Grid>
           </Route>

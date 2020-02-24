@@ -1,7 +1,6 @@
 import styled, { css } from 'styled-components'
 import { Card, Button, Toggle, Textarea } from '@adamwebster/fused-components'
 
-
 interface StyledCard {
     bgColor?: string;
     scale?: string;
@@ -9,7 +8,7 @@ interface StyledCard {
 export const StyledCard = styled(Card)<StyledCard>`
     width: 275px;
     padding: 30px;
-    float:left;
+    display: inline-block;
     ${props => props.bgColor && css`
     background-image: linear-gradient(136deg, hsl(212.24, 80.9%, 39.66%), hsl(200.73, 41.64%, 49.16%));
         color: #fff;
@@ -18,7 +17,7 @@ export const StyledCard = styled(Card)<StyledCard>`
     @media (max-width: 825px) {
     margin-bottom: 20px;
     width: 100%;
-    float: left;
+
   }
     text-align:center;
     h2{ 
@@ -69,7 +68,7 @@ export const PricingWrapper = styled.div`
         :nth-child(2){
             position:relative;
             padding: 55px 30px;
-            top: -25px;
+            top: 0px;
             @media (max-width: 825px) {
                 padding: 30px;
 

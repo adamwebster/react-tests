@@ -17,6 +17,7 @@ import {
   useToast,
   FormField,
 } from "@adamwebster/fused-components";
+import { ExampleFooter } from "../../components/UI/ExampleFooter";
 
 const NeedHelp = () => {
   const [dialogVisible, setDialogVisible] = useState(true);
@@ -84,7 +85,6 @@ const PricingTable = () => {
   const ButtonText = "LEARN MORE";
   const [active, setActive] = useState(false);
 
- 
   return (
     <>
       <ToastProvider>
@@ -134,7 +134,7 @@ const PricingTable = () => {
         </PricingTableStyled>
       </PricingWrapper>
       </ToastProvider>
-
+      <ExampleFooter />
     </>
   );
 };
