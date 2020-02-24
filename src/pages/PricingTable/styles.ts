@@ -2,14 +2,14 @@ import styled, { css } from 'styled-components'
 import { Card, Button, Toggle, Textarea } from '@adamwebster/fused-components'
 
 interface StyledCard {
-    bgColor?: string;
+    primary?: boolean;
     scale?: string;
 }
 export const StyledCard = styled(Card)<StyledCard>`
     width: 275px;
     padding: 30px;
     display: inline-block;
-    ${props => props.bgColor && css`
+    ${props => props.primary && css`
     background-image: linear-gradient(136deg, hsl(212.24, 80.9%, 39.66%), hsl(200.73, 41.64%, 49.16%));
         color: #fff;
     `};

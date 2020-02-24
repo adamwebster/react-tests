@@ -109,7 +109,7 @@ const PricingTable = () => {
             </StyledList>
             <CardButton primary>{ButtonText}</CardButton>
           </PricingCard>
-          <PricingCard bgColor="purple">
+          <PricingCard primary>
             <h2> Professional</h2>
             <Price>${active ? "279.99" : "24.99"}</Price>
             <StyledList>
@@ -134,7 +134,7 @@ const PricingTable = () => {
         </PricingTableStyled>
       </PricingWrapper>
       </ToastProvider>
-      <ExampleFooter />
+      <ExampleFooter url="https://github.com/adamwebster/react-tests/tree/master/src/pages/PricingTable/"/>
     </>
   );
 };
