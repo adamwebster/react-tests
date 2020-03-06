@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Button } from "@adamwebster/fused-components";
+import { utimes } from "fs";
 
 export const authEndpoint = "https://accounts.spotify.com/authorize?";
 // https://accounts.spotify.com/en/authorize?client_id=7e5f8b9e5390468fb25f323a0647c507&response_type=code&redirect_uri=https:%2F%2Fexample.com%2Fcallback&scope=user-read-private%20user-read-email
@@ -25,6 +26,37 @@ const hash = window.location.hash
     return initial;
   }, {});
 window.location.hash = "";
+
+interface ITracks {
+  href: string;
+  token: any;
+}
+const TrackList = ({ href, token }: ITracks) => {
+  const [tracks, setTracks] = useState([]);
+
+  useEffect(() => {
+    getTracks(href);
+  });
+  const getTracks = (href: any) => {
+    axios
+      .get(href, {
+        headers: {
+          Authorization: "Bearer " + token
+        }
+      })
+      .then(response => {
+        setTracks(response.data.items);
+      });
+  };
+
+  return (
+    <ul>
+      {tracks.map((item: { track: { name: string } }) => {
+        return <li>{item.track.name}</li>;
+      })}
+    </ul>
+  );
+};
 
 function FusedMusic() {
   const [token, setToken] = useState("");
@@ -62,26 +94,14 @@ function FusedMusic() {
           tracksURLToSave.push(item.tracks.href);
         });
         return tracksURLToSave;
-      })
+      });
   };
-
- const getTracks = (href: any) => {
-   axios.get(href, {
-    headers: {
-      Authorization: "Bearer " + token
-    }
-  })
-  .then(response => {
-    setTracks(response.data.items);
-  })
- 
- }
 
   interface items {
     name: string;
     id: string;
     images: any;
-    tracks: { href: any};
+    tracks: { href: any };
   }
   return (
     <div className="App">
@@ -98,26 +118,18 @@ function FusedMusic() {
         )}
         {token && (
           <>
-          <ul>
-            {playlists.map((item: items, index: any) => {
-              return (
-                <li key={item.id}>
-                  <Button onClick={() => getTracks(item.tracks.href)}>{item.name} </Button>                 
-                </li>
-              );
-            })}
-          </ul>
-
-          <ul>
-            {tracks.map((item: {track: {name: string}}) => {
-              return(
-              <li>{item.track.name}</li>
-              )
-            })}
-          </ul>
+            <ul>
+              {playlists.map((item: items, index: any) => {
+                return (
+                  <li key={item.id}>
+                    {item.name}{" "}
+                    <TrackList href={item.tracks.href} token={token} />
+                  </li>
+                );
+              })}
+            </ul>
           </>
         )}
-        
       </header>
     </div>
   );
