@@ -18,7 +18,7 @@ const scopes = [
 const hash = window.location.hash
   .substring(1)
   .split("&")
-  .reduce(function(initial: any, item) {
+  .reduce(function (initial: any, item) {
     if (item) {
       var parts = item.split("=");
       initial[parts[0]] = decodeURIComponent(parts[1]);
@@ -57,6 +57,39 @@ const TrackList = ({ href, token }: ITracks) => {
     </ul>
   );
 };
+
+interface ISearch {
+  token: string;
+}
+const Search = ({ token }: ISearch) => {
+  const [results, setResults] = useState([]);
+  const searchForTrack = (e: { target: { value: string } }) => {
+    console.log(e.target.value)
+    axios
+      .get(`https://api.spotify.com/v1/search?q=${e.target.value}&type=track&market=US`, {
+        headers: {
+          Authorization: "Bearer " + token
+        }
+      })
+      .then(response => {
+
+        console.log(response)
+        setResults(response.data.tracks.items);
+      })
+  }
+  return (
+    <>
+      <input onChange={e => searchForTrack(e)} />
+      <ul>
+        {results.map((item: { name: string }) => {
+        return(
+          <li>{item.name}</li>
+        )
+      })}
+    </ul>
+    </>
+  )
+}
 
 function FusedMusic() {
   const [token, setToken] = useState("");
@@ -124,6 +157,7 @@ function FusedMusic() {
                   <li key={item.id}>
                     {item.name}{" "}
                     <TrackList href={item.tracks.href} token={token} />
+                    <Search token={token} />
                   </li>
                 );
               })}
