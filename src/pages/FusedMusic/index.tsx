@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Button } from "@adamwebster/fused-components";
-import { utimes } from "fs";
+import { Button, Input, Card } from "@adamwebster/fused-components";
+import styled from 'styled-components';
 
 export const authEndpoint = "https://accounts.spotify.com/authorize?";
 // https://accounts.spotify.com/en/authorize?client_id=7e5f8b9e5390468fb25f323a0647c507&response_type=code&redirect_uri=https:%2F%2Fexample.com%2Fcallback&scope=user-read-private%20user-read-email
@@ -31,12 +31,26 @@ interface ITracks {
   href: string;
   token: any;
 }
+
+const TrackListStyled = styled.ul`
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  li{
+    padding: 10px;
+    box-sizing:border-box;
+    border-bottom: solid 1px ${props => props.theme.borderColor};
+    &:last-child{
+      border-bottom: 0;
+    }
+  }
+`
 const TrackList = ({ href, token }: ITracks) => {
   const [tracks, setTracks] = useState([]);
 
   useEffect(() => {
     getTracks(href);
-  });
+  }, [href]);
   const getTracks = (href: any) => {
     axios
       .get(href, {
@@ -50,44 +64,77 @@ const TrackList = ({ href, token }: ITracks) => {
   };
 
   return (
-    <ul>
-      {tracks.map((item: { track: { name: string } }) => {
-        return <li>{item.track.name}</li>;
+    <TrackListStyled>
+      {tracks.map((item: { track: { name: string, id: string, artists: any } }) => {
+        return (
+            <li key={item.track.id}>{item.track.name} {item.track.artists[0].name}</li>
+        );
       })}
-    </ul>
+    </TrackListStyled>
   );
 };
 
+const StyledSearchMenu = styled.ul`
+  background-color: #fff;
+  padding: 0;
+  margin: 0;
+  list-style:none;
+  position: absolute;
+  border: solid 1px ${props => props.theme.borderColor};
+  z-index: 9;
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 0 10px #00000050;
+  top: 45px;
+  border-radius: 5px;
+  li{
+    padding: 10px;
+    box-sizing:border-box;
+    border-bottom: solid 1px ${props => props.theme.borderColor};
+    &:last-child{
+      border-bottom: 0;
+    }
+  }
+`
+
+const SearchWrapper = styled.div`
+  position:relative;
+`
 interface ISearch {
   token: string;
 }
 const Search = ({ token }: ISearch) => {
   const [results, setResults] = useState([]);
+  const [searchValue, setSearchValue] = useState('');
+
   const searchForTrack = (e: { target: { value: string } }) => {
-    console.log(e.target.value)
+    setSearchValue(e.target.value);
     axios
-      .get(`https://api.spotify.com/v1/search?q=${e.target.value}&type=track&market=US`, {
+      .get(`https://api.spotify.com/v1/search?q=${e.target.value}&type=track&market=US&limit=5`, {
         headers: {
           Authorization: "Bearer " + token
         }
       })
       .then(response => {
-
-        console.log(response)
         setResults(response.data.tracks.items);
       })
   }
   return (
-    <>
-      <input onChange={e => searchForTrack(e)} />
-      <ul>
-        {results.map((item: { name: string }) => {
-        return(
-          <li>{item.name}</li>
-        )
-      })}
-    </ul>
-    </>
+    <SearchWrapper>
+      <Input value={searchValue} onChange={e => searchForTrack(e)} />
+      {searchValue.length > 0 &&
+        <StyledSearchMenu>
+          {results.length === 0 &&
+            <li>No Results Found</li>
+          }
+          {results.map((item: { name: string, id: string, artists: any }) => {
+            return (
+              <li onClick={() => setSearchValue('')} key={item.id}>{item.name} | {item.artists[0].name}</li>
+            )
+          })}
+        </StyledSearchMenu>
+      }
+    </SearchWrapper>
   )
 }
 
@@ -127,6 +174,11 @@ function FusedMusic() {
           tracksURLToSave.push(item.tracks.href);
         });
         return tracksURLToSave;
+      }).catch(err => {
+        if (err) {
+          setToken('');
+          localStorage.removeItem('FS_SPOTIFY_TOKEN');
+        }
       });
   };
 
@@ -136,6 +188,17 @@ function FusedMusic() {
     images: any;
     tracks: { href: any };
   }
+
+  const PlayList = styled.div`
+  list-style: none;
+  padding:0; 
+  width: 300px;
+  margin: 0 0 30px 0;
+  `
+  const PlaylistCard = styled(Card)`
+    padding: 30px;
+    box-sizing:border-box;
+  `
   return (
     <div className="App">
       <header className="App-header">
@@ -154,11 +217,13 @@ function FusedMusic() {
             <ul>
               {playlists.map((item: items, index: any) => {
                 return (
-                  <li key={item.id}>
-                    {item.name}{" "}
-                    <TrackList href={item.tracks.href} token={token} />
-                    <Search token={token} />
-                  </li>
+                  <PlayList key={item.id}>
+                    <PlaylistCard>
+                      {item.name}{" "}
+                      <TrackList href={item.tracks.href} token={token} />
+                      <Search token={token} />
+                    </PlaylistCard>
+                  </PlayList>
                 );
               })}
             </ul>
