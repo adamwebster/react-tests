@@ -232,8 +232,9 @@ function FusedMusic() {
 
                           {playlist?.name}
                         </PlaylistTitle>
-                        <TrackList />
                         <Search />
+
+                        <TrackList />
                       </PlaylistCard>
                     </PlayList>
                   )}

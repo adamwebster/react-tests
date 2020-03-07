@@ -18,6 +18,9 @@ li {
   box-sizing: border-box;
   position: relative;
   border-bottom: solid 1px ${Colors.border};
+  &:last-child{
+      border-bottom: none;
+  }
 }
 `;
 const SongTitle = styled.div`
