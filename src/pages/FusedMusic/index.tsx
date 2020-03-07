@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Button, Input, Card } from "@adamwebster/fused-components";
+import { Button, Input, Card, Icon, Colors } from "@adamwebster/fused-components";
 import styled from 'styled-components';
 
 export const authEndpoint = "https://accounts.spotify.com/authorize?";
@@ -12,7 +12,9 @@ const redirectUri = "http://localhost:3000/fusedmusic";
 const scopes = [
   "user-read-currently-playing",
   "user-read-playback-state",
-  "playlist-read-private"
+  "playlist-read-private",
+  "playlist-modify-public",
+  "playlist-modify-private"
 ];
 // Get the hash of the url
 const hash = window.location.hash
@@ -30,6 +32,8 @@ window.location.hash = "";
 interface ITracks {
   href: string;
   token: any;
+  playlistID: string;
+  getPlaylist: () => void;
 }
 
 const TrackListStyled = styled.ul`
@@ -39,13 +43,33 @@ const TrackListStyled = styled.ul`
   li{
     padding: 10px;
     box-sizing:border-box;
-    border-bottom: solid 1px ${props => props.theme.borderColor};
-    &:last-child{
-      border-bottom: 0;
-    }
+    position:relative;
+    border-bottom: solid 1px ${Colors.border};
   }
 `
-const TrackList = ({ href, token }: ITracks) => {
+const SongTitle = styled.div`
+font-weight:bold;
+`
+
+const RemoveIcon = styled.span`
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  background-color: ${Colors.red};
+  box-sizing:border-box;
+  margin-left: 5px;
+border-radius: 50%;
+top: calc(50% - 8px);
+right: 10px;
+position: absolute;
+  svg{
+    color: ${Colors.light};
+    position: relative;
+    cursor: pointer;;
+  }
+`
+
+const TrackList = ({ href, token, playlistID, getPlaylist }: ITracks) => {
   const [tracks, setTracks] = useState([]);
 
   useEffect(() => {
@@ -63,11 +87,26 @@ const TrackList = ({ href, token }: ITracks) => {
       });
   };
 
+  const RemoveFromPlaylist = (trackID: string) => {
+    console.log(playlistID)
+    axios
+    .delete(`https://api.spotify.com/v1/playlists/${playlistID}/tracks`, {
+        data: { "uris": [`spotify:track:${trackID}`]},
+        headers: {
+          Authorization: "Bearer " + token
+        },
+    })
+    .then(response => {
+      getPlaylist();
+        console.log(response)
+    })
+  }
+
   return (
     <TrackListStyled>
       {tracks.map((item: { track: { name: string, id: string, artists: any } }) => {
         return (
-            <li key={item.track.id}>{item.track.name} {item.track.artists[0].name}</li>
+            <li key={item.track.id}><SongTitle>{item.track.name}</SongTitle>{item.track.artists[0].name} <RemoveIcon onClick={()=> RemoveFromPlaylist(item.track.id)} ><Icon icon='times'/></RemoveIcon> </li>
         );
       })}
     </TrackListStyled>
@@ -82,7 +121,7 @@ const StyledSearchMenu = styled.ul`
   position: absolute;
   border: solid 1px ${props => props.theme.borderColor};
   z-index: 9;
-  width: 100%;
+  width: calc(100% - 20px);
   box-sizing: border-box;
   box-shadow: 0 0 10px #00000050;
   top: 45px;
@@ -99,11 +138,16 @@ const StyledSearchMenu = styled.ul`
 
 const SearchWrapper = styled.div`
   position:relative;
+  padding: 10px;
 `
+
+
 interface ISearch {
   token: string;
+  playlistID: string;
+  getPlaylist: () => void;
 }
-const Search = ({ token }: ISearch) => {
+const Search = ({ token, playlistID, getPlaylist }: ISearch) => {
   const [results, setResults] = useState([]);
   const [searchValue, setSearchValue] = useState('');
 
@@ -119,9 +163,28 @@ const Search = ({ token }: ISearch) => {
         setResults(response.data.tracks.items);
       })
   }
+
+  const AddToPlaylist = (trackID: string) => {
+    console.log(playlistID)
+    setSearchValue('')
+    axios
+    .post(`https://api.spotify.com/v1/playlists/${playlistID}/tracks`, {
+      "uris": [`spotify:track:${trackID}`],  
+    }, {
+      headers: {
+        Authorization: "Bearer " + token
+      }
+    })
+    .then(response => {
+      getPlaylist();
+        console.log(response)
+    })
+  }
+
+  
   return (
     <SearchWrapper>
-      <Input value={searchValue} onChange={e => searchForTrack(e)} />
+      <Input placeholder="Add an item" value={searchValue} onChange={e => searchForTrack(e)} />
       {searchValue.length > 0 &&
         <StyledSearchMenu>
           {results.length === 0 &&
@@ -129,7 +192,9 @@ const Search = ({ token }: ISearch) => {
           }
           {results.map((item: { name: string, id: string, artists: any }) => {
             return (
-              <li onClick={() => setSearchValue('')} key={item.id}>{item.name} | {item.artists[0].name}</li>
+              <li onClick={() => AddToPlaylist(item.id)} key={item.id}>
+                <SongTitle>{item.name} </SongTitle>{item.artists[0].name}
+                </li>
             )
           })}
         </StyledSearchMenu>
@@ -196,8 +261,37 @@ function FusedMusic() {
   margin: 0 0 30px 0;
   `
   const PlaylistCard = styled(Card)`
-    padding: 30px;
     box-sizing:border-box;
+    border-radius: 5px;
+    box-shadow: 0 0 10px #00000050;
+  `
+  const PlaylistTitle = styled.h3`
+    background-color: #4fd75d;
+    margin:0;
+    padding: 10px 10px 10px 10px;
+    color: #fff;
+    font-size:28px;
+    display: flex;
+    border-radius: 5px 5px 0 0;
+
+    align-content:center;
+    align-items:center;
+    img{
+      margin-right: 10px;
+      border-radius: 50%;
+
+    }
+
+  `
+
+  const PlayListWrapper = styled.div`
+   display: grid;
+  grid-template-columns: auto auto;
+  grid-gap: 10px;
+  color: #444;
+  padding: 10px;
+  align-items:top;
+  justify-items: center;
   `
   return (
     <div className="App">
@@ -214,19 +308,22 @@ function FusedMusic() {
         )}
         {token && (
           <>
-            <ul>
+            <PlayListWrapper>
               {playlists.map((item: items, index: any) => {
                 return (
                   <PlayList key={item.id}>
                     <PlaylistCard>
+                      <PlaylistTitle>
+                     {item.images[2] && <img  alt={item.name} src={item.images[2].url} />}
                       {item.name}{" "}
-                      <TrackList href={item.tracks.href} token={token} />
-                      <Search token={token} />
+                      </PlaylistTitle>
+                      <TrackList getPlaylist={() => getPlaylist()} playlistID={item.id} href={item.tracks.href} token={token} />
+                      <Search getPlaylist={() => getPlaylist()} playlistID={item.id} token={token} />
                     </PlaylistCard>
                   </PlayList>
                 );
               })}
-            </ul>
+            </PlayListWrapper>
           </>
         )}
       </header>
