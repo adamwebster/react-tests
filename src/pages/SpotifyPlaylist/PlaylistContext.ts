@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export interface PlaylistInterface {
   playlists: any;
@@ -7,11 +7,13 @@ export interface PlaylistInterface {
   token: string;
   selectedPlaylist?: string;
   playlist: any;
-  getTracks: (h:any) => void;
+  getTracks: (h: any) => void;
 }
 
-export const PlaylistContext = React.createContext<PlaylistInterface | null>(null);
+export const PlaylistContext = React.createContext<PlaylistInterface | null>(
+  null
+);
 
 export const PlaylistContextProvider = PlaylistContext.Provider;
-  
+
 export const PlaylistContextConsumer = PlaylistContext.Consumer;

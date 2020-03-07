@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {
   Card,
@@ -10,41 +10,16 @@ import {
 import styled from "styled-components";
 import Search from "./search";
 import TrackList from "./tracklist";
-
+import { authEndpoint, clientId, redirectUri, scopes, hash } from "./setup";
 import { PlaylistContextProvider } from "./PlaylistContext";
 import { ExampleFooter } from "../../components/UI/ExampleFooter";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-const authEndpoint = "https://accounts.spotify.com/authorize?";
-// https://accounts.spotify.com/en/authorize?client_id=7e5f8b9e5390468fb25f323a0647c507&response_type=code&redirect_uri=https:%2F%2Fexample.com%2Fcallback&scope=user-read-private%20user-read-email
-// Replace with your app's client ID, redirect URI and desired scopes
-const clientId = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
-const redirectUri = "http://localhost:3000/fusedmusic";
-const scopes = [
-  "user-read-currently-playing",
-  "user-read-playback-state",
-  "playlist-read-private",
-  "playlist-modify-public",
-  "playlist-modify-private"
-];
-// Get the hash of the url
-const hash = window.location.hash
-  .substring(1)
-  .split("&")
-  .reduce(function(initial: any, item) {
-    if (item) {
-      var parts = item.split("=");
-      initial[parts[0]] = decodeURIComponent(parts[1]);
-    }
-    return initial;
-  }, {});
-window.location.hash = "";
 
 const PlayList = styled.div`
   list-style: none;
   padding: 0;
   width: 300px;
-  margin: 0 0 30px 0;
+  margin: 30px 0 30px 0;
 `;
 const PlaylistCard = styled(Card)`
   box-sizing: border-box;
@@ -79,17 +54,17 @@ const PlayListWrapper = styled.div`
 `;
 
 const ButtonText = styled.span`
-top: -4px;
-position:relative;
-margin-left: 5px;
-`
+  top: -4px;
+  position: relative;
+  margin-left: 5px;
+`;
 
 interface playlistInterface {
   name?: string;
   images?: any;
 }
 
-function FusedMusic() {
+function SpotifyPlaylist() {
   const [token, setToken] = useState("");
   const [playlists, setPlaylists] = useState([]);
   const [tracks, setTracks] = useState([]);
@@ -125,6 +100,7 @@ function FusedMusic() {
         let tracksURLToSave: any[] = [];
         response.data.items.map((item: any) => {
           tracksURLToSave.push(item.tracks.href);
+          return true;
         });
         return tracksURLToSave;
       })
@@ -169,13 +145,6 @@ function FusedMusic() {
       });
   };
 
-  interface items {
-    name: string;
-    id: string;
-    images: any;
-    tracks: { href: any };
-  }
-
   const ContextValue = {
     playlists,
     tracks,
@@ -187,65 +156,77 @@ function FusedMusic() {
   };
   return (
     <div className="App">
-        <PlayListWrapper>
-          {!token && (
-            <Button
-              buttonColor="#1db954"
-              primary
-              onClick={() =>
-                (window.location.href = `${authEndpoint}client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join(
-                  "%20"
-                )}&response_type=token&show_dialog=true`)
-              }
-            >
-             <FontAwesomeIcon  size="2x" icon={['fab', 'spotify']}/> <ButtonText>Login to Spotify</ButtonText>
-            </Button>
-          )}
-          {token && (
-            <>
-              <ToastProvider position="bottom">
-                <DropdownButton buttonColor="#1db954" as="button" primary label={playlist?.name ? playlist?.name :  'Select a playlist'}>
-                  <DropdownButton.Menu>
-                    {playlists.map((item: { name: string; id: string }) => {
-                      return (
-                        <DropdownButton.MenuItem
-                          key={item.id}
-                          onClick={() => getPlaylist(item.id)}
-                        >
-                          {item.name}
-                        </DropdownButton.MenuItem>
-                      );
-                    })}
-                  </DropdownButton.Menu>
-                </DropdownButton>
-                <PlaylistContextProvider value={ContextValue}>
-                  {playlist && (
-                    <PlayList>
-                      <PlaylistCard>
-                        <PlaylistTitle>
-                          {playlist?.images[2] && (
-                            <img
-                              alt={playlist.name}
-                              src={playlist?.images[2].url}
-                            />
-                          )}
+      <PlayListWrapper>
+        {!token && (
+          <Button
+            buttonColor="#1db954"
+            primary
+            onClick={() =>
+              (window.location.href = `${authEndpoint}client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join(
+                "%20"
+              )}&response_type=token&show_dialog=true`)
+            }
+          >
+            <FontAwesomeIcon size="2x" icon={["fab", "spotify"]} />{" "}
+            <ButtonText>Login to Spotify</ButtonText>
+          </Button>
+        )}
+        {token && (
+          <>
+            <ToastProvider position="bottom">
+              <p>
+                Select a playlist from the dropdown below to edit you playlist
+              </p>
+              <DropdownButton
+                buttonColor="#1db954"
+                as="button"
+                primary
+                label={playlist?.name ? playlist?.name : "Select a playlist"}
+              >
+                <DropdownButton.Menu>
+                  {playlists.map((item: { name: string; id: string }) => {
+                    return (
+                      <DropdownButton.MenuItem
+                        key={item.id}
+                        onClick={() => getPlaylist(item.id)}
+                      >
+                        {item.name}
+                      </DropdownButton.MenuItem>
+                    );
+                  })}
+                </DropdownButton.Menu>
+              </DropdownButton>
+              <PlaylistContextProvider value={ContextValue}>
+                {playlist && (
+                  <PlayList>
+                    <PlaylistCard>
+                      <PlaylistTitle>
+                        {playlist?.images[2] && (
+                          <img
+                            alt={playlist.name}
+                            src={playlist?.images[2].url}
+                          />
+                        )}
 
-                          {playlist?.name}
-                        </PlaylistTitle>
-                        <Search />
+                        {playlist?.name}
+                      </PlaylistTitle>
+                      <Search />
 
-                        <TrackList />
-                      </PlaylistCard>
-                    </PlayList>
-                  )}
-                </PlaylistContextProvider>
-              </ToastProvider>
-            </>
-          )}
-        </PlayListWrapper>
-        <ExampleFooter linkColor="#1db954" />
+                      <TrackList />
+                    </PlaylistCard>
+                  </PlayList>
+                )}
+              </PlaylistContextProvider>
+            </ToastProvider>
+            <p>
+              Powered by <FontAwesomeIcon icon={["fab", "spotify"]} /> Spotify
+            </p>
+          </>
+        )}
+      </PlayListWrapper>
+      <ExampleFooter linkColor="#1db954" />
     </div>
   );
 }
 
-export default FusedMusic;
+export default SpotifyPlaylist;
