@@ -6,4 +6,5 @@ export const ExampleFooterStyled = styled.div`
   font-size: 11px;
   color: 333;
   text-align:center;
+  box-sizing:border-box;
 `

@@ -14,10 +14,13 @@ import CSSGrid from './pages/CSSGrid';
 import { FollowPage } from './pages/FollowPage';
 import followImg from './static/follow.png';
 import priceTableImg from './static/pricetable.jpg'
+import playlistImg from './static/playlist.jpg'
+
 import loginImg from './static/login.png';
 import { WeatherApp } from './pages/WeatherApp';
 import NewsFeed from './pages/NewsFeed';
 import PricingTable from './pages/PricingTable/PricingTable';
+import SpotifyPlaylist from './pages/SpotifyPlaylist'
 const GlobalStyle = createGlobalStyle`
   body {
     color: ${props => props.theme.foregroundColor};
@@ -115,6 +118,10 @@ function App() {
             <StyledLink image={priceTableImg} to="/pricingtable" />
             <Link to="/pricingtable"><h3>Pricing Table</h3></Link>
             </GridItem>
+            <GridItem>
+            <StyledLink image={playlistImg} to="/spotifyplaylist" />
+            <Link to="/pricingtable"><h3>Spotify Playlist Editor</h3></Link>
+            </GridItem>
             </Grid>
           </Route>
           <Route path="/login"><LoginPage /></Route>
@@ -135,6 +142,9 @@ function App() {
           </Route>
           <Route path="/pricingtable">
             <PricingTable />
+          </Route>
+          <Route path="/spotifyplaylist">
+            <SpotifyPlaylist />
           </Route>
         </Switch>
       </div>
