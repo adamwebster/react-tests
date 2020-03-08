@@ -224,7 +224,7 @@ function SpotifyPlaylist() {
           </>
         )}
       </PlayListWrapper>
-      <ExampleFooter linkColor="#1db954" />
+      <ExampleFooter linkColor="#1db954" url="https://github.com/adamwebster/react-tests/tree/master/src/pages/SpotifyPlaylist"/>
     </div>
   );
 }
