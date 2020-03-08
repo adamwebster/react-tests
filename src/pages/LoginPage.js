@@ -44,7 +44,6 @@ const AlertStyled = styled(Alert)`
 
 const GitHubButton = styled.a`
   background-color: #fff;
-  color: ${props => props.theme.foregroundColor};
   text-decoration: none;
   margin-top: 10px;
   display: inline-block;
@@ -52,7 +51,7 @@ const GitHubButton = styled.a`
   padding: 10px;
   text-align: center;
   box-sizing: border-box;
-  border: solid 1px ${props => props.theme.borderColor};
+  border: solid 1px ${Colors.border};
   border-radius: ${variables.borderRadius};
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
   font-size: 18px;
