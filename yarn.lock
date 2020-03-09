@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@adamwebster/fused-components@^1.1.3":
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/@adamwebster/fused-components/-/fused-components-1.1.3.tgz#e1ef0e85ffb86a866861423a0006f7cb601dcbb7"
-  integrity sha512-3nhuu1Vc//w9x6MPYDeOQZDIfY1dnT9/2X3nv5zUFMFMhN+oQ7bGrC4NcFkEXoNT7SctnhKo48IlqXiR1s5LqA==
+"@adamwebster/fused-components@^1.2.0-beta.2":
+  version "1.2.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@adamwebster/fused-components/-/fused-components-1.2.0-beta.2.tgz#6e9727a8e377dc7d28d0dd52de0e4e4be452a9f7"
+  integrity sha512-PCoLGQ7Rjuym+dhMO1i0WvkqzTQ9p18xk62UCSkfd/332i2jvHjNQqSZcKjtvqB3dBH70VGnPOXdU2rDkRIlmQ==
   dependencies:
     styled-components "^5.0.1"
 

@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
-import { Input, useToast, Colors, FCTheme } from "@adamwebster/fused-components";
+import { Input, useToast, Colors, FCTheme, Autocomplete } from "@adamwebster/fused-components";
 import styled from "styled-components";
 import { PlaylistContext } from "./PlaylistContext";
 import { darken, lighten } from "polished";
@@ -42,6 +42,7 @@ const SearchWrapper = styled.div`
 
 const Search = () => {
   const [results, setResults] = useState([]);
+  const [data, setData] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const playlistData = useContext(PlaylistContext);
   const toast = useToast();
@@ -58,6 +59,12 @@ const Search = () => {
         }
       )
       .then(response => {
+        const toSetItems = data;
+        // response.data.tracks.items.forEach((item: any) => {
+        //   console.log(item);
+        //   toSetItems.push({ name: item.name, artist: item.artists[0].name })
+        // })
+
         setResults(response.data.tracks.items);
       });
   };
@@ -97,6 +104,7 @@ const Search = () => {
 
   return (
     <SearchWrapper>
+      <Autocomplete items={['test 1', 'test 2']} />
       <Input
         placeholder="Add an item"
         value={searchValue}
