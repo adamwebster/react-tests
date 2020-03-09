@@ -15,8 +15,10 @@ import {
   Alert,
   Toggle,
   Icon,
-  Colors
+  Colors,
+  FormField
 } from "@adamwebster/fused-components";
+import { ExampleFooter } from '../components/UI/ExampleFooter';
 
 const LoginWrapper = styled.div`
   position: relative;
@@ -64,6 +66,7 @@ const GitHubButton = styled.a`
 `;
 
 const BackToLoginBTN = styled(Button)`
+margin-left: 10px;
 `;
 
 const LoginButton = styled(Button)`
@@ -74,6 +77,13 @@ const LoginButton = styled(Button)`
     top: 5px;
   }
 `;
+
+const TextButtonStyled = styled(TextButton)`
+  color: #29a19c;
+  &:hover{
+    color: ${darken(0.2, "#29a19c")}
+  }
+`
 
 const ToggleWrapper = styled.div`
   margin-bottom: 15px;
@@ -144,7 +154,7 @@ const LoginPage = () => {
           <form>
             {!loaded && (
               <>
-                <Label htmlFor="username">Username</Label>
+                <FormField label="Username">
                 <Input
                   inError={inError}
                   onChange={e => setUsername(e.target.value)}
@@ -152,14 +162,18 @@ const LoginPage = () => {
                   id="username"
                   placeholder="Enter you user name"
                 />
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  inError={inError}
-                  onChange={e => setPassword(e.target.value)}
-                  password={password}
-                  type="password"
-                  id="password"
-                />
+                                </FormField>
+
+                <FormField label="Password">
+                  <Input
+                    inError={inError}
+                    onChange={e => setPassword(e.target.value)}
+                    password={password}
+                    type="password"
+                    id="password"
+                  />
+                </FormField>
+
                 <Label onClick={() => setRememberMe(!rememberMe)}>
                   Remember me
                 </Label>
@@ -180,8 +194,8 @@ const LoginPage = () => {
               onClick={
                 completed
                   ? () => {
-                      setLoaded(false) ; setForgotPassword(false)
-                    }
+                    setLoaded(false); setForgotPassword(false)
+                  }
                   : e => clickButton(e)
               }
             >
@@ -191,17 +205,17 @@ const LoginPage = () => {
         )}
         {forgotPassword && (
           <>
+          <FormField>
             <Label>Email Address</Label>
             <Input type="email" placeholder="Enter your email address" />
+            </FormField>
             <Button
-              icon={<FontAwesomeIcon icon="key" />}
               buttonColor={"#29a19c"}
               primary
             >
               Reset Password
             </Button>
             <BackToLoginBTN
-              icon={<FontAwesomeIcon icon="arrow-left" />}
               buttonColor={"#29a19c"}
               onClick={() => setForgotPassword(false)}
             >
@@ -211,9 +225,9 @@ const LoginPage = () => {
         )}
         {!loaded && !forgotPassword && (
           <>
-            <TextButton onClick={() => setForgotPassword(true)}>
+            <TextButtonStyled onClick={() => setForgotPassword(true)}>
               Forgot password?
-            </TextButton>
+            </TextButtonStyled>
 
             <HelpText>
               Use the username demo and the password demo to login. If you use
@@ -222,11 +236,7 @@ const LoginPage = () => {
           </>
         )}
       </StyledCard>
-      <div>
-        <GitHubButton href="https://github.com/adamwebster/react-tests/">
-          <FontAwesomeIcon icon={["fab", "github"]} /> View the code on GitHub{" "}
-        </GitHubButton>
-      </div>
+     <ExampleFooter linkColor="#29a19c" url="https://github.com/adamwebster/react-tests/blob/master/src/pages/LoginPage.js" />
     </LoginWrapper>
   );
 };

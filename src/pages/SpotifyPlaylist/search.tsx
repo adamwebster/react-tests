@@ -10,7 +10,7 @@ const SongTitle = styled.div`
 `;
 
 const StyledSearchMenu = styled.ul`
-  background-color: ${props => props.theme === 'dark' ? darken(0.1, Colors.darkModeBG) : '#fff'};
+  background-color: ${props => props.theme === 'dark' ? Colors.darkModeDark : '#fff'};
   padding: 0;
   margin: 0;
   list-style: none;

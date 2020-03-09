@@ -11,7 +11,7 @@ const TextButtonStyled = styled.button`
   cursor:pointer;
   outline:none;
   text-decoration:underline;
-  margin-top:5px;
+  margin-top:15px;
   &:hover{
     color: ${props => darken(0.4, Colors.primary)}
   }

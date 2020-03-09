@@ -27,7 +27,7 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
     font: 13px/1.5 'Helvetica Neue', Arial, 'Liberation Sans', FreeSans, sans-serif;
-   background-color: ${props => props.theme === 'dark' ? "#023557" : Colors.mediumlight};
+   background-color: ${props => props.theme === 'dark' ? Colors.darkModeDarkest : Colors.mediumlight};
    color: ${props => props.theme === 'dark' ? Colors.medium : Colors.dark};
 
    width:100%;
@@ -43,7 +43,7 @@ const GlobalStyle = createGlobalStyle`
 }
 
 a{
-  color: ${props => Colors.primary}
+  color:  ${props => props.theme === 'dark' ? Colors.darkModeMedium : Colors.primary};
 }
 `;
 
@@ -101,8 +101,8 @@ const WelcomeMessage = styled.div`
 
 const AppHeader = styled.div`
   width: 100%;
-  padding: 10px;
-  border-bottom: solid 1px ${Colors.border};
+  padding: 10px; 
+  border-bottom: solid 1px ${props => props.theme === 'dark' ? Colors.darkModeMediumDark : Colors.border};
   box-sizing: border-box;
   h1{
     display:inline;
@@ -118,82 +118,82 @@ const DarkModeToggle = styled.span`
 function App() {
   const [theme, setTheme] = useState("");
   const toggleDarkMode = () => {
-    if(theme === 'dark'){
+    if (theme === 'dark') {
       setTheme('')
-    }else{
+    } else {
       setTheme('dark')
     }
-  } 
+  }
   return (
-      <FCThemeProvider value={{ theme }}>
-        <GlobalStyle theme={theme}/>
-        <AppHeader>
-          <h1><a href="/">React Examples | Adam Webster</a></h1>
-      <DarkModeToggle onClick={() => toggleDarkMode()}>
-      <FontAwesomeIcon icon={theme === 'dark' ? "sun" : "moon"}  />
-      </DarkModeToggle>
+    <FCThemeProvider value={{ theme }}>
+      <GlobalStyle theme={theme} />
+      <AppHeader theme={theme}>
+        <h1><a href="/">React Examples | Adam Webster</a></h1>
+        <DarkModeToggle onClick={() => toggleDarkMode()}>
+          <FontAwesomeIcon icon={theme === 'dark' ? "sun" : "moon"} />
+        </DarkModeToggle>
       </AppHeader>
-        <div className="App">
-          <Switch>
-            <Route exact path="/">
-              <WelcomeMessage>
-                Click on of the pages to show examples
+      <div className="App">
+        <Switch>
+          <Route exact path="/">
+            <WelcomeMessage>
+              Click on of the pages to show examples
               </WelcomeMessage>
-              <Grid>
-                <GridItem>
-                  <StyledLink image={loginImg} to="/login" />
-                  <Link to="/Login">
-                    <h3>Login Card</h3>
-                  </Link>
-                </GridItem>
-                <GridItem>
-                  <StyledLink image={followImg} to="/follow" />
-                  <Link to="/follow">
-                    <h3>Social Profile Card</h3>
-                  </Link>
-                </GridItem>
+            <Grid>
+              <GridItem>
+                <StyledLink image={loginImg} to="/login" />
+                <Link to="/Login">
+                  <h3>Login Card</h3>
+                </Link>
+              </GridItem>
+              <GridItem>
+                <StyledLink image={followImg} to="/follow" />
+                <Link to="/follow">
+                  <h3>Social Profile Card</h3>
+                </Link>
+              </GridItem>
 
-                <GridItem>
-                  <StyledLink image={priceTableImg} to="/pricingtable" />
-                  <Link to="/pricingtable">
-                    <h3>Pricing Table</h3>
-                  </Link>
-                </GridItem>
-                <GridItem>
-                  <StyledLink image={playlistImg} to="/spotifyplaylist" />
-                  <Link to="/pricingtable">
-                    <h3>Spotify Playlist Editor</h3>
-                  </Link>
-                </GridItem>
-              </Grid>
-            </Route>
-            <Route path="/login">
-              <LoginPage />
-            </Route>
-            <Route path="/about">
-              <About />
-            </Route>
-            <Route path="/grid">
-              <CSSGrid />
-            </Route>
-            <Route path="/follow">
-              <FollowPage />
-            </Route>
-            <Route path="/weather">
-              <WeatherApp />
-            </Route>
-            <Route path="/newsfeed">
-              <NewsFeed />
-            </Route>
-            <Route path="/pricingtable">
-              <PricingTable />
-            </Route>
-            <Route path="/spotifyplaylist">
-              <SpotifyPlaylist />
-            </Route>
-          </Switch>
-        </div>
-      </FCThemeProvider>
+              <GridItem>
+                <StyledLink image={priceTableImg} to="/pricingtable" />
+                <Link to="/pricingtable">
+                  <h3>Pricing Table</h3>
+                </Link>
+              </GridItem>
+              <GridItem>
+                <StyledLink image={playlistImg} to="/spotifyplaylist" />
+                <Link to="/pricingtable">
+                  <h3>Spotify Playlist Editor</h3>
+                </Link>
+              </GridItem>
+            </Grid>
+          </Route>
+          <Route path="/login">
+            <LoginPage />
+          </Route>
+          <Route path="/about">
+            <About />
+          </Route>
+          <Route path="/grid">
+            <CSSGrid />
+          </Route>
+          <Route path="/follow">
+            <FollowPage />
+          </Route>
+          <Route path="/weather">
+            <WeatherApp />
+          </Route>
+          <Route path="/newsfeed">
+            <NewsFeed />
+          </Route>
+          <Route path="/pricingtable">
+            <PricingTable />
+          </Route>
+          <Route path="/spotifyplaylist">
+            <SpotifyPlaylist />
+          </Route>
+        </Switch>
+      </div>
+    </FCThemeProvider>
   );
 }
 

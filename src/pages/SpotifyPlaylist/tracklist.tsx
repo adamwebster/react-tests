@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import axios from "axios";
-import { Colors, Icon, useToast } from "@adamwebster/fused-components";
+import { Colors, Icon, useToast, FCTheme } from "@adamwebster/fused-components";
 import styled from "styled-components";
 import { PlaylistContext } from "./PlaylistContext";
 
@@ -12,7 +12,7 @@ const TrackListStyled = styled.ul`
     padding: 10px;
     box-sizing: border-box;
     position: relative;
-    border-bottom: solid 1px ${Colors.border};
+    border-bottom: solid 1px ${props => props.theme === 'dark' ? Colors.darkModeMedium : Colors.border};
     &:last-child {
       border-bottom: none;
     }
@@ -40,7 +40,7 @@ const RemoveIcon = styled.span`
 const TrackList = () => {
   const playlistData = useContext(PlaylistContext);
   const toast = useToast();
-
+  const theme = useContext(FCTheme);
   const RemoveFromPlaylist = (trackID: string) => {
     axios
       .delete(
@@ -61,7 +61,7 @@ const TrackList = () => {
   };
 
   return (
-    <TrackListStyled>
+    <TrackListStyled theme={theme?.theme}>
       {playlistData?.tracks.map(
         (item: { track: { name: string; id: string; artists: any } }) => {
           return (
