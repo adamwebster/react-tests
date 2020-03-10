@@ -1,23 +1,18 @@
 import React, { useState } from "react";
 import { Switch, Route, Link } from "react-router-dom";
 import styled, {
-  ThemeProvider,
   createGlobalStyle,
   css
 } from "styled-components";
-import themes from "./themes/";
 
 import LoginPage from "./pages/LoginPage";
 import About from "./pages/About";
-import { device } from "./styles/mediaqueries";
-import CSSGrid from "./pages/CSSGrid";
 import { FollowPage } from "./pages/FollowPage";
 import followImg from "./static/follow.png";
 import priceTableImg from "./static/pricetable.jpg";
 import playlistImg from "./static/playlist.jpg";
 import { FCThemeProvider, Colors } from "@adamwebster/fused-components";
 import loginImg from "./static/login.png";
-import { WeatherApp } from "./pages/WeatherApp";
 import NewsFeed from "./pages/NewsFeed";
 import PricingTable from "./pages/PricingTable/PricingTable";
 import SpotifyPlaylist from "./pages/SpotifyPlaylist";
@@ -173,14 +168,8 @@ function App() {
           <Route path="/about">
             <About />
           </Route>
-          <Route path="/grid">
-            <CSSGrid />
-          </Route>
           <Route path="/follow">
             <FollowPage />
-          </Route>
-          <Route path="/weather">
-            <WeatherApp />
           </Route>
           <Route path="/newsfeed">
             <NewsFeed />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import PricingCard from "./PricingCard";
 import {
   PricingWrapper,
@@ -27,7 +27,6 @@ const NeedHelp = () => {
   const toast = useToast();
 
  const sendMessage = () => {
-   console.log(textValue)
    if(!textValue){
      setVMessage('You did not enter a message');
      return;

@@ -6,7 +6,6 @@ import {
   DropdownButton,
   ToastProvider,
   Button,
-  FCThemeProvider
 } from "@adamwebster/fused-components";
 import styled from "styled-components";
 import Search from "./search";

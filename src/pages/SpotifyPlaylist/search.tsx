@@ -1,39 +1,9 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
-import { Input, useToast, Colors, FCTheme, Autocomplete } from "@adamwebster/fused-components";
+import { useToast, Autocomplete } from "@adamwebster/fused-components";
 import styled from "styled-components";
 import { PlaylistContext } from "./PlaylistContext";
-import { darken, lighten } from "polished";
 
-const SongTitle = styled.div`
-  font-weight: bold;
-`;
-
-const StyledSearchMenu = styled.ul`
-  background-color: ${props => props.theme === 'dark' ? Colors.darkModeDark : '#fff'};
-  padding: 0;
-  margin: 0;
-  list-style: none;
-  position: absolute;
-  border: solid 1px ${Colors.border};
-  z-index: 9;
-  width: calc(100% - 20px);
-  box-sizing: border-box;
-  box-shadow: 0 0 10px #00000050;
-  top: 45px;
-  border-radius: 5px;
-  li {
-    padding: 10px;
-    box-sizing: border-box;
-    border-bottom: solid 1px ${Colors.border};
-    &:hover{
-      background-color: ${props => props.theme === 'dark' ? darken(0.4, Colors.highlight) : Colors.highlight}
-    }
-    &:last-child {
-      border-bottom: 0;
-    }
-  }
-`;
 
 const SearchWrapper = styled.div`
   position: relative;
@@ -41,14 +11,12 @@ const SearchWrapper = styled.div`
 `;
 
 const Search = () => {
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState([] as any);
   const [data, setData] = useState([] as any);
-  const [searchValue, setSearchValue] = useState("");
   const playlistData = useContext(PlaylistContext);
   const toast = useToast();
 
   const searchForTrack = (e: { target: { value: string } }) => {
-    setSearchValue(e.target.value);
     axios
       .get(
         `https://api.spotify.com/v1/search?q=${e.target.value}&type=track&market=US&limit=5`,
@@ -61,17 +29,17 @@ const Search = () => {
       .then(response => {
         const toSetItems = [] as any;
         response.data.tracks.items.forEach((item: any) => {
-          console.log(item);
           toSetItems.push({ name: item.name, artist: item.artists[0].name })
         })
-        console.log(toSetItems);
+        if(toSetItems.length > 0){
         setData(toSetItems);
+        }
         setResults(response.data.tracks.items);
+        
       });
   };
 
   const AddToPlaylist = (trackID: string) => {
-    setSearchValue("");
     const trackExists = playlistData?.tracks.filter(
       (track: any) => track.track.id === trackID
     );
@@ -101,13 +69,15 @@ const Search = () => {
       });
   };
 
-  const theme = useContext(FCTheme);
 
   return (
     <SearchWrapper>
-      <Autocomplete 
+      <Autocomplete
+      inputIcon="search" 
       onInputChange={e => searchForTrack(e)} 
       keyToSearch="name"
+      placeholder="Search for a song title"
+      onItemClick={index => AddToPlaylist(results[index].id)}
       itemFormatter={(value) => {
         return (
           <>
@@ -118,24 +88,6 @@ const Search = () => {
       }
       }
       items={data} />
-      {/* <Input
-        placeholder="Add an item"
-        value={searchValue}
-        onChange={e => searchForTrack(e)}
-      />
-      {searchValue.length > 0 && (
-        <StyledSearchMenu theme={theme?.theme}>
-          {results.length === 0 && <li>No Results Found</li>}
-          {results.map((item: { name: string; id: string; artists: any }) => {
-            return (
-              <li onClick={() => AddToPlaylist(item.id)} key={item.id}>
-                <SongTitle>{item.name} </SongTitle>
-                {item.artists[0].name}
-              </li>
-            );
-          })}
-        </StyledSearchMenu>
-      )} */}
     </SearchWrapper>
   );
 };
