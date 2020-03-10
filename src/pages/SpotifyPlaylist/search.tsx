@@ -4,10 +4,16 @@ import { useToast, Autocomplete } from "@adamwebster/fused-components";
 import styled from "styled-components";
 import { PlaylistContext } from "./PlaylistContext";
 
-
 const SearchWrapper = styled.div`
   position: relative;
   padding: 10px;
+`;
+
+const SearchResultsImage = styled.img`
+  width: 36px;
+  float: left;
+  margin-right: 10px;
+  border-radius: 50%;
 `;
 
 const Search = () => {
@@ -29,13 +35,16 @@ const Search = () => {
       .then(response => {
         const toSetItems = [] as any;
         response.data.tracks.items.forEach((item: any) => {
-          toSetItems.push({ name: item.name, artist: item.artists[0].name })
-        })
-        if(toSetItems.length > 0){
-        setData(toSetItems);
+          toSetItems.push({
+            name: item.name,
+            artist: item.artists[0].name,
+            image: item.album.images[2].url
+          });
+        });
+        if (toSetItems.length > 0) {
+          setData(toSetItems);
         }
         setResults(response.data.tracks.items);
-        
       });
   };
 
@@ -69,25 +78,27 @@ const Search = () => {
       });
   };
 
-
   return (
     <SearchWrapper>
       <Autocomplete
-      inputIcon="search" 
-      onInputChange={e => searchForTrack(e)} 
-      keyToSearch="name"
-      placeholder="Search for a song title"
-      onItemClick={index => AddToPlaylist(results[index].id)}
-      itemFormatter={(value) => {
-        return (
-          <>
-          <div>{data[value].name}</div>
-          <div style={{fontSize: '12px', color: '#aaa'}}>{data[value].artist}</div>
-          </>
-        )
-      }
-      }
-      items={data} />
+        inputIcon="search"
+        onInputChange={e => searchForTrack(e)}
+        keyToSearch="name"
+        placeholder="Search for a song title"
+        onItemClick={index => AddToPlaylist(results[index].id)}
+        itemFormatter={value => {
+          return (
+            <>
+              <SearchResultsImage src={data[value].image} />
+              <div>{data[value].name}</div>
+              <div style={{ fontSize: "12px", color: "#aaa" }}>
+                {data[value].artist}
+              </div>
+            </>
+          );
+        }}
+        items={data}
+      />
     </SearchWrapper>
   );
 };
