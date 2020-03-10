@@ -2,13 +2,6 @@
 # yarn lockfile v1
 
 
-"@adamwebster/fused-components@^1.2.0-beta.2":
-  version "1.2.0-beta.2"
-  resolved "https://registry.yarnpkg.com/@adamwebster/fused-components/-/fused-components-1.2.0-beta.2.tgz#6e9727a8e377dc7d28d0dd52de0e4e4be452a9f7"
-  integrity sha512-PCoLGQ7Rjuym+dhMO1i0WvkqzTQ9p18xk62UCSkfd/332i2jvHjNQqSZcKjtvqB3dBH70VGnPOXdU2rDkRIlmQ==
-  dependencies:
-    styled-components "^5.0.1"
-
 "@babel/code-frame@7.8.3", "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.8.3":
   version "7.8.3"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.8.3.tgz#33e25903d7481181534e12ec0a25f16b6fcf419e"
@@ -9814,7 +9807,7 @@ style-loader@0.23.1:
     loader-utils "^1.1.0"
     schema-utils "^1.0.0"
 
-styled-components@^5.0.0, styled-components@^5.0.1:
+styled-components@^5.0.0:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/styled-components/-/styled-components-5.0.1.tgz#57782a6471031abefb2db5820a1876ae853bc619"
   integrity sha512-E0xKTRIjTs4DyvC1MHu/EcCXIj6+ENCP8hP01koyoADF++WdBUOrSGwU1scJRw7/YaYOhDvvoad6VlMG+0j53A==

@@ -42,7 +42,7 @@ const SearchWrapper = styled.div`
 
 const Search = () => {
   const [results, setResults] = useState([]);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([] as any);
   const [searchValue, setSearchValue] = useState("");
   const playlistData = useContext(PlaylistContext);
   const toast = useToast();
@@ -59,12 +59,13 @@ const Search = () => {
         }
       )
       .then(response => {
-        const toSetItems = data;
-        // response.data.tracks.items.forEach((item: any) => {
-        //   console.log(item);
-        //   toSetItems.push({ name: item.name, artist: item.artists[0].name })
-        // })
-
+        const toSetItems = [] as any;
+        response.data.tracks.items.forEach((item: any) => {
+          console.log(item);
+          toSetItems.push({ name: item.name, artist: item.artists[0].name })
+        })
+        console.log(toSetItems);
+        setData(toSetItems);
         setResults(response.data.tracks.items);
       });
   };
@@ -104,8 +105,20 @@ const Search = () => {
 
   return (
     <SearchWrapper>
-      <Autocomplete items={['test 1', 'test 2']} />
-      <Input
+      <Autocomplete 
+      onInputChange={e => searchForTrack(e)} 
+      keyToSearch="name"
+      itemFormatter={(value) => {
+        return (
+          <>
+          <div>{data[value].name}</div>
+          <div style={{fontSize: '12px', color: '#aaa'}}>{data[value].artist}</div>
+          </>
+        )
+      }
+      }
+      items={data} />
+      {/* <Input
         placeholder="Add an item"
         value={searchValue}
         onChange={e => searchForTrack(e)}
@@ -122,7 +135,7 @@ const Search = () => {
             );
           })}
         </StyledSearchMenu>
-      )}
+      )} */}
     </SearchWrapper>
   );
 };
