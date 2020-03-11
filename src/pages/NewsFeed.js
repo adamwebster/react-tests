@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
-import PropTypes from "prop-types";
 import {
   Card,
   Button,
@@ -124,13 +123,6 @@ const Actions = styled.div`
 const Toasts = () => {
   const toast = useToast();
   useEffect(() => {
-    const message = setTimeout(() => {
-      toast.addInfo(
-        "New Message from James",
-        "Hey buddy how about we go out and have some fun tonight"
-      );
-    }, 1000);
-
     const newComment = setTimeout(() => {
       toast.addInfo(
         "Frank just commented on your post",
@@ -140,6 +132,7 @@ const Toasts = () => {
     return () => {
       clearTimeout(newComment);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return false;
 };

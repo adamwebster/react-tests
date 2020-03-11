@@ -23,16 +23,7 @@ const GridItem = styled.div`
   `}
 `
 const CSSGrid = () => {
-  const numberOfItems = 9;
-  const createGridItem = () => {
-    let items = [];
 
-    for (let i = 0; i < numberOfItems; i++) {
-      items.push(<GridItem>{i + 1}</GridItem>)
-    }
-    return items;
-
-  }
   return (
     <Grid>
       {/* {createGridItem()} */}

@@ -5,7 +5,7 @@ import {
   Card,
   DropdownButton,
   ToastProvider,
-  Button
+  Button,
 } from "@adamwebster/fused-components";
 import styled from "styled-components";
 import Search from "./search";
@@ -47,7 +47,6 @@ const PlayListWrapper = styled.div`
   display: grid;
   grid-template-columns: auto;
   grid-gap: 10px;
-  color: #444;
   padding: 10px;
   align-items: top;
   justify-items: center;
@@ -156,75 +155,78 @@ function SpotifyPlaylist() {
   };
   return (
     <div className="App">
-      <PlayListWrapper>
-        {!token && (
-          <Button
-            buttonColor="#1db954"
-            primary
-            onClick={() =>
-              (window.location.href = `${authEndpoint}client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join(
-                "%20"
-              )}&response_type=token&show_dialog=true`)
-            }
-          >
-            <FontAwesomeIcon size="2x" icon={["fab", "spotify"]} />{" "}
-            <ButtonText>Login to Spotify</ButtonText>
-          </Button>
-        )}
-        {token && (
-          <>
-            <ToastProvider position="bottom">
+        <PlayListWrapper>
+          {!token && (
+            <Button
+              buttonColor="#1db954"
+              primary
+              onClick={() =>
+                (window.location.href = `${authEndpoint}client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join(
+                  "%20"
+                )}&response_type=token&show_dialog=true`)
+              }
+            >
+              <FontAwesomeIcon size="2x" icon={["fab", "spotify"]} />{" "}
+              <ButtonText>Login to Spotify</ButtonText>
+            </Button>
+          )}
+          {token && (
+            <>
+              <ToastProvider position="bottom">
+                <p>
+                  Select a playlist from the dropdown below to edit you playlist
+                </p>
+                <DropdownButton
+                  buttonColor="#1db954"
+                  as="button"
+                  primary
+                  label={playlist?.name ? playlist?.name : "Select a playlist"}
+                >
+                  <DropdownButton.Menu>
+                    {playlists.map((item: { name: string; id: string }) => {
+                      return (
+                        <DropdownButton.MenuItem
+                          key={item.id}
+                          onClick={() => getPlaylist(item.id)}
+                        >
+                          {item.name}
+                        </DropdownButton.MenuItem>
+                      );
+                    })}
+                  </DropdownButton.Menu>
+                </DropdownButton>
+                <PlaylistContextProvider value={ContextValue}>
+                  {playlist && (
+                    <PlayList>
+                      <PlaylistCard>
+                        <PlaylistTitle>
+                          {playlist?.images[2] && (
+                            <img
+                              alt={playlist.name}
+                              src={playlist?.images[2].url}
+                            />
+                          )}
+
+                          {playlist?.name}
+                        </PlaylistTitle>
+                        <Search />
+
+                        <TrackList />
+                      </PlaylistCard>
+                    </PlayList>
+                  )}
+                </PlaylistContextProvider>
+              </ToastProvider>
               <p>
-                Select a playlist from the dropdown below to edit you playlist
+                Powered by <FontAwesomeIcon icon={["fab", "spotify"]} /> Spotify
               </p>
-              <DropdownButton
-                buttonColor="#1db954"
-                as="button"
-                primary
-                label={playlist?.name ? playlist?.name : "Select a playlist"}
-              >
-                <DropdownButton.Menu>
-                  {playlists.map((item: { name: string; id: string }) => {
-                    return (
-                      <DropdownButton.MenuItem
-                        key={item.id}
-                        onClick={() => getPlaylist(item.id)}
-                      >
-                        {item.name}
-                      </DropdownButton.MenuItem>
-                    );
-                  })}
-                </DropdownButton.Menu>
-              </DropdownButton>
-              <PlaylistContextProvider value={ContextValue}>
-                {playlist && (
-                  <PlayList>
-                    <PlaylistCard>
-                      <PlaylistTitle>
-                        {playlist?.images[2] && (
-                          <img
-                            alt={playlist.name}
-                            src={playlist?.images[2].url}
-                          />
-                        )}
-
-                        {playlist?.name}
-                      </PlaylistTitle>
-                      <Search />
-
-                      <TrackList />
-                    </PlaylistCard>
-                  </PlayList>
-                )}
-              </PlaylistContextProvider>
-            </ToastProvider>
-            <p>
-              Powered by <FontAwesomeIcon icon={["fab", "spotify"]} /> Spotify
-            </p>
-          </>
-        )}
-      </PlayListWrapper>
-      <ExampleFooter linkColor="#1db954" url="https://github.com/adamwebster/react-tests/tree/master/src/pages/SpotifyPlaylist"/>
+            </>
+          )}
+        </PlayListWrapper>
+        <ExampleFooter
+          linkColor="#1db954"
+          url="https://github.com/adamwebster/react-tests/tree/master/src/pages/SpotifyPlaylist"
+        />
     </div>
   );
 }

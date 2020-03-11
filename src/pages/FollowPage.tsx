@@ -76,8 +76,8 @@ export const FollowPage = () => {
   const [buttonColor, setButtonColor] =useState('');
   const [buttonText, setButtonText] = useState('Follow');
   const [following, setFollowing] = useState(false);
-  const [buttonIcon, setButtonIcon ] = useState('check');
-  const [completed, setCompleted] = useState(false);
+  const [, setButtonIcon ] = useState('check');
+  const [, setCompleted] = useState(false);
   const followUser = () => {
     setIsLoading(true);
     setTimeout(() => {
