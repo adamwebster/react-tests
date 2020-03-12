@@ -82,9 +82,10 @@ const Search = () => {
     <SearchWrapper>
       <Autocomplete
         inputIcon="search"
-        onInputChange={e => searchForTrack(e)}
+        onChange={e => searchForTrack(e)}
         keyToSearch="name"
         placeholder="Search for a song title"
+        clearValueOnSelect
         onItemClick={index => AddToPlaylist(results[index].id)}
         itemFormatter={value => {
           return (
@@ -99,6 +100,7 @@ const Search = () => {
         }}
         items={data}
       />
+
     </SearchWrapper>
   );
 };

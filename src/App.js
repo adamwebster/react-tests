@@ -123,7 +123,7 @@ function App() {
     <FCThemeProvider value={{ theme }}>
       <GlobalStyle theme={theme} />
       <AppHeader theme={theme}>
-        <h1><a href="/">React Examples | Adam Webster</a></h1>
+        <h1><Link to="/">React Examples | Adam Webster</Link></h1>
         <DarkModeToggle onClick={() => toggleDarkMode()}>
           <FontAwesomeIcon icon={theme === 'dark' ? "sun" : "moon"} />
         </DarkModeToggle>
