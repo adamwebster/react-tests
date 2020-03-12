@@ -4,7 +4,6 @@ import { useToast, Autocomplete } from "@adamwebster/fused-components";
 import styled from "styled-components";
 import { PlaylistContext } from "./PlaylistContext";
 
-
 const SearchWrapper = styled.div`
   position: relative;
   padding: 10px;
@@ -69,14 +68,14 @@ const Search = () => {
       });
   };
 
-
   return (
     <SearchWrapper>
       <Autocomplete
       inputIcon="search" 
-      onInputChange={e => searchForTrack(e)} 
+      onChange={e => searchForTrack(e)} 
       keyToSearch="name"
       placeholder="Search for a song title"
+      clearValueOnSelect
       onItemClick={index => AddToPlaylist(results[index].id)}
       itemFormatter={(value) => {
         return (
