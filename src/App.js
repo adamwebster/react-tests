@@ -17,6 +17,7 @@ import NewsFeed from "./pages/NewsFeed";
 import PricingTable from "./pages/PricingTable/PricingTable";
 import SpotifyPlaylist from "./pages/SpotifyPlaylist";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import MobileMenu from "./pages/MobileMenu/MobileMenu";
 const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
@@ -179,6 +180,9 @@ function App() {
           </Route>
           <Route path="/spotifyplaylist">
             <SpotifyPlaylist />
+          </Route>
+          <Route path="/mobilemenu">
+            <MobileMenu />
           </Route>
         </Switch>
       </div>

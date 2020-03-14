@@ -1,0 +1,104 @@
+import React, { useState, useContext } from "react";
+import {
+  Wrapper,
+  MobileMenuStyled,
+  Container,
+  Menu,
+  MenuItem,
+  Post,
+  PostContent,
+  PostDate,
+  PostTitle,
+  Header,
+  Posts,
+  SiteTitle
+} from "./styles";
+import { Button, ToastProvider, useToast, FCTheme } from "@adamwebster/fused-components";
+
+const posts = [
+  {
+    id: 0,
+    title: "Post 1",
+    date: "03/04/2022",
+    content:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione necessitatibus molestias voluptates, dignissimos inventore porro sunt repudiandae quaerat dolorem nesciunt maxime aspernatur assumenda eius consequatur aperiam atque exercitationem? Tenetur, et!"
+  },
+  {
+    id: 1,
+    title: "Post 2",
+    date: "03/03/2022",
+    content:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione necessitatibus molestias voluptates, dignissimos inventore porro sunt repudiandae quaerat dolorem nesciunt maxime aspernatur assumenda eius consequatur aperiam atque exercitationem? Tenetur, et!"
+  },
+  {
+    id: 3,
+    title: "Post 3",
+    date: "03/03/2022",
+    content:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione necessitatibus molestias voluptates, dignissimos inventore porro sunt repudiandae quaerat dolorem nesciunt maxime aspernatur assumenda eius consequatur aperiam atque exercitationem? Tenetur, et!"
+  },
+  {
+    id: 4,
+    title: "Post 4",
+    date: "03/03/2022",
+    content:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione necessitatibus molestias voluptates, dignissimos inventore porro sunt repudiandae quaerat dolorem nesciunt maxime aspernatur assumenda eius consequatur aperiam atque exercitationem? Tenetur, et!"
+  },
+  {
+    id: 5,
+    title: "Post 5",
+    date: "03/03/2022",
+    content:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione necessitatibus molestias voluptates, dignissimos inventore porro sunt repudiandae quaerat dolorem nesciunt maxime aspernatur assumenda eius consequatur aperiam atque exercitationem? Tenetur, et!"
+  }
+];
+
+const MenuList = () => {
+    const toast = useToast();
+    const theme = useContext(FCTheme);
+    return(
+        <Menu>
+        <MenuItem onClick={() => toast.addInfo('Open the Home page')}>Home</MenuItem>
+        <MenuItem onClick={() => toast.addInfo('Open the About page')}>About</MenuItem>
+        <MenuItem onClick={() => toast.addInfo('Open the Portfolio page')}>Portfolio</MenuItem>
+        <MenuItem onClick={() => toast.addInfo('Open the Contact page')}>Contact</MenuItem>
+      </Menu>
+    )
+}
+const MobileMenu = () => {
+    const theme = useContext(FCTheme);
+  const [menuOpen, setMenuOpen] = useState(false);
+  return (
+    <Wrapper>
+      <MobileMenuStyled theme={theme?.theme}>
+      <ToastProvider>
+
+       <MenuList />
+       </ToastProvider>
+      </MobileMenuStyled>
+      <Container theme={theme?.theme} menuOpen={menuOpen}>
+
+        <Header theme={theme?.theme}>
+          <Button primary onClick={() => setMenuOpen(!menuOpen)}>
+            {menuOpen ? "Close " : "Open "}
+            Menu
+          </Button>
+          <SiteTitle>Site Name</SiteTitle>
+        </Header>
+        <Posts>
+          {posts.map(post => {
+            return (
+              <Post>
+                <PostTitle>{post.title}</PostTitle>
+                <PostDate>{post.date}</PostDate>
+                <PostContent>{post.content}</PostContent>
+              </Post>
+            );
+          })}
+        </Posts>
+      </Container>
+    </Wrapper>
+  );
+};
+
+export default MobileMenu;

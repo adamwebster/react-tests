@@ -82,12 +82,12 @@ const Search = () => {
     <SearchWrapper>
       <Autocomplete
         inputIcon="search"
-        onChange={e => searchForTrack(e)}
+        onChange={(e: { target: { value: string; }; }) => searchForTrack(e)}
         keyToSearch="name"
         placeholder="Search for a song title"
         clearValueOnSelect
-        onItemClick={index => AddToPlaylist(results[index].id)}
-        itemFormatter={value => {
+        onItemClick={(index: React.ReactText) => AddToPlaylist(results[index].id)}
+        itemFormatter={(value: React.ReactText) => {
           return (
             <>
               <SearchResultsImage src={data[value].image} />
