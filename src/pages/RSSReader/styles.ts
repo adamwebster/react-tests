@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 import { Colors, Icon } from "@adamwebster/fused-components";
 import { color } from "@adamwebster/fused-components/dist/types/styles/styles";
+import { darken } from "polished";
 
 export const Wrapper = styled.div`
   width: 375px;
@@ -9,7 +10,6 @@ export const Wrapper = styled.div`
   margin: 20px auto;
   overflow: hidden;
   position: relative;
-  border-radius: 15px;
   font-size: 15px;
 `;
 export const MobileMenuStyled = styled.div`
@@ -17,6 +17,7 @@ export const MobileMenuStyled = styled.div`
   width: 100%;
   height: 100%;
   padding: 20px;
+  overflow:hidden;
   box-sizing: border-box;
   background-color: ${props =>
     props.theme === "dark" ? Colors.darkModeDarkest : Colors.dark};
@@ -32,17 +33,15 @@ export const Container = styled.div<CI>`
   display: flex;
   flex-flow: column;
   width: 100%;
-  height: 100%;
+  height: calc(100% - 43px);
   box-sizing: border-box;
   background-color: ${props =>
     props.theme === "dark" ? Colors.darkModeDarker : Colors.medium};
   color: ${props =>
     props.theme === "dark" ? Colors.darkModeLight : Colors.dark};
-  border-radius: 10px;
-  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: all 0.2s;
   overflow: hidden;
   box-shadow: 0 0 10px ${Colors.darkest};
-
   ${props =>
     props.menuOpen &&
     css`
@@ -63,7 +62,7 @@ export const Header = styled.header`
   min-height: 88px;
   max-height: 88px;
   align-items: center;
-  overflow:hidden;
+  overflow: hidden;
 `;
 
 export const SiteTitle = styled.h1`
@@ -76,6 +75,7 @@ export const SiteTitle = styled.h1`
   overflow: hidden;
   text-overflow: ellipsis;
 `;
+
 
 export const Posts = styled.section`
   overflow: auto;
@@ -98,20 +98,28 @@ export const Menu = styled.ul`
 export const MenuItem = styled.li`
   padding: 10px 0;
   border-bottom: solid 1px ${Colors.mediumdark};
-  display:flex;
+  display: flex;
   cursor: pointer;
-  align-items:center;
-  &:hover{
-      opacity: 0.5;
+  align-items: center;
+  &:hover {
+    opacity: 0.5;
   }
   &:last-child {
     border-bottom: none;
   }
 `;
 
-export const Post = styled.div`
+interface PT {
+  read:boolean;
+}
+export const Post = styled.div<PT>`
   border-bottom: solid 1px
-    ${props => (props.theme === "dark" ? Colors.darkModeMediumDark : Colors.border)};
+    ${props =>
+      props.theme === "dark" ? Colors.darkModeMediumDark : Colors.border};
+  
+  ${props => props.read && css`
+      opacity: 0.6;
+  `}
   &:last-child {
     border-bottom: none;
   }
@@ -119,6 +127,21 @@ export const Post = styled.div`
 export const PostTitle = styled.h2`
   margin-bottom: 0;
 `;
+
+interface ReadProps {
+  read:boolean;
+}
+
+export const Read = styled.div<ReadProps>`
+width: 16px;
+height: 16px;
+border-radius: 50%;
+background-color: ${props => props.read ? 'none' :Colors.blue};
+display:inline-block;
+margin-right: 5px;
+box-sizing:border-box;
+border: solid 3px ${darken(0.2, Colors.blue)};
+`
 
 export const PostDate = styled.div``;
 
@@ -181,12 +204,28 @@ export const BackButton = styled.div`
     opacity: 0.7;
   }
 `;
-export const BottomBar = styled.div`
+
+interface BB {
+  menuOpen: boolean;
+}
+export const BottomBar = styled.div<BB>`
   min-height: 32px;
   border-top: solid 1px
-    ${props => (props.theme === "dark" ? Colors.darkModeMediumDark : Colors.border)};  padding: 5px;
+    ${props =>
+      props.theme === "dark" ? Colors.darkModeMediumDark : Colors.border};
+  padding: 5px;
   display: flex;
   align-items: center;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  color: ${props => props.menuOpen ? Colors.medium : 'inherit'};
+  background-color: ${props =>
+    props.theme === "dark"
+      ? Colors.darkModeDarker
+      : props.menuOpen
+      ? Colors.dark
+      : Colors.medium};
 `;
 export const BarItem = styled.div`
   flex: 1 1;
@@ -206,6 +245,6 @@ export const FavIcon = styled.img`
   background-color: #fff;
   padding: 1px;
   width: 20px;
-  box-sizing:border-box;
+  box-sizing: border-box;
   margin-right: 10px;
-`
+`;

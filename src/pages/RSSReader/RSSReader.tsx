@@ -19,7 +19,8 @@ import {
   BottomBar,
   BarItem,
   FeedImage,
-  FavIcon
+  FavIcon,
+  Read
 } from "./styles";
 import {
   Button,
@@ -34,47 +35,60 @@ import Axios from "axios";
 
 interface ML {
   setFeed: (feed: string) => void;
+  closeMenu: () => void;
 }
 
-const MenuList = ({ setFeed }: ML) => {
+const MenuList = ({ setFeed, closeMenu }: ML) => {
   const toast = useToast();
   const theme = useContext(FCTheme);
   return (
     <Menu>
       <MenuItem
-        onClick={() => setFeed("https://www.theverge.com/rss/index.xml")}
+        onClick={() => {
+          setFeed("https://www.theverge.com/rss/index.xml");
+          closeMenu();
+        }}
       >
         <FavIcon
           alt="The Verge"
-          src="http://www.google.com/s2/favicons?domain=www.theverge.com"
+          src="https://www.google.com/s2/favicons?domain=www.theverge.com"
         />
         The Verge
       </MenuItem>
       <MenuItem
-        onClick={() => setFeed("https://www.polygon.com/rss/index.xml")}
+        onClick={() => {
+          setFeed("https://www.polygon.com/rss/index.xml");
+          closeMenu();
+        }}
       >
         {" "}
         <FavIcon
           alt="Polygon"
-          src="http://www.google.com/s2/favicons?domain=www.polygon.com"
+          src="https://www.google.com/s2/favicons?domain=www.polygon.com"
         />
         Polygon
       </MenuItem>
       <MenuItem
-        onClick={() => setFeed("https://www.smashingmagazine.com/feed")}
+        onClick={() => {
+          setFeed("https://www.smashingmagazine.com/feed");
+          closeMenu();
+        }}
       >
         <FavIcon
           alt="Smashing Magazine"
-          src="http://www.google.com/s2/favicons?domain=www.smashingmagazine.com"
+          src="https://www.google.com/s2/favicons?domain=www.smashingmagazine.com"
         />
         Smashing Magazine
       </MenuItem>
       <MenuItem
-        onClick={() => setFeed("https://daringfireball.net/feeds/main")}
+        onClick={() => {
+          setFeed("https://daringfireball.net/feeds/main");
+          closeMenu();
+        }}
       >
         <FavIcon
           alt="Daring Fireball"
-          src="http://www.google.com/s2/favicons?domain=www.daringfireball.com"
+          src="https://www.google.com/s2/favicons?domain=www.daringfireball.com"
         />
         Daring Fireball
       </MenuItem>
@@ -87,6 +101,7 @@ const RSSReader = () => {
   const [postOpen, setPostOpen] = useState(false);
   const [feedUrl, setFeed] = useState("https://www.theverge.com/rss/index.xml");
   const [feedImg, setFeedImage] = useState("");
+  const [readPosts, setReadPosts] = useState<Array<string>>([]);
   const [activePosts, setActivePost] = useState({
     title: "",
     pubDate: "",
@@ -97,12 +112,39 @@ const RSSReader = () => {
   const FeedData = () => {
     const corsUrl = "https://api.rss2json.com/v1/api.json?rss_url=";
     Axios.get(corsUrl + feedUrl, {}).then(response => {
-      console.log(response);
+      if (response.data.items) {
+        response.data.items.forEach((item: any) => {
+          const readList = localStorage.getItem("FRSSReadPosts");
+          if (readList) {
+            const readListJson = JSON.parse(readList as string);
+            const isRead = readListJson.filter(
+              (itemToMatch: any) => itemToMatch === item.guid
+            );
+            if (isRead.length > 0) {
+              item.read = true;
+            } else {
+              item.read = false;
+            }
+          }
+        });
+      }
       setFeedItems(response.data.items);
       setFeedImage(response.data.feed.image);
       setSiteName(response.data.feed.title);
-      setMenuOpen(false);
     });
+  };
+
+  const setRead = (guid: string) => {
+    const toSet = localStorage.getItem("FRSSReadPosts");
+    let toSetJ = [];
+    if (toSet) {
+      toSetJ = JSON.parse(toSet);
+    }
+    toSetJ.push(guid);
+    setReadPosts(toSetJ);
+    localStorage.setItem("FRSSReadPosts", JSON.stringify(toSetJ));
+    const toMarkRead = feedItems.filter(item => item.guid === guid);
+    toMarkRead[0].read = true;
   };
 
   useEffect(() => {
@@ -112,7 +154,10 @@ const RSSReader = () => {
     <Wrapper>
       <MobileMenuStyled theme={theme?.theme}>
         <ToastProvider>
-          <MenuList setFeed={(feedUrl: string) => setFeed(feedUrl)} />
+          <MenuList
+            closeMenu={() => setMenuOpen(false)}
+            setFeed={(feedUrl: string) => setFeed(feedUrl)}
+          />
         </ToastProvider>
       </MobileMenuStyled>
       <Container theme={theme?.theme} menuOpen={menuOpen}>
@@ -125,19 +170,22 @@ const RSSReader = () => {
           <SiteTitle>{siteName}</SiteTitle>
         </Header>
         <Posts>
-          {console.log(feedItems)}
           {feedItems &&
             feedItems.map(post => {
               return (
                 <Post
                   theme={theme?.theme}
-                  key={post.id}
+                  key={post.guid}
+                  read={post.read}
                   onClick={() => {
                     setActivePost(post);
                     setPostOpen(true);
+                    setRead(post.guid);
                   }}
                 >
-                  <PostTitle>{post.title}</PostTitle>
+                  <PostTitle>
+                    <Read read={post.read}/>
+                    {post.title}</PostTitle>
                   <PostDate>
                     {moment(post.pubDate)
                       .format("MMMM Do YYYY")
@@ -155,11 +203,6 @@ const RSSReader = () => {
               );
             })}
         </Posts>
-        {/* <BottomBar theme={theme?.theme}>
-          <BarItem>Read</BarItem>
-          <BarItem>Unread</BarItem>
-          <BarItem>Favourites</BarItem>
-        </BottomBar> */}
       </Container>
       <SinglePost theme={theme?.theme} postOpen={postOpen}>
         <Header theme={theme?.theme}>
@@ -182,6 +225,11 @@ const RSSReader = () => {
           />
         </SinglePostInner>
       </SinglePost>
+      <BottomBar menuOpen={menuOpen} theme={theme?.theme}>
+        <BarItem>Read</BarItem>
+        <BarItem>Unread</BarItem>
+        <BarItem>Favorites</BarItem>
+      </BottomBar>
     </Wrapper>
   );
 };
