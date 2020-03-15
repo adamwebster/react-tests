@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { Colors } from "@adamwebster/fused-components";
+import { Colors, Icon } from "@adamwebster/fused-components";
 import { color } from "@adamwebster/fused-components/dist/types/styles/styles";
 
 export const Wrapper = styled.div`
@@ -10,6 +10,7 @@ export const Wrapper = styled.div`
   overflow: hidden;
   position: relative;
   border-radius: 15px;
+  font-size: 15px;
 `;
 export const MobileMenuStyled = styled.div`
   position: absolute;
@@ -59,6 +60,10 @@ export const Header = styled.header`
   background-color: ${props =>
     props.theme === "dark" ? Colors.darkModeDark : Colors.darker};
   color: #fff;
+  min-height: 88px;
+  max-height: 88px;
+  align-items: center;
+  overflow:hidden;
 `;
 
 export const SiteTitle = styled.h1`
@@ -66,11 +71,16 @@ export const SiteTitle = styled.h1`
   margin: 0 10px;
   box-sizing: border-box;
   font-weight: 100;
+  font-size: 22px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const Posts = styled.section`
   overflow: auto;
   padding: 10px 20px 0 20px;
+  box-sizing: border-box;
 `;
 
 export const SinglePostInner = styled.section`
@@ -88,13 +98,20 @@ export const Menu = styled.ul`
 export const MenuItem = styled.li`
   padding: 10px 0;
   border-bottom: solid 1px ${Colors.mediumdark};
+  display:flex;
+  cursor: pointer;
+  align-items:center;
+  &:hover{
+      opacity: 0.5;
+  }
   &:last-child {
     border-bottom: none;
   }
 `;
 
 export const Post = styled.div`
-  border-bottom: solid 1px ${Colors.border};
+  border-bottom: solid 1px
+    ${props => (props.theme === "dark" ? Colors.darkModeMediumDark : Colors.border)};
   &:last-child {
     border-bottom: none;
   }
@@ -105,7 +122,11 @@ export const PostTitle = styled.h2`
 
 export const PostDate = styled.div``;
 
-export const PostContent = styled.p``;
+export const PostContent = styled.p`
+  & img {
+    max-width: 100%;
+  }
+`;
 
 export const PostMeta = styled.div``;
 
@@ -130,4 +151,61 @@ export const SinglePost = styled.div<SP>`
       left: 0;
       /* transform: scale(0.9) translate(70%); */
     `}
+    color: ${props =>
+      props.theme === "dark" ? Colors.darkModeLight : Colors.dark};
 `;
+
+export const MobileMenuIcon = styled.div`
+  width: 24px;
+  box-sizing: border-box;
+  color: #fff;
+  top: 5px;
+  position: relative;
+  cursor: pointer;
+  svg {
+    width: 24px;
+  }
+  &:hover {
+    opacity: 0.7;
+  }
+`;
+
+export const BackButton = styled.div`
+  width: 24px;
+  box-sizing: border-box;
+  color: #fff;
+  top: 5px;
+  position: relative;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.7;
+  }
+`;
+export const BottomBar = styled.div`
+  min-height: 32px;
+  border-top: solid 1px
+    ${props => (props.theme === "dark" ? Colors.darkModeMediumDark : Colors.border)};  padding: 5px;
+  display: flex;
+  align-items: center;
+`;
+export const BarItem = styled.div`
+  flex: 1 1;
+  text-align: center;
+`;
+
+export const FeedImage = styled.img`
+  border-radius: 50%;
+  background-color: #fff;
+  padding: 2px;
+  width: 24px;
+  margin-left: 15px;
+`;
+
+export const FavIcon = styled.img`
+  border-radius: 50%;
+  background-color: #fff;
+  padding: 1px;
+  width: 20px;
+  box-sizing:border-box;
+  margin-right: 10px;
+`
