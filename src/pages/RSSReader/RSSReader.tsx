@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import {
   Wrapper,
   MobileMenuStyled,
@@ -20,14 +20,16 @@ import {
   BarItem,
   FeedImage,
   FavIcon,
-  Read
+  Read,
+  ButtonGroupTest
 } from "./styles";
 import {
   Button,
   ToastProvider,
   useToast,
   FCTheme,
-  Icon
+  Icon,
+  Colors
 } from "@adamwebster/fused-components";
 
 import moment from "moment";
@@ -36,9 +38,10 @@ import Axios from "axios";
 interface ML {
   setFeed: (feed: string) => void;
   closeMenu: () => void;
+  setFeedIcon: (icon: string) => void;
 }
 
-const MenuList = ({ setFeed, closeMenu }: ML) => {
+const MenuList = ({ setFeed, setFeedIcon, closeMenu }: ML) => {
   const toast = useToast();
   const theme = useContext(FCTheme);
   return (
@@ -46,6 +49,9 @@ const MenuList = ({ setFeed, closeMenu }: ML) => {
       <MenuItem
         onClick={() => {
           setFeed("https://www.theverge.com/rss/index.xml");
+          setFeedIcon(
+            "https://www.google.com/s2/favicons?domain=www.theverge.com"
+          );
           closeMenu();
         }}
       >
@@ -58,6 +64,9 @@ const MenuList = ({ setFeed, closeMenu }: ML) => {
       <MenuItem
         onClick={() => {
           setFeed("https://www.polygon.com/rss/index.xml");
+          setFeedIcon(
+            "https://www.google.com/s2/favicons?domain=www.polygon.com"
+          );
           closeMenu();
         }}
       >
@@ -71,6 +80,10 @@ const MenuList = ({ setFeed, closeMenu }: ML) => {
       <MenuItem
         onClick={() => {
           setFeed("https://www.smashingmagazine.com/feed");
+          setFeedIcon(
+            "https://www.google.com/s2/favicons?domain=www.smashingmagazine.com"
+          );
+
           closeMenu();
         }}
       >
@@ -83,6 +96,9 @@ const MenuList = ({ setFeed, closeMenu }: ML) => {
       <MenuItem
         onClick={() => {
           setFeed("https://daringfireball.net/feeds/main");
+          setFeedIcon(
+            "https://www.google.com/s2/favicons?domain=www.daringfireball.com"
+          );
           closeMenu();
         }}
       >
@@ -99,6 +115,7 @@ const RSSReader = () => {
   const theme = useContext(FCTheme);
   const [menuOpen, setMenuOpen] = useState(false);
   const [postOpen, setPostOpen] = useState(false);
+  const [feedIcon, setFeedIcon] = useState("");
   const [feedUrl, setFeed] = useState("https://www.theverge.com/rss/index.xml");
   const [feedImg, setFeedImage] = useState("");
   const [readPosts, setReadPosts] = useState<Array<string>>([]);
@@ -109,6 +126,7 @@ const RSSReader = () => {
   });
   const [siteName, setSiteName] = useState("");
   const [feedItems, setFeedItems] = useState<Array<any>>([]);
+  const containerRef = useRef<HTMLDivElement>(null);
   const FeedData = () => {
     const corsUrl = "https://api.rss2json.com/v1/api.json?rss_url=";
     Axios.get(corsUrl + feedUrl, {}).then(response => {
@@ -131,6 +149,7 @@ const RSSReader = () => {
       setFeedItems(response.data.items);
       setFeedImage(response.data.feed.image);
       setSiteName(response.data.feed.title);
+      scrollTop();
     });
   };
 
@@ -140,16 +159,81 @@ const RSSReader = () => {
     if (toSet) {
       toSetJ = JSON.parse(toSet);
     }
-    toSetJ.push(guid);
+
+    const isAdded = toSetJ.filter((itemToCheck: any) => itemToCheck === guid);
+
+    if (isAdded.length < 1) {
+      toSetJ.push(guid);
+    }
     setReadPosts(toSetJ);
     localStorage.setItem("FRSSReadPosts", JSON.stringify(toSetJ));
     const toMarkRead = feedItems.filter(item => item.guid === guid);
     toMarkRead[0].read = true;
   };
 
+  const markAllRead = () => {
+    const toUpdate = feedItems.slice();
+    const toSet = localStorage.getItem("FRSSReadPosts");
+    let toSetJ: any[] = [];
+    if (toSet) {
+      toSetJ = JSON.parse(toSet);
+    }
+
+    toUpdate.forEach(item => {
+      item.read = true;
+      const isAdded = toSetJ.filter(
+        (itemToCheck: any) => itemToCheck === item.guid
+      );
+      if (isAdded.length < 1) {
+        toSetJ.push(item.guid);
+      }
+    });
+    localStorage.setItem("FRSSReadPosts", JSON.stringify(toSetJ));
+
+    console.log(toUpdate);
+    setFeedItems(toUpdate);
+  };
+
+  const markAllUnread = () => {
+    const toUpdate = feedItems.slice();
+    const toSet = localStorage.getItem("FRSSReadPosts");
+    let toSetJ: any[] = [];
+    if (toSet) {
+      toSetJ = JSON.parse(toSet);
+    }
+
+    toUpdate.forEach(item => {
+      item.read = false;
+      const index = toSetJ.findIndex(
+        (itemToCheck: any) => itemToCheck === item.guid
+      );
+      // if (isAdded.length < 1) {
+      //   toSetJ.push(item.guid);
+      // }
+
+      toSetJ.splice(index, 1);
+    });
+    localStorage.setItem("FRSSReadPosts", JSON.stringify(toSetJ));
+
+    console.log(toUpdate);
+    setFeedItems(toUpdate);
+  };
+
+  const scrollTop = () => {
+    // const scrollElement = containerRef?.current?.scrollTop;
+    console.log(containerRef);
+    containerRef?.current?.scrollTo(0, 0);
+  };
+
+  useEffect(() => {
+    setFeedIcon("https://www.google.com/s2/favicons?domain=www.theverge.com");
+  },[])
   useEffect(() => {
     FeedData();
   }, [feedUrl]);
+
+  const buttonColor =
+    theme?.theme === "dark" ? Colors.darkModeMedium : Colors.dark;
   return (
     <Wrapper>
       <MobileMenuStyled theme={theme?.theme}>
@@ -157,19 +241,33 @@ const RSSReader = () => {
           <MenuList
             closeMenu={() => setMenuOpen(false)}
             setFeed={(feedUrl: string) => setFeed(feedUrl)}
+            setFeedIcon={(feedIcon: string) => setFeedIcon(feedIcon)}
           />
         </ToastProvider>
       </MobileMenuStyled>
       <Container theme={theme?.theme} menuOpen={menuOpen}>
         <Header theme={theme?.theme}>
-          <MobileMenuIcon onClick={() => setMenuOpen(!menuOpen)}>
+          <MobileMenuIcon
+            theme={theme?.theme}
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
             <Icon icon="menu" />
           </MobileMenuIcon>
-          {feedImg && <FeedImage src={feedImg} alt={siteName} />}
+          {feedIcon && (
+            <FeedImage theme={theme?.theme} src={feedIcon} alt={siteName} />
+          )}
 
           <SiteTitle>{siteName}</SiteTitle>
         </Header>
-        <Posts>
+        <Posts ref={containerRef}>
+          <ButtonGroupTest>
+            <Button buttonColor={buttonColor} onClick={() => markAllRead()}>
+              Mark all Read
+            </Button>
+            <Button buttonColor={buttonColor} onClick={() => markAllUnread()}>
+              Mark all Unread
+            </Button>
+          </ButtonGroupTest>
           {feedItems &&
             feedItems.map(post => {
               return (
@@ -184,8 +282,9 @@ const RSSReader = () => {
                   }}
                 >
                   <PostTitle>
-                    <Read read={post.read}/>
-                    {post.title}</PostTitle>
+                    <Read read={post.read} />
+                    {post.title}
+                  </PostTitle>
                   <PostDate>
                     {moment(post.pubDate)
                       .format("MMMM Do YYYY")
@@ -225,11 +324,11 @@ const RSSReader = () => {
           />
         </SinglePostInner>
       </SinglePost>
-      <BottomBar menuOpen={menuOpen} theme={theme?.theme}>
+      {/* <BottomBar menuOpen={menuOpen} theme={theme?.theme}>
         <BarItem>Read</BarItem>
         <BarItem>Unread</BarItem>
         <BarItem>Favorites</BarItem>
-      </BottomBar>
+      </BottomBar> */}
     </Wrapper>
   );
 };

@@ -1,7 +1,11 @@
 import styled, { css } from "styled-components";
-import { Colors, Icon } from "@adamwebster/fused-components";
-import { color } from "@adamwebster/fused-components/dist/types/styles/styles";
+import { Colors, Icon, ButtonGroup } from "@adamwebster/fused-components";
 import { darken } from "polished";
+
+export const ButtonGroupTest = styled(ButtonGroup)`
+  width: 196px;
+  margin: 0 auto;
+`;
 
 export const Wrapper = styled.div`
   width: 375px;
@@ -17,14 +21,14 @@ export const MobileMenuStyled = styled.div`
   width: 100%;
   height: 100%;
   padding: 20px;
-  overflow:hidden;
+  overflow: hidden;
   box-sizing: border-box;
   background-color: ${props =>
     props.theme === "dark" ? Colors.darkModeDarkest : Colors.dark};
   color: ${Colors.mediumlight};
 `;
 
-interface CI {
+interface CI extends React.HTMLAttributes<HTMLDivElement>{
   menuOpen: boolean;
 }
 
@@ -33,7 +37,7 @@ export const Container = styled.div<CI>`
   display: flex;
   flex-flow: column;
   width: 100%;
-  height: calc(100% - 43px);
+  height: calc(100%);
   box-sizing: border-box;
   background-color: ${props =>
     props.theme === "dark" ? Colors.darkModeDarker : Colors.medium};
@@ -50,17 +54,20 @@ export const Container = styled.div<CI>`
 `;
 
 export const Header = styled.header`
-  border-bottom: solid 1px ${Colors.border};
+  border-bottom: solid 1px
+    ${props =>
+      props.theme === "dark" ? Colors.darkModeMediumDark : Colors.border};
   width: 100%;
   padding: 20px;
   box-sizing: border-box;
   overflow: hidden;
   display: flex;
   background-color: ${props =>
-    props.theme === "dark" ? Colors.darkModeDark : Colors.darker};
-  color: #fff;
-  min-height: 88px;
-  max-height: 88px;
+    props.theme === "dark" ? Colors.darkModeDarker : Colors.medium};
+  color: ${props =>
+    props.theme === "dark" ? Colors.darkModeLight : Colors.dark};
+  min-height: 60px;
+  max-height: 60px;
   align-items: center;
   overflow: hidden;
 `;
@@ -69,13 +76,12 @@ export const SiteTitle = styled.h1`
   display: inline-block;
   margin: 0 10px;
   box-sizing: border-box;
-  font-weight: 100;
+  font-weight: 300;
   font-size: 22px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 `;
-
 
 export const Posts = styled.section`
   overflow: auto;
@@ -110,16 +116,18 @@ export const MenuItem = styled.li`
 `;
 
 interface PT {
-  read:boolean;
+  read: boolean;
 }
 export const Post = styled.div<PT>`
   border-bottom: solid 1px
     ${props =>
       props.theme === "dark" ? Colors.darkModeMediumDark : Colors.border};
-  
-  ${props => props.read && css`
+
+  ${props =>
+    props.read &&
+    css`
       opacity: 0.6;
-  `}
+    `}
   &:last-child {
     border-bottom: none;
   }
@@ -129,19 +137,19 @@ export const PostTitle = styled.h2`
 `;
 
 interface ReadProps {
-  read:boolean;
+  read: boolean;
 }
 
 export const Read = styled.div<ReadProps>`
-width: 16px;
-height: 16px;
-border-radius: 50%;
-background-color: ${props => props.read ? 'none' :Colors.blue};
-display:inline-block;
-margin-right: 5px;
-box-sizing:border-box;
-border: solid 3px ${darken(0.2, Colors.blue)};
-`
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: ${props => (props.read ? "none" : Colors.blue)};
+  display: inline-block;
+  margin-right: 5px;
+  box-sizing: border-box;
+  border: solid 2px ${Colors.blue};
+`;
 
 export const PostDate = styled.div``;
 
@@ -178,10 +186,15 @@ export const SinglePost = styled.div<SP>`
       props.theme === "dark" ? Colors.darkModeLight : Colors.dark};
 `;
 
-export const MobileMenuIcon = styled.div`
+interface MMI {
+  theme?: any;
+}
+
+export const MobileMenuIcon = styled.div<MMI>`
   width: 24px;
   box-sizing: border-box;
-  color: #fff;
+  color: ${props =>
+    props.theme === "dark" ? Colors.darkModeLight : Colors.dark};
   top: 5px;
   position: relative;
   cursor: pointer;
@@ -196,8 +209,8 @@ export const MobileMenuIcon = styled.div`
 export const BackButton = styled.div`
   width: 24px;
   box-sizing: border-box;
-  color: #fff;
-  top: 5px;
+  color: ${props =>
+    props.theme === "dark" ? Colors.darkModeLight : Colors.dark};  top: 5px;
   position: relative;
   cursor: pointer;
   &:hover {
@@ -219,7 +232,7 @@ export const BottomBar = styled.div<BB>`
   position: absolute;
   bottom: 0;
   width: 100%;
-  color: ${props => props.menuOpen ? Colors.medium : 'inherit'};
+  color: ${props => (props.menuOpen ? Colors.medium : "inherit")};
   background-color: ${props =>
     props.theme === "dark"
       ? Colors.darkModeDarker
@@ -232,11 +245,14 @@ export const BarItem = styled.div`
   text-align: center;
 `;
 
-export const FeedImage = styled.img`
+interface FI {
+  theme?: any;
+}
+export const FeedImage = styled.img<FI>`
   border-radius: 50%;
   background-color: #fff;
-  padding: 2px;
-  width: 24px;
+  padding: 1px;
+  min-width: 24px;
   margin-left: 15px;
 `;
 
