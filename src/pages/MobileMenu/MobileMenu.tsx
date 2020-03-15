@@ -11,9 +11,16 @@ import {
   PostTitle,
   Header,
   Posts,
-  SiteTitle
+  SiteTitle,
+  SinglePost,
+  SinglePostInner
 } from "./styles";
-import { Button, ToastProvider, useToast, FCTheme } from "@adamwebster/fused-components";
+import {
+  Button,
+  ToastProvider,
+  useToast,
+  FCTheme
+} from "@adamwebster/fused-components";
 
 const posts = [
   {
@@ -31,21 +38,21 @@ const posts = [
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione necessitatibus molestias voluptates, dignissimos inventore porro sunt repudiandae quaerat dolorem nesciunt maxime aspernatur assumenda eius consequatur aperiam atque exercitationem? Tenetur, et!"
   },
   {
-    id: 3,
+    id: 2,
     title: "Post 3",
     date: "03/03/2022",
     content:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione necessitatibus molestias voluptates, dignissimos inventore porro sunt repudiandae quaerat dolorem nesciunt maxime aspernatur assumenda eius consequatur aperiam atque exercitationem? Tenetur, et!"
   },
   {
-    id: 4,
+    id: 3,
     title: "Post 4",
     date: "03/03/2022",
     content:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione necessitatibus molestias voluptates, dignissimos inventore porro sunt repudiandae quaerat dolorem nesciunt maxime aspernatur assumenda eius consequatur aperiam atque exercitationem? Tenetur, et!"
   },
   {
-    id: 5,
+    id: 4,
     title: "Post 5",
     date: "03/03/2022",
     content:
@@ -54,30 +61,39 @@ const posts = [
 ];
 
 const MenuList = () => {
-    const toast = useToast();
-    const theme = useContext(FCTheme);
-    return(
-        <Menu>
-        <MenuItem onClick={() => toast.addInfo('Open the Home page')}>Home</MenuItem>
-        <MenuItem onClick={() => toast.addInfo('Open the About page')}>About</MenuItem>
-        <MenuItem onClick={() => toast.addInfo('Open the Portfolio page')}>Portfolio</MenuItem>
-        <MenuItem onClick={() => toast.addInfo('Open the Contact page')}>Contact</MenuItem>
-      </Menu>
-    )
-}
+  const toast = useToast();
+  const theme = useContext(FCTheme);
+  return (
+    <Menu>
+      <MenuItem onClick={() => toast.addInfo("Open the Home page")}>
+        Home
+      </MenuItem>
+      <MenuItem onClick={() => toast.addInfo("Open the About page")}>
+        About
+      </MenuItem>
+      <MenuItem onClick={() => toast.addInfo("Open the Portfolio page")}>
+        Portfolio
+      </MenuItem>
+      <MenuItem onClick={() => toast.addInfo("Open the Contact page")}>
+        Contact
+      </MenuItem>
+    </Menu>
+  );
+};
 const MobileMenu = () => {
-    const theme = useContext(FCTheme);
+  const theme = useContext(FCTheme);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [postOpen, setPostOpen] = useState(false);
+  const [activePosts, setActivePost] = useState(0);
+
   return (
     <Wrapper>
       <MobileMenuStyled theme={theme?.theme}>
-      <ToastProvider>
-
-       <MenuList />
-       </ToastProvider>
+        <ToastProvider>
+          <MenuList />
+        </ToastProvider>
       </MobileMenuStyled>
       <Container theme={theme?.theme} menuOpen={menuOpen}>
-
         <Header theme={theme?.theme}>
           <Button primary onClick={() => setMenuOpen(!menuOpen)}>
             {menuOpen ? "Close " : "Open "}
@@ -88,7 +104,13 @@ const MobileMenu = () => {
         <Posts>
           {posts.map(post => {
             return (
-              <Post>
+              <Post
+                key={post.id}
+                onClick={() => {
+                  setActivePost(post.id);
+                  setPostOpen(true);
+                }}
+              >
                 <PostTitle>{post.title}</PostTitle>
                 <PostDate>{post.date}</PostDate>
                 <PostContent>{post.content}</PostContent>
@@ -97,6 +119,15 @@ const MobileMenu = () => {
           })}
         </Posts>
       </Container>
+      <SinglePost postOpen={postOpen}>
+        <Header theme={theme?.theme}>
+            <Button onClick={() => setPostOpen(false)}>Back</Button>
+            <SiteTitle>{posts[activePosts].title}</SiteTitle></Header>
+        <SinglePostInner>
+          <PostDate>{posts[activePosts].date}</PostDate>
+          <PostContent>{posts[activePosts].content}</PostContent>
+        </SinglePostInner>
+      </SinglePost>
     </Wrapper>
   );
 };
