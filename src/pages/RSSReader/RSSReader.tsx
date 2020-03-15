@@ -189,8 +189,6 @@ const RSSReader = () => {
       }
     });
     localStorage.setItem("FRSSReadPosts", JSON.stringify(toSetJ));
-
-    console.log(toUpdate);
     setFeedItems(toUpdate);
   };
 
@@ -214,14 +212,11 @@ const RSSReader = () => {
       toSetJ.splice(index, 1);
     });
     localStorage.setItem("FRSSReadPosts", JSON.stringify(toSetJ));
-
-    console.log(toUpdate);
     setFeedItems(toUpdate);
   };
 
   const scrollTop = () => {
     // const scrollElement = containerRef?.current?.scrollTop;
-    console.log(containerRef);
     containerRef?.current?.scrollTo(0, 0);
   };
 
