@@ -1,13 +1,14 @@
 import styled, { css } from "styled-components";
 import { Colors } from "@adamwebster/fused-components";
+import { color } from "@adamwebster/fused-components/dist/types/styles/styles";
 
 export const Wrapper = styled.div`
   width: 375px;
   height: 812px;
-  border: solid 1px ${Colors.border};
+  border: solid 1px ${Colors.mediumdark};
   margin: 20px auto;
+  overflow:hidden;
   position: relative;
-  overflow: hidden;
   border-radius: 15px;
 `;
 export const MobileMenuStyled = styled.div`
@@ -16,7 +17,7 @@ export const MobileMenuStyled = styled.div`
   height: 100%;
   padding: 20px;
   box-sizing: border-box;
-  background-color: ${props => props.theme === 'dark' ? Colors.darkModeDark : Colors.dark};
+  background-color: ${props => props.theme === 'dark' ? Colors.darkModeDarkest : Colors.dark};
   color: ${Colors.mediumlight};
 `;
 
@@ -31,8 +32,8 @@ export const Container = styled.div<CI>`
   width: 100%;
   height: 100%;
   box-sizing: border-box;
-  background-color: ${props => props.theme === 'dark' ? Colors.darkModeDarkest : Colors.medium};
-  color: ${Colors.dark};
+  background-color: ${props => props.theme === 'dark' ? Colors.darkModeDarker : Colors.medium};
+  color: ${props => props.theme === 'dark' ? Colors.darkModeLight : Colors.dark};
   border-radius: 10px;
   transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   overflow:hidden;
@@ -51,7 +52,7 @@ export const Header = styled.header`
   box-sizing: border-box;
   overflow:hidden;
   display:flex;
-  background-color: ${props => props.theme === 'dark' ? Colors.darkModeDarker : Colors.darker};
+  background-color: ${props => props.theme === 'dark' ? Colors.darkModeDark : Colors.darker};
   color: #fff;
 `;
 
