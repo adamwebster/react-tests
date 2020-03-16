@@ -14,7 +14,7 @@ import { authEndpoint, clientId, redirectUri, scopes, hash } from "./setup";
 import { PlaylistContextProvider } from "./PlaylistContext";
 import { ExampleFooter } from "../../components/UI/ExampleFooter";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import { Helmet } from 'react-helmet';
 const PlayList = styled.div`
   list-style: none;
   padding: 0;
@@ -156,6 +156,9 @@ function SpotifyPlaylist() {
   return (
     <div className="App">
         <PlayListWrapper>
+        <Helmet>
+      <title>Spotify Playlist | React Examples | Adam Webster</title>
+      </Helmet>
           {!token && (
             <Button
               buttonColor="#1db954"

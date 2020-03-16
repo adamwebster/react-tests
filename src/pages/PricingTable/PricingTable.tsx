@@ -18,6 +18,7 @@ import {
   FormField,
 } from "@adamwebster/fused-components";
 import { ExampleFooter } from "../../components/UI/ExampleFooter";
+import { Helmet } from 'react-helmet';
 
 const NeedHelp = () => {
   const [dialogVisible, setDialogVisible] = useState(true);
@@ -86,6 +87,9 @@ const PricingTable = () => {
 
   return (
     <>
+     <Helmet>
+      <title>Pricing Table | React Examples | Adam Webster</title>
+      </Helmet>
       <ToastProvider>
         <NeedHelp />
       <PricingWrapper>

@@ -21,7 +21,8 @@ import {
   FeedImage,
   FavIcon,
   Read,
-  ButtonGroupTest
+  ButtonGroupTest,
+  EmptyState
 } from "./styles";
 import {
   Button,
@@ -30,6 +31,7 @@ import {
   Icon,
   Colors
 } from "@adamwebster/fused-components";
+import {Helmet} from "react-helmet";
 
 import moment from "moment";
 import Axios from "axios";
@@ -38,9 +40,10 @@ interface ML {
   setFeed: (feed: string) => void;
   closeMenu: () => void;
   setFeedIcon: (icon: string) => void;
+  resetActiveTab: () => void;
 }
 
-const MenuList = ({ setFeed, setFeedIcon, closeMenu }: ML) => {
+const MenuList = ({ setFeed, setFeedIcon, closeMenu, resetActiveTab }: ML) => {
   return (
     <Menu>
       <MenuItem
@@ -49,6 +52,7 @@ const MenuList = ({ setFeed, setFeedIcon, closeMenu }: ML) => {
           setFeedIcon(
             "https://www.google.com/s2/favicons?domain=www.theverge.com"
           );
+          resetActiveTab();
           closeMenu();
         }}
       >
@@ -64,6 +68,7 @@ const MenuList = ({ setFeed, setFeedIcon, closeMenu }: ML) => {
           setFeedIcon(
             "https://www.google.com/s2/favicons?domain=www.polygon.com"
           );
+          resetActiveTab();
           closeMenu();
         }}
       >
@@ -80,7 +85,7 @@ const MenuList = ({ setFeed, setFeedIcon, closeMenu }: ML) => {
           setFeedIcon(
             "https://www.google.com/s2/favicons?domain=www.smashingmagazine.com"
           );
-
+          resetActiveTab();
           closeMenu();
         }}
       >
@@ -96,6 +101,7 @@ const MenuList = ({ setFeed, setFeedIcon, closeMenu }: ML) => {
           setFeedIcon(
             "https://www.google.com/s2/favicons?domain=www.daringfireball.com"
           );
+          resetActiveTab();
           closeMenu();
         }}
       >
@@ -113,6 +119,7 @@ const RSSReader = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [postOpen, setPostOpen] = useState(false);
   const [feedIcon, setFeedIcon] = useState("");
+  const [activeTab, setActiveTab] = useState("All");
   const [feedUrl, setFeed] = useState("https://www.theverge.com/rss/index.xml");
   const [, setFeedImage] = useState("");
   const [, setReadPosts] = useState<Array<string>>([]);
@@ -127,7 +134,7 @@ const RSSReader = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const FeedData = async () => {
     const corsUrl = "https://api.rss2json.com/v1/api.json?rss_url=";
-   const feedItems = await Axios.get(corsUrl + feedUrl, {}).then(response => {
+    const feedItems = await Axios.get(corsUrl + feedUrl, {}).then(response => {
       if (response.data.items) {
         response.data.items.forEach((item: any) => {
           const readList = localStorage.getItem("FRSSReadPosts");
@@ -148,9 +155,9 @@ const RSSReader = () => {
       setFeedImage(response.data.feed.image);
       setSiteName(response.data.feed.title);
       scrollTop();
-      return(response.data.items);
+      return response.data.items;
     });
-  
+
     return feedItems;
   };
 
@@ -221,42 +228,74 @@ const RSSReader = () => {
     containerRef?.current?.scrollTo(0, 0);
   };
 
-  
   const GetRead = async () => {
     const toSet = await FeedData();
-    const filtered = toSet.filter((item: {read:boolean}) => item.read === true);
-        setFeedItems(filtered);
-  }
+    const filtered = toSet.filter(
+      (item: { read: boolean }) => item.read === true
+    );
+    setFeedItems(filtered);
+  };
 
   const GetUnread = async () => {
     const toSet = await FeedData();
-    const filtered = toSet.filter((item: {read:boolean}) => item.read === false);
-        setFeedItems(filtered);
-  }
-
+    const filtered = toSet.filter(
+      (item: { read: boolean }) => item.read === false
+    );
+    setFeedItems(filtered);
+  };
 
   const GetAll = async () => {
     const toSet = await FeedData();
     setFeedItems(toSet);
-  }
+  };
+
+  const toggleRead = (guid: string) => {
+    const itemsFiltered = feedItems.slice();
+    const toToggle = itemsFiltered.filter(item => item.guid === guid);
+    console.log(toToggle);
+    toToggle[0].read = !toToggle[0].read;
+    console.log(itemsFiltered);
+    if (toToggle[0].read) {
+      setRead(guid);
+    } else {
+      const readLocal = localStorage.getItem("FRSSReadPosts");
+      let toSetJ: any[] = [];
+      if (readLocal) {
+        toSetJ = JSON.parse(readLocal);
+      }
+      const indexToRemove = toSetJ.findIndex(item => item === guid);
+      toSetJ.splice(indexToRemove, 1);
+      localStorage.setItem("FRSSReadPosts", JSON.stringify(toSetJ));
+    }
+    setFeedItems(itemsFiltered);
+  };
+  const OpenPost = (e: any, guid: string) => {
+    if (e.target.getAttribute("role") !== "button") {
+      setPostOpen(true);
+      setRead(guid);
+    }
+  };
 
   useEffect(() => {
     setFeedIcon("https://www.google.com/s2/favicons?domain=www.theverge.com");
-  },[])
+  }, []);
 
   useEffect(() => {
     FeedData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [feedUrl]);
-
 
   const buttonColor =
     theme?.theme === "dark" ? Colors.darkModeMedium : Colors.dark;
   return (
     <Wrapper>
+      <Helmet>
+      <title>RSS Reader | React Examples | Adam Webster</title>
+      </Helmet>
       <MobileMenuStyled theme={theme?.theme}>
         <ToastProvider>
           <MenuList
+            resetActiveTab={() => setActiveTab("All")}
             closeMenu={() => setMenuOpen(false)}
             setFeed={(feedUrl: string) => setFeed(feedUrl)}
             setFeedIcon={(feedIcon: string) => setFeedIcon(feedIcon)}
@@ -293,14 +332,18 @@ const RSSReader = () => {
                   theme={theme?.theme}
                   key={post.guid}
                   read={post.read}
-                  onClick={() => {
+                  onClick={e => {
                     setActivePost(post);
-                    setPostOpen(true);
-                    setRead(post.guid);
+                    OpenPost(e, post.guid);
+                    // setRead(post.guid);
                   }}
                 >
                   <PostTitle>
-                    <Read read={post.read} />
+                    <Read
+                      onClick={() => toggleRead(post.guid)}
+                      role="button"
+                      read={post.read}
+                    />
                     {post.title}
                   </PostTitle>
                   <PostDate>
@@ -319,17 +362,47 @@ const RSSReader = () => {
                 </Post>
               );
             })}
+          {feedItems.length === 0 && (
+            <EmptyState>No posts found for this feed.</EmptyState>
+          )}
         </Posts>
         <BottomBar menuOpen={menuOpen} theme={theme?.theme}>
-        <BarItem onClick={() => GetAll()}>All</BarItem>
-        <BarItem onClick={() => GetRead()}>Read</BarItem>
-        <BarItem onClick={() => GetUnread()}>Unread</BarItem>
-        {/* <BarItem>Favorites</BarItem> */}
-      </BottomBar>
+          <BarItem
+            theme={theme?.theme}
+            activeTab={activeTab}
+            onClick={() => {
+              GetAll();
+              setActiveTab("All");
+            }}
+          >
+            All
+          </BarItem>
+          <BarItem
+            theme={theme?.theme}
+            activeTab={activeTab}
+            onClick={() => {
+              GetRead();
+              setActiveTab("Read");
+            }}
+          >
+            Read
+          </BarItem>
+          <BarItem
+            theme={theme?.theme}
+            activeTab={activeTab}
+            onClick={() => {
+              GetUnread();
+              setActiveTab("Unread");
+            }}
+          >
+            Unread
+          </BarItem>
+          {/* <BarItem>Favorites</BarItem> */}
+        </BottomBar>
       </Container>
       <SinglePost theme={theme?.theme} postOpen={postOpen}>
         <Header theme={theme?.theme}>
-          <BackButton onClick={() => setPostOpen(false)}>
+          <BackButton theme={theme?.theme} onClick={() => setPostOpen(false)}>
             <Icon icon="chevron-left" />
           </BackButton>
         </Header>
@@ -348,7 +421,6 @@ const RSSReader = () => {
           />
         </SinglePostInner>
       </SinglePost>
-    
     </Wrapper>
   );
 };

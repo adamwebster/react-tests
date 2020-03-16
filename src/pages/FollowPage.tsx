@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Card, Button, Avatar } from '@adamwebster/fused-components';
 import styled from 'styled-components';
+ import { Helmet } from 'react-helmet';
  
 const StyledCard = styled(Card)`
   width: 300px;
@@ -106,6 +107,9 @@ export const FollowPage = () => {
   }
   return (
     <StyledCard boxShadow>
+       <Helmet>
+      <title>Social Profile Card | React Examples | Adam Webster</title>
+      </Helmet>
       <CoverImage image="https://adamwebster.me/static/avatar.jpg" />
       <StyledAvatar boxShadow size="large" borderRadius='round' image="https://adamwebster.me/static/avatar.jpg" />
       <CardInner>

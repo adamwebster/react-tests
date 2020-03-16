@@ -87,8 +87,8 @@ export const Posts = styled.section`
   padding: 10px 20px 0 20px;
   box-sizing: border-box;
   display: flex;
-  flex:1 1;
-  flex-flow:column;
+  flex: 1 1;
+  flex-flow: column;
 `;
 
 export const SinglePostInner = styled.section`
@@ -226,20 +226,42 @@ interface BB {
 }
 export const BottomBar = styled.div<BB>`
   min-height: 32px;
-  height:32px;
+  height: 44px;
+  box-sizing: border-box;
+
   border-top: solid 1px
-  ${props =>
+    ${props =>
       props.theme === "dark" ? Colors.darkModeMediumDark : Colors.border};
-  padding: 5px;
   display: flex;
   align-items: center;
   width: 100%;
   background-color: ${props =>
     props.theme === "dark" ? Colors.darkModeDarker : Colors.medium};
 `;
-export const BarItem = styled.div`
+
+interface BI {
+  activeTab: string;
+}
+export const BarItem = styled.div<BI>`
   flex: 1 1;
+  padding: 8px;
+  border-right: solid 1px
+    ${props =>
+      props.theme === "dark" ? Colors.darkModeMediumDark : Colors.border};
+  box-sizing: border-box;
   text-align: center;
+  &:last-child{
+          border-right:none;
+        }
+
+  ${props =>
+    props.activeTab === props.children
+      ? css`
+          border-top: solid 5px ${Colors.primary};
+        `
+      : css`
+          border-top: solid 5px transparent;
+        `}
 `;
 
 interface FI {
@@ -260,4 +282,10 @@ export const FavIcon = styled.img`
   width: 20px;
   box-sizing: border-box;
   margin-right: 10px;
+`;
+
+export const EmptyState = styled.div`
+  text-align: center;
+  font-weight: bold;
+  margin-top: 50px;
 `;
