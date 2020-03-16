@@ -1,6 +1,5 @@
 import styled, { css } from "styled-components";
-import { Colors, Icon, ButtonGroup } from "@adamwebster/fused-components";
-import { darken } from "polished";
+import { Colors, ButtonGroup } from "@adamwebster/fused-components";
 
 export const ButtonGroupTest = styled(ButtonGroup)`
   width: 196px;
@@ -28,7 +27,7 @@ export const MobileMenuStyled = styled.div`
   color: ${Colors.mediumlight};
 `;
 
-interface CI extends React.HTMLAttributes<HTMLDivElement>{
+interface CI extends React.HTMLAttributes<HTMLDivElement> {
   menuOpen: boolean;
 }
 
@@ -87,6 +86,9 @@ export const Posts = styled.section`
   overflow: auto;
   padding: 10px 20px 0 20px;
   box-sizing: border-box;
+  display: flex;
+  flex:1 1;
+  flex-flow:column;
 `;
 
 export const SinglePostInner = styled.section`
@@ -210,7 +212,8 @@ export const BackButton = styled.div`
   width: 24px;
   box-sizing: border-box;
   color: ${props =>
-    props.theme === "dark" ? Colors.darkModeLight : Colors.dark};  top: 5px;
+    props.theme === "dark" ? Colors.darkModeLight : Colors.dark};
+  top: 5px;
   position: relative;
   cursor: pointer;
   &:hover {
@@ -223,22 +226,16 @@ interface BB {
 }
 export const BottomBar = styled.div<BB>`
   min-height: 32px;
+  height:32px;
   border-top: solid 1px
-    ${props =>
+  ${props =>
       props.theme === "dark" ? Colors.darkModeMediumDark : Colors.border};
   padding: 5px;
   display: flex;
   align-items: center;
-  position: absolute;
-  bottom: 0;
   width: 100%;
-  color: ${props => (props.menuOpen ? Colors.medium : "inherit")};
   background-color: ${props =>
-    props.theme === "dark"
-      ? Colors.darkModeDarker
-      : props.menuOpen
-      ? Colors.dark
-      : Colors.medium};
+    props.theme === "dark" ? Colors.darkModeDarker : Colors.medium};
 `;
 export const BarItem = styled.div`
   flex: 1 1;

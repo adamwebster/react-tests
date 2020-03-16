@@ -26,7 +26,6 @@ import {
 import {
   Button,
   ToastProvider,
-  useToast,
   FCTheme,
   Icon,
   Colors
@@ -42,8 +41,6 @@ interface ML {
 }
 
 const MenuList = ({ setFeed, setFeedIcon, closeMenu }: ML) => {
-  const toast = useToast();
-  const theme = useContext(FCTheme);
   return (
     <Menu>
       <MenuItem
@@ -117,8 +114,8 @@ const RSSReader = () => {
   const [postOpen, setPostOpen] = useState(false);
   const [feedIcon, setFeedIcon] = useState("");
   const [feedUrl, setFeed] = useState("https://www.theverge.com/rss/index.xml");
-  const [feedImg, setFeedImage] = useState("");
-  const [readPosts, setReadPosts] = useState<Array<string>>([]);
+  const [, setFeedImage] = useState("");
+  const [, setReadPosts] = useState<Array<string>>([]);
   const [activePosts, setActivePost] = useState({
     title: "",
     pubDate: "",
@@ -126,10 +123,11 @@ const RSSReader = () => {
   });
   const [siteName, setSiteName] = useState("");
   const [feedItems, setFeedItems] = useState<Array<any>>([]);
+
   const containerRef = useRef<HTMLDivElement>(null);
-  const FeedData = () => {
+  const FeedData = async () => {
     const corsUrl = "https://api.rss2json.com/v1/api.json?rss_url=";
-    Axios.get(corsUrl + feedUrl, {}).then(response => {
+   const feedItems = await Axios.get(corsUrl + feedUrl, {}).then(response => {
       if (response.data.items) {
         response.data.items.forEach((item: any) => {
           const readList = localStorage.getItem("FRSSReadPosts");
@@ -150,7 +148,10 @@ const RSSReader = () => {
       setFeedImage(response.data.feed.image);
       setSiteName(response.data.feed.title);
       scrollTop();
+      return(response.data.items);
     });
+  
+    return feedItems;
   };
 
   const setRead = (guid: string) => {
@@ -220,12 +221,34 @@ const RSSReader = () => {
     containerRef?.current?.scrollTo(0, 0);
   };
 
+  
+  const GetRead = async () => {
+    const toSet = await FeedData();
+    const filtered = toSet.filter((item: {read:boolean}) => item.read === true);
+        setFeedItems(filtered);
+  }
+
+  const GetUnread = async () => {
+    const toSet = await FeedData();
+    const filtered = toSet.filter((item: {read:boolean}) => item.read === false);
+        setFeedItems(filtered);
+  }
+
+
+  const GetAll = async () => {
+    const toSet = await FeedData();
+    setFeedItems(toSet);
+  }
+
   useEffect(() => {
     setFeedIcon("https://www.google.com/s2/favicons?domain=www.theverge.com");
   },[])
+
   useEffect(() => {
     FeedData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [feedUrl]);
+
 
   const buttonColor =
     theme?.theme === "dark" ? Colors.darkModeMedium : Colors.dark;
@@ -297,6 +320,12 @@ const RSSReader = () => {
               );
             })}
         </Posts>
+        <BottomBar menuOpen={menuOpen} theme={theme?.theme}>
+        <BarItem onClick={() => GetAll()}>All</BarItem>
+        <BarItem onClick={() => GetRead()}>Read</BarItem>
+        <BarItem onClick={() => GetUnread()}>Unread</BarItem>
+        {/* <BarItem>Favorites</BarItem> */}
+      </BottomBar>
       </Container>
       <SinglePost theme={theme?.theme} postOpen={postOpen}>
         <Header theme={theme?.theme}>
@@ -319,11 +348,7 @@ const RSSReader = () => {
           />
         </SinglePostInner>
       </SinglePost>
-      {/* <BottomBar menuOpen={menuOpen} theme={theme?.theme}>
-        <BarItem>Read</BarItem>
-        <BarItem>Unread</BarItem>
-        <BarItem>Favorites</BarItem>
-      </BottomBar> */}
+    
     </Wrapper>
   );
 };
