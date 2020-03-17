@@ -2,118 +2,19 @@ import React, { useState, useContext, useEffect, useRef } from "react";
 import {
   Wrapper,
   MobileMenuStyled,
-  Container,
-  Menu,
-  MenuItem,
-  Post,
-  PostContent,
-  PostDate,
-  PostTitle,
-  Header,
-  Posts,
-  SiteTitle,
-  SinglePost,
-  SinglePostInner,
-  MobileMenuIcon,
-  BackButton,
-  BottomBar,
-  BarItem,
-  FeedImage,
-  FavIcon,
-  Read,
-  ButtonGroupTest,
-  EmptyState
 } from "./styles";
+import RSSMenu from './components/Menu';
+import PostsPage from './components/PostsPage';
+import PostPage from './components/PostPage';
 import {
-  Button,
   ToastProvider,
   FCTheme,
-  Icon,
-  Colors
 } from "@adamwebster/fused-components";
 import {Helmet} from "react-helmet";
 
-import moment from "moment";
 import Axios from "axios";
 
-interface ML {
-  setFeed: (feed: string) => void;
-  closeMenu: () => void;
-  setFeedIcon: (icon: string) => void;
-  resetActiveTab: () => void;
-}
 
-const MenuList = ({ setFeed, setFeedIcon, closeMenu, resetActiveTab }: ML) => {
-  return (
-    <Menu>
-      <MenuItem
-        onClick={() => {
-          setFeed("https://www.theverge.com/rss/index.xml");
-          setFeedIcon(
-            "https://www.google.com/s2/favicons?domain=www.theverge.com"
-          );
-          resetActiveTab();
-          closeMenu();
-        }}
-      >
-        <FavIcon
-          alt="The Verge"
-          src="https://www.google.com/s2/favicons?domain=www.theverge.com"
-        />
-        The Verge
-      </MenuItem>
-      <MenuItem
-        onClick={() => {
-          setFeed("https://www.polygon.com/rss/index.xml");
-          setFeedIcon(
-            "https://www.google.com/s2/favicons?domain=www.polygon.com"
-          );
-          resetActiveTab();
-          closeMenu();
-        }}
-      >
-        {" "}
-        <FavIcon
-          alt="Polygon"
-          src="https://www.google.com/s2/favicons?domain=www.polygon.com"
-        />
-        Polygon
-      </MenuItem>
-      <MenuItem
-        onClick={() => {
-          setFeed("https://www.smashingmagazine.com/feed");
-          setFeedIcon(
-            "https://www.google.com/s2/favicons?domain=www.smashingmagazine.com"
-          );
-          resetActiveTab();
-          closeMenu();
-        }}
-      >
-        <FavIcon
-          alt="Smashing Magazine"
-          src="https://www.google.com/s2/favicons?domain=www.smashingmagazine.com"
-        />
-        Smashing Magazine
-      </MenuItem>
-      <MenuItem
-        onClick={() => {
-          setFeed("https://daringfireball.net/feeds/main");
-          setFeedIcon(
-            "https://www.google.com/s2/favicons?domain=www.daringfireball.com"
-          );
-          resetActiveTab();
-          closeMenu();
-        }}
-      >
-        <FavIcon
-          alt="Daring Fireball"
-          src="https://www.google.com/s2/favicons?domain=www.daringfireball.com"
-        />
-        Daring Fireball
-      </MenuItem>
-    </Menu>
-  );
-};
 const RSSReader = () => {
   const theme = useContext(FCTheme);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -228,7 +129,7 @@ const RSSReader = () => {
     containerRef?.current?.scrollTo(0, 0);
   };
 
-  const GetRead = async () => {
+  const getRead = async () => {
     const toSet = await FeedData();
     const filtered = toSet.filter(
       (item: { read: boolean }) => item.read === true
@@ -236,7 +137,7 @@ const RSSReader = () => {
     setFeedItems(filtered);
   };
 
-  const GetUnread = async () => {
+  const getUnread = async () => {
     const toSet = await FeedData();
     const filtered = toSet.filter(
       (item: { read: boolean }) => item.read === false
@@ -244,7 +145,7 @@ const RSSReader = () => {
     setFeedItems(filtered);
   };
 
-  const GetAll = async () => {
+  const getAll = async () => {
     const toSet = await FeedData();
     setFeedItems(toSet);
   };
@@ -285,8 +186,7 @@ const RSSReader = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [feedUrl]);
 
-  const buttonColor =
-    theme?.theme === "dark" ? Colors.darkModeMedium : Colors.dark;
+  
   return (
     <Wrapper>
       <Helmet>
@@ -294,7 +194,7 @@ const RSSReader = () => {
       </Helmet>
       <MobileMenuStyled theme={theme?.theme}>
         <ToastProvider>
-          <MenuList
+          <RSSMenu
             resetActiveTab={() => setActiveTab("All")}
             closeMenu={() => setMenuOpen(false)}
             setFeed={(feedUrl: string) => setFeed(feedUrl)}
@@ -302,125 +202,29 @@ const RSSReader = () => {
           />
         </ToastProvider>
       </MobileMenuStyled>
-      <Container theme={theme?.theme} menuOpen={menuOpen}>
-        <Header theme={theme?.theme}>
-          <MobileMenuIcon
-            theme={theme?.theme}
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
-            <Icon icon="menu" />
-          </MobileMenuIcon>
-          {feedIcon && (
-            <FeedImage theme={theme?.theme} src={feedIcon} alt={siteName} />
-          )}
-
-          <SiteTitle>{siteName}</SiteTitle>
-        </Header>
-        <Posts ref={containerRef}>
-          <ButtonGroupTest>
-            <Button buttonColor={buttonColor} onClick={() => markAllRead()}>
-              Mark all Read
-            </Button>
-            <Button buttonColor={buttonColor} onClick={() => markAllUnread()}>
-              Mark all Unread
-            </Button>
-          </ButtonGroupTest>
-          {feedItems &&
-            feedItems.map(post => {
-              return (
-                <Post
-                  theme={theme?.theme}
-                  key={post.guid}
-                  read={post.read}
-                  onClick={e => {
-                    setActivePost(post);
-                    OpenPost(e, post.guid);
-                    // setRead(post.guid);
-                  }}
-                >
-                  <PostTitle>
-                    <Read
-                      onClick={() => toggleRead(post.guid)}
-                      role="button"
-                      read={post.read}
-                    />
-                    {post.title}
-                  </PostTitle>
-                  <PostDate>
-                    {moment(post.pubDate)
-                      .format("MMMM Do YYYY")
-                      .toString()}
-                  </PostDate>
-                  <PostContent
-                    dangerouslySetInnerHTML={{
-                      __html:
-                        post.content
-                          .replace(/(<([^>]+)>)/gi, "")
-                          .substr(0, 400) + "..."
-                    }}
-                  />
-                </Post>
-              );
-            })}
-          {feedItems.length === 0 && (
-            <EmptyState>No posts found for this feed.</EmptyState>
-          )}
-        </Posts>
-        <BottomBar menuOpen={menuOpen} theme={theme?.theme}>
-          <BarItem
-            theme={theme?.theme}
-            activeTab={activeTab}
-            onClick={() => {
-              GetAll();
-              setActiveTab("All");
-            }}
-          >
-            All
-          </BarItem>
-          <BarItem
-            theme={theme?.theme}
-            activeTab={activeTab}
-            onClick={() => {
-              GetRead();
-              setActiveTab("Read");
-            }}
-          >
-            Read
-          </BarItem>
-          <BarItem
-            theme={theme?.theme}
-            activeTab={activeTab}
-            onClick={() => {
-              GetUnread();
-              setActiveTab("Unread");
-            }}
-          >
-            Unread
-          </BarItem>
-          {/* <BarItem>Favorites</BarItem> */}
-        </BottomBar>
-      </Container>
-      <SinglePost theme={theme?.theme} postOpen={postOpen}>
-        <Header theme={theme?.theme}>
-          <BackButton theme={theme?.theme} onClick={() => setPostOpen(false)}>
-            <Icon icon="chevron-left" />
-          </BackButton>
-        </Header>
-        <SinglePostInner>
-          <PostTitle>{activePosts.title}</PostTitle>
-          <PostDate>
-            {" "}
-            {moment(activePosts.pubDate)
-              .format("MMMM Do YYYY")
-              .toString()}
-          </PostDate>
-          <PostContent
-            dangerouslySetInnerHTML={{
-              __html: activePosts.content
-            }}
-          />
-        </SinglePostInner>
-      </SinglePost>
+      <PostsPage
+        feedIcon={feedIcon}
+        feedItems={feedItems}
+        siteName={siteName}
+        markAllRead={() => markAllRead()}
+        markAllUnread={() => markAllUnread()}
+        containerRef={containerRef}
+        setActiveTab={(value) => setActiveTab(value)}
+        openPost={(e, guid)=> OpenPost(e, guid)}
+        getRead={() => getRead()}
+        getUnread={() => getUnread()}
+        getAll={() => getAll()}
+        toggleRead={(guid) => toggleRead(guid)}
+        menuOpen={menuOpen}
+        activeTab={activeTab}
+        setActivePost={(value) => setActivePost(value)}
+        setMenuOpen={(value) => setMenuOpen(value)}
+      />
+     <PostPage
+        postOpen={postOpen}
+        setPostOpen={(value) => setPostOpen(value)}
+        activePosts={activePosts}
+     />
     </Wrapper>
   );
 };
