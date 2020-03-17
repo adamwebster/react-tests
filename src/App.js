@@ -9,6 +9,8 @@ import { FollowPage } from "./pages/FollowPage";
 import followImg from "./static/follow.png";
 import priceTableImg from "./static/pricetable.jpg";
 import playlistImg from "./static/playlist.jpg";
+import rssImage from "./static/RSSReader.jpg";
+
 import { FCThemeProvider, Colors } from "@adamwebster/fused-components";
 import loginImg from "./static/login.png";
 import NewsFeed from "./pages/NewsFeed";
@@ -167,6 +169,12 @@ function App() {
                 <StyledLink image={playlistImg} to="/spotifyplaylist" />
                 <Link to="/pricingtable">
                   <h3>Spotify Playlist Editor</h3>
+                </Link>
+              </GridItem>
+              <GridItem>
+                <StyledLink image={rssImage} to="/rss" />
+                <Link to="/rss">
+                  <h3>RSS Reader</h3>
                 </Link>
               </GridItem>
             </Grid>

@@ -1,19 +1,13 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
-import {
-  Wrapper,
-  MobileMenuStyled,
-} from "./styles";
-import RSSMenu from './components/Menu';
-import PostsPage from './components/PostsPage';
-import PostPage from './components/PostPage';
-import {
-  ToastProvider,
-  FCTheme,
-} from "@adamwebster/fused-components";
-import {Helmet} from "react-helmet";
+import { Wrapper, MobileMenuStyled } from "./styles";
+import RSSMenu from "./components/Menu";
+import PostsPage from "./components/PostsPage";
+import PostPage from "./components/PostPage";
+import { ToastProvider, FCTheme } from "@adamwebster/fused-components";
+import { Helmet } from "react-helmet";
 
 import Axios from "axios";
-
+import { ExampleFooter } from "../../components/UI/ExampleFooter";
 
 const RSSReader = () => {
   const theme = useContext(FCTheme);
@@ -186,46 +180,48 @@ const RSSReader = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [feedUrl]);
 
-  
   return (
-    <Wrapper>
-      <Helmet>
-      <title>RSS Reader | React Examples | Adam Webster</title>
-      </Helmet>
-      <MobileMenuStyled theme={theme?.theme}>
-        <ToastProvider>
-          <RSSMenu
-            resetActiveTab={() => setActiveTab("All")}
-            closeMenu={() => setMenuOpen(false)}
-            setFeed={(feedUrl: string) => setFeed(feedUrl)}
-            setFeedIcon={(feedIcon: string) => setFeedIcon(feedIcon)}
-          />
-        </ToastProvider>
-      </MobileMenuStyled>
-      <PostsPage
-        feedIcon={feedIcon}
-        feedItems={feedItems}
-        siteName={siteName}
-        markAllRead={() => markAllRead()}
-        markAllUnread={() => markAllUnread()}
-        containerRef={containerRef}
-        setActiveTab={(value) => setActiveTab(value)}
-        openPost={(e, guid)=> OpenPost(e, guid)}
-        getRead={() => getRead()}
-        getUnread={() => getUnread()}
-        getAll={() => getAll()}
-        toggleRead={(guid) => toggleRead(guid)}
-        menuOpen={menuOpen}
-        activeTab={activeTab}
-        setActivePost={(value) => setActivePost(value)}
-        setMenuOpen={(value) => setMenuOpen(value)}
-      />
-     <PostPage
-        postOpen={postOpen}
-        setPostOpen={(value) => setPostOpen(value)}
-        activePosts={activePosts}
-     />
-    </Wrapper>
+    <>
+      <Wrapper>
+        <Helmet>
+          <title>RSS Reader | React Examples | Adam Webster</title>
+        </Helmet>
+        <MobileMenuStyled theme={theme?.theme}>
+          <ToastProvider>
+            <RSSMenu
+              resetActiveTab={() => setActiveTab("All")}
+              closeMenu={() => setMenuOpen(false)}
+              setFeed={(feedUrl: string) => setFeed(feedUrl)}
+              setFeedIcon={(feedIcon: string) => setFeedIcon(feedIcon)}
+            />
+          </ToastProvider>
+        </MobileMenuStyled>
+        <PostsPage
+          feedIcon={feedIcon}
+          feedItems={feedItems}
+          siteName={siteName}
+          markAllRead={() => markAllRead()}
+          markAllUnread={() => markAllUnread()}
+          containerRef={containerRef}
+          setActiveTab={value => setActiveTab(value)}
+          openPost={(e, guid) => OpenPost(e, guid)}
+          getRead={() => getRead()}
+          getUnread={() => getUnread()}
+          getAll={() => getAll()}
+          toggleRead={guid => toggleRead(guid)}
+          menuOpen={menuOpen}
+          activeTab={activeTab}
+          setActivePost={value => setActivePost(value)}
+          setMenuOpen={value => setMenuOpen(value)}
+        />
+        <PostPage
+          postOpen={postOpen}
+          setPostOpen={value => setPostOpen(value)}
+          activePosts={activePosts}
+        />
+      </Wrapper>
+      <ExampleFooter url="https://github.com/adamwebster/react-tests/tree/master/src/pages/RSSReader" />
+    </>
   );
 };
 
