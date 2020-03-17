@@ -12,7 +12,9 @@ const TrackListStyled = styled.ul`
     padding: 10px;
     box-sizing: border-box;
     position: relative;
-    border-bottom: solid 1px ${props => props.theme === 'dark' ? Colors.darkModeMedium : Colors.border};
+    border-bottom: solid 1px
+      ${props =>
+        props.theme === "dark" ? Colors.darkModeMedium : Colors.border};
     &:last-child {
       border-bottom: none;
     }
@@ -37,6 +39,12 @@ const RemoveIcon = styled.span`
   }
 `;
 
+const ResultsImage = styled.img`
+  width: 36px;
+  float: left;
+  margin-right: 10px;
+  border-radius: 50%;
+`;
 const TrackList = () => {
   const playlistData = useContext(PlaylistContext);
   const toast = useToast();
@@ -63,9 +71,10 @@ const TrackList = () => {
   return (
     <TrackListStyled theme={theme?.theme}>
       {playlistData?.tracks.map(
-        (item: { track: { name: string; id: string; artists: any } }) => {
+        (item: { track: { name: string; id: string; artists: any; album: any } }) => {
           return (
             <li key={item.track.id}>
+              <ResultsImage src={item.track.album.images[2].url} />
               <SongTitle>{item.track.name}</SongTitle>
               {item.track.artists[0].name}{" "}
               <RemoveIcon onClick={() => RemoveFromPlaylist(item.track.id)}>

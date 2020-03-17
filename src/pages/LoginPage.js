@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import TextButton from "../components/UI/TextButton";
 import HelpText from "../components/UI/HelpText";
-
+import {Helmet} from "react-helmet";
 import {
   Card,
   Input,
@@ -115,6 +115,9 @@ const LoginPage = () => {
 
   return (
     <LoginWrapper>
+       <Helmet>
+      <title>Login Page | React Examples | Adam Webster</title>
+      </Helmet>
       <StyledCard boxShadow>
         {!loaded && (
           <>

@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { Switch, Route, Link } from "react-router-dom";
-import styled, {
-  createGlobalStyle,
-  css
-} from "styled-components";
+import styled, { createGlobalStyle, css } from "styled-components";
+import {Helmet} from "react-helmet";
 
 import LoginPage from "./pages/LoginPage";
 import About from "./pages/About";
@@ -17,13 +15,15 @@ import NewsFeed from "./pages/NewsFeed";
 import PricingTable from "./pages/PricingTable/PricingTable";
 import SpotifyPlaylist from "./pages/SpotifyPlaylist";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import RSSReader from "./pages/RSSReader/RSSReader";
 const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
     padding: 0;
     font: 13px/1.5 'Helvetica Neue', Arial, 'Liberation Sans', FreeSans, sans-serif;
-   background-color: ${props => props.theme === 'dark' ? Colors.darkModeDarkest : Colors.mediumlight};
-   color: ${props => props.theme === 'dark' ? Colors.medium : Colors.dark};
+   background-color: ${props =>
+     props.theme === "dark" ? Colors.darkModeDarkest : Colors.mediumlight};
+   color: ${props => (props.theme === "dark" ? Colors.medium : Colors.dark)};
 
    width:100%;
   }
@@ -38,7 +38,8 @@ const GlobalStyle = createGlobalStyle`
 }
 
 a{
-  color:  ${props => props.theme === 'dark' ? Colors.darkModeMedium : Colors.primary};
+  color:  ${props =>
+    props.theme === "dark" ? Colors.darkModeMedium : Colors.primary};
 }
 `;
 
@@ -96,36 +97,44 @@ const WelcomeMessage = styled.div`
 
 const AppHeader = styled.div`
   width: 100%;
-  padding: 10px; 
-  border-bottom: solid 1px ${props => props.theme === 'dark' ? Colors.darkModeMediumDark : Colors.border};
+  padding: 10px;
+  border-bottom: solid 1px
+    ${props =>
+      props.theme === "dark" ? Colors.darkModeMediumDark : Colors.border};
   box-sizing: border-box;
-  h1{
-    display:inline;
+  h1 {
+    display: inline;
     font-size: 14px;
-    a{
-      text-decoration:none;
+    a {
+      text-decoration: none;
     }
   }
-`
+`;
 const DarkModeToggle = styled.span`
   float: right;
-`
+`;
 function App() {
   const [theme, setTheme] = useState("");
   const toggleDarkMode = () => {
-    if (theme === 'dark') {
-      setTheme('')
+    if (theme === "dark") {
+      setTheme("");
     } else {
-      setTheme('dark')
+      setTheme("dark");
     }
-  }
+  };
   return (
     <FCThemeProvider value={{ theme }}>
       <GlobalStyle theme={theme} />
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>React Examples | Adam Webster</title>
+      </Helmet>
       <AppHeader theme={theme}>
-        <h1><a href="/">React Examples | Adam Webster</a></h1>
+        <h1>
+          <Link to="/">React Examples | Adam Webster</Link>
+        </h1>
         <DarkModeToggle onClick={() => toggleDarkMode()}>
-          <FontAwesomeIcon icon={theme === 'dark' ? "sun" : "moon"} />
+          <FontAwesomeIcon icon={theme === "dark" ? "sun" : "moon"} />
         </DarkModeToggle>
       </AppHeader>
       <div className="App">
@@ -133,7 +142,7 @@ function App() {
           <Route exact path="/">
             <WelcomeMessage>
               Click on of the pages to show examples
-              </WelcomeMessage>
+            </WelcomeMessage>
             <Grid>
               <GridItem>
                 <StyledLink image={loginImg} to="/login" />
@@ -179,6 +188,9 @@ function App() {
           </Route>
           <Route path="/spotifyplaylist">
             <SpotifyPlaylist />
+          </Route>
+          <Route path="/rss">
+            <RSSReader />
           </Route>
         </Switch>
       </div>
