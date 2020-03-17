@@ -17,7 +17,7 @@ const StyledLink = styled.a<Props>`
 export const ExampleFooter = ({linkColor, url = 'https://github.com/adamwebster/react-tests'}:Props) => {
   return(
     <ExampleFooterStyled>
-     &copy; {moment().format('YYYY')} <StyledLink linkColor={linkColor} href="https://adamwebster.me" rel="noopener noreferrer" target="_blank">Adam Webster</StyledLink> View the code on <StyledLink linkColor={linkColor} href={url} rel="noopener noreferrer" target="_blank"><FontAwesomeIcon style={{marginRight: 2 + 'px'}} icon={['fab','github']}  />GitHub</StyledLink>
+     &copy; {moment().format('YYYY')} <StyledLink linkColor={linkColor} href="https://adamwebster.me" rel="noopener noreferrer" target="_blank">Adam Webster</StyledLink>. View the code on <StyledLink linkColor={linkColor} href={url} rel="noopener noreferrer" target="_blank"><FontAwesomeIcon style={{marginRight: 2 + 'px'}} icon={['fab','github']}  />GitHub</StyledLink>
     </ExampleFooterStyled>
   )
 }
