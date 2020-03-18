@@ -250,9 +250,9 @@ export const BarItem = styled.div<BI>`
       props.theme === "dark" ? Colors.darkModeMediumDark : Colors.border};
   box-sizing: border-box;
   text-align: center;
-  &:last-child{
-          border-right:none;
-        }
+  &:last-child {
+    border-right: none;
+  }
 
   ${props =>
     props.activeTab === props.children
@@ -288,4 +288,18 @@ export const EmptyState = styled.div`
   text-align: center;
   font-weight: bold;
   margin-top: 50px;
+`;
+
+export const Loading = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight:bold;
+  flex-flow: column;
 `;
