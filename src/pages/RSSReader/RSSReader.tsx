@@ -67,7 +67,6 @@ const RSSReader = () => {
       })
       return response.data.items;
     });
-
     return feedItems;
   };
 
