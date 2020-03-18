@@ -1,13 +1,21 @@
-import React, { useState, useContext, useEffect, useRef } from "react";
-import { Wrapper, MobileMenuStyled } from "./styles";
+import React, {
+  useState,
+  useContext,
+  useEffect,
+  useRef,
+  useReducer
+} from "react";
+import { Wrapper, MobileMenuStyled, Loading } from "./styles";
 import RSSMenu from "./components/Menu";
 import PostsPage from "./components/PostsPage";
 import PostPage from "./components/PostPage";
 import { ToastProvider, FCTheme } from "@adamwebster/fused-components";
 import { Helmet } from "react-helmet";
-
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import Axios from "axios";
 import { ExampleFooter } from "../../components/UI/ExampleFooter";
+import { reducer, initialState, RSSContext } from "./context";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const RSSReader = () => {
   const theme = useContext(FCTheme);
@@ -25,9 +33,13 @@ const RSSReader = () => {
   });
   const [siteName, setSiteName] = useState("");
   const [feedItems, setFeedItems] = useState<Array<any>>([]);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const FeedData = async () => {
+    dispatch({
+      type: "LOADING"
+    });
     const corsUrl = "https://api.rss2json.com/v1/api.json?rss_url=";
     const feedItems = await Axios.get(corsUrl + feedUrl, {}).then(response => {
       if (response.data.items) {
@@ -50,6 +62,9 @@ const RSSReader = () => {
       setFeedImage(response.data.feed.image);
       setSiteName(response.data.feed.title);
       scrollTop();
+      dispatch({
+        type: "LOADED",
+      })
       return response.data.items;
     });
 
@@ -182,44 +197,51 @@ const RSSReader = () => {
 
   return (
     <>
-      <Wrapper>
-        <Helmet>
-          <title>RSS Reader | React Examples | Adam Webster</title>
-        </Helmet>
-        <MobileMenuStyled theme={theme?.theme}>
-          <ToastProvider>
-            <RSSMenu
-              resetActiveTab={() => setActiveTab("All")}
-              closeMenu={() => setMenuOpen(false)}
-              setFeed={(feedUrl: string) => setFeed(feedUrl)}
-              setFeedIcon={(feedIcon: string) => setFeedIcon(feedIcon)}
-            />
-          </ToastProvider>
-        </MobileMenuStyled>
-        <PostsPage
-          feedIcon={feedIcon}
-          feedItems={feedItems}
-          siteName={siteName}
-          markAllRead={() => markAllRead()}
-          markAllUnread={() => markAllUnread()}
-          containerRef={containerRef}
-          setActiveTab={value => setActiveTab(value)}
-          openPost={(e, guid) => OpenPost(e, guid)}
-          getRead={() => getRead()}
-          getUnread={() => getUnread()}
-          getAll={() => getAll()}
-          toggleRead={guid => toggleRead(guid)}
-          menuOpen={menuOpen}
-          activeTab={activeTab}
-          setActivePost={value => setActivePost(value)}
-          setMenuOpen={value => setMenuOpen(value)}
-        />
-        <PostPage
-          postOpen={postOpen}
-          setPostOpen={value => setPostOpen(value)}
-          activePosts={activePosts}
-        />
-      </Wrapper>
+      <RSSContext.Provider value={{ state, dispatch }}>
+        <Wrapper>
+          {state.loading && (
+            <Loading>
+              <FontAwesomeIcon size="2x" icon={faSpinner} spin />   <p>Loading</p>
+            </Loading>
+          )}
+          <Helmet>
+            <title>RSS Reader | React Examples | Adam Webster</title>
+          </Helmet>
+          <MobileMenuStyled theme={theme?.theme}>
+            <ToastProvider>
+              <RSSMenu
+                resetActiveTab={() => setActiveTab("All")}
+                closeMenu={() => setMenuOpen(false)}
+                setFeed={(feedUrl: string) => setFeed(feedUrl)}
+                setFeedIcon={(feedIcon: string) => setFeedIcon(feedIcon)}
+              />
+            </ToastProvider>
+          </MobileMenuStyled>
+          <PostsPage
+            feedIcon={feedIcon}
+            feedItems={feedItems}
+            siteName={siteName}
+            markAllRead={() => markAllRead()}
+            markAllUnread={() => markAllUnread()}
+            containerRef={containerRef}
+            setActiveTab={value => setActiveTab(value)}
+            openPost={(e, guid) => OpenPost(e, guid)}
+            getRead={() => getRead()}
+            getUnread={() => getUnread()}
+            getAll={() => getAll()}
+            toggleRead={guid => toggleRead(guid)}
+            menuOpen={menuOpen}
+            activeTab={activeTab}
+            setActivePost={value => setActivePost(value)}
+            setMenuOpen={value => setMenuOpen(value)}
+          />
+          <PostPage
+            postOpen={postOpen}
+            setPostOpen={value => setPostOpen(value)}
+            activePosts={activePosts}
+          />
+        </Wrapper>
+      </RSSContext.Provider>
       <ExampleFooter url="https://github.com/adamwebster/react-tests/tree/master/src/pages/RSSReader" />
     </>
   );
