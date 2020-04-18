@@ -18,6 +18,7 @@ import PricingTable from "./pages/PricingTable/PricingTable";
 import SpotifyPlaylist from "./pages/SpotifyPlaylist";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import RSSReader from "./pages/RSSReader/RSSReader";
+import { LazyComponent } from "./pages/LazyComponents";
 const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
@@ -199,6 +200,9 @@ function App() {
           </Route>
           <Route path="/rss">
             <RSSReader />
+          </Route>
+          <Route path="/lazy">
+            <LazyComponent />
           </Route>
         </Switch>
       </div>
