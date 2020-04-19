@@ -4,8 +4,8 @@ import localeDate from 'dayjs/plugin/localeData';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 import duration from 'dayjs/plugin/duration';
 import styled from 'styled-components';
-import { Colors, Heading } from '@adamwebster/fused-components';
-import { darken, lighten } from 'polished';
+import { Colors, Heading, Button } from '@adamwebster/fused-components';
+import { darken } from 'polished';
 
 const Table = styled.table`
     padding: 0;
@@ -15,13 +15,18 @@ const Day = styled.td`
     text-align: center;
     padding: 5px;
     &.current-day {
+        background-color: ${Colors.mediumdark};
+        color: #fff;
+    }
+    &.selected-day {
         background-color: tomato;
         color: #fff;
     }
-    &:hover:not(.current-day):not(.prev-month) {
+    &:hover:not(.selected-day):not(.other-month) {
         background-color: ${darken(0.1, Colors.medium)};
+        cursor: pointer;
     }
-    &.prev-month {
+    &.other-month {
         color: ${Colors.mediumdark};
     }
 `;
@@ -41,36 +46,61 @@ dayjs.extend(advancedFormat);
 dayjs.extend(duration);
 
 const CalendarDemo = () => {
-    const [daysInTheMonth] = useState(dayjs().daysInMonth());
+    const [date, setDate] = useState(dayjs());
+    const [selectedDate, setSelectedDate] = useState(dayjs());
     const [daysOfTheWeek] = useState(dayjs().localeData().weekdaysShort());
-    const [startOfMonth] = useState(dayjs().startOf('month'));
-    const [currentDay] = useState(dayjs().format('D'));
-    const [currentDate] = useState(dayjs().format('MMMM Do, YYYY'));
-    const [currentMonth] = useState(dayjs().format('MMMM'));
-    const [currentYear] = useState(dayjs().format('YYYY'));
+    const [currentDay, setCurrentDay] = useState([]);
 
     const [calendar, setCalendar] = useState([]);
 
     const dayNames = daysOfTheWeek.map((day: string) => {
         return <DayName key={day}>{day}</DayName>;
     });
-    let i;
     const getWeeks = () => {
         let blankDays = [];
         let daysInMonth = [];
+        let blankDaysEnd = [];
+        const startOfMonth = date.startOf('month');
+        const daysInTheMonth = date.daysInMonth();
+        const endOfMonth = date.endOf('month');
 
-        for (i = 0; i < startOfMonth.day(); i++) {
+        for (let d = 0; d < startOfMonth.day(); d++) {
             blankDays.push({
-                day: startOfMonth.subtract(i + 1, 'day').format('D'),
-                previousMonth: true,
+                day: startOfMonth.subtract(d + 1, 'day').format('D'),
+                otherMonth: true,
+                date: null,
             });
         }
 
         for (let d = 1; d <= daysInTheMonth; d++) {
-            daysInMonth.push({ day: d });
+            daysInMonth.push({
+                day: d,
+                date: new Date(
+                    `${date.get('year')}-${date.get('month') + 1}-${d}/`
+                ),
+            });
         }
 
-        var totalSlots = [...blankDays.reverse(), ...daysInMonth];
+        const daysBefore = daysInMonth.length + blankDays.length;
+        const numberOfWeeks = dayjs.duration(daysBefore, 'days').asWeeks();
+        const totalNumberOfDaysInCalendar = Math.ceil(numberOfWeeks) * 7;
+
+        for (
+            let d = totalNumberOfDaysInCalendar, i = 0;
+            d > daysBefore;
+            d--, i++
+        ) {
+            blankDaysEnd.push({
+                day: endOfMonth.add(i + 1, 'day').format('D'),
+                otherMonth: true,
+                date: null,
+            });
+        }
+        var totalSlots = [
+            ...blankDays.reverse(),
+            ...daysInMonth,
+            ...blankDaysEnd,
+        ];
         let rows: ({ day: string } | { day: number })[][] = [];
         let cells: ({ day: string } | { day: number })[] = [];
         totalSlots.forEach((row, i) => {
@@ -87,6 +117,12 @@ const CalendarDemo = () => {
             }
         });
         setCalendar(rows as any);
+
+        if (date.get('month') === dayjs().get('month')) {
+            setCurrentDay(dayjs().format('D') as any);
+        } else {
+            setCurrentDay([]);
+        }
     };
 
     const calendarRows = calendar.map((row: any) => {
@@ -99,13 +135,21 @@ const CalendarDemo = () => {
                                 item.day.toString() === currentDay
                                     ? `current-day`
                                     : ''
-                            }${item.previousMonth ? 'prev-month' : ''}`}
+                            }${item.otherMonth ? 'other-month' : ''}${
+                                dayjs(item.date).format('MMMM/DD/YYYY') ===
+                                selectedDate.format('MMMM/DD/YYYY')
+                                    ? ' selected-day'
+                                    : ''
+                            }`}
                             key={
                                 item.day
                                     ? `day-${item.day}`
                                     : `blank-day-${index}`
                             }
-                            onClick={() => console.log(calendar)}
+                            onClick={() => {
+                                if (item.date)
+                                    setSelectedDate(dayjs(item.date));
+                            }}
                         >
                             {item.day}
                         </Day>
@@ -117,18 +161,30 @@ const CalendarDemo = () => {
 
     useEffect(() => {
         getWeeks();
-    }, []);
+    }, [date]);
 
+    const nextMonth = () => {
+        setDate(date.add(1, 'month'));
+    };
+
+    const previousMonth = () => {
+        setDate(date.subtract(1, 'month'));
+    };
     return (
         <div>
-            <Heading as="h2">{`${currentMonth} ${currentYear}`}</Heading>
+            <Button onClick={() => previousMonth()}>Previous Month</Button>
+            <Button onClick={() => nextMonth()}>Next Month</Button>
+
+            <Heading as="h2">{`${date.format('MMMM')} ${date.format(
+                'YYYY'
+            )}`}</Heading>
             <Table>
                 <thead>
                     <tr>{dayNames}</tr>
                 </thead>
                 <tbody>{calendarRows}</tbody>
             </Table>
-            {currentDate}
+            {selectedDate.format('MMMM Do, YYYY')}
         </div>
     );
 };
