@@ -151,9 +151,7 @@ const Calendar = ({ onChange, selectedDate = dayjs(), size }: Props) => {
         for (let d = 1; d <= daysInTheMonth; d++) {
             daysInMonth.push({
                 day: d,
-                date: new Date(
-                    `${date.get('year')}-${date.get('month') + 1}-${d}/`
-                ),
+                date: `${date.get('year')}-${date.get('month') + 1}-${d}`,
             });
         }
 
@@ -206,6 +204,7 @@ const Calendar = ({ onChange, selectedDate = dayjs(), size }: Props) => {
             return (
                 <Week key={Math.random()}>
                     {row.map((item: any, index: number) => {
+                        console.log(item.date);
                         return (
                             <Day
                                 className={`${
