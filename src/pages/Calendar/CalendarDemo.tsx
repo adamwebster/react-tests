@@ -22,7 +22,7 @@ const Day = styled.td`
         background-color: ${darken(0.1, Colors.medium)};
     }
     &.prev-month {
-        color: ${Colors.mediumdarkWo};
+        color: ${Colors.mediumdark};
     }
 `;
 
