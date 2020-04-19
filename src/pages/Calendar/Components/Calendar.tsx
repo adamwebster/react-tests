@@ -5,16 +5,25 @@ import advancedFormat from 'dayjs/plugin/advancedFormat';
 import duration from 'dayjs/plugin/duration';
 import styled from 'styled-components';
 import { Colors, Heading, Button, Icon } from '@adamwebster/fused-components';
-import { darken } from 'polished';
 
 const Table = styled.table`
     padding: 0;
     border-collapse: collapse;
+    width: 100%;
+    height: calc(100% - 32px);
+    border-spacing: 0;
 `;
 
-const CalendarWrapper = styled.div`
-    width: 280px;
-    overflow: hidden;
+interface CWProps {
+    calendarWidth: any;
+}
+const CalendarWrapper = styled.div<CWProps>`
+    width: ${(props: any) =>
+        props.calendarWidth ? `${props.calendarWidth}px` : 'fit-content'};
+    display: flex;
+    height: ${(props: any) =>
+        props.calendarWidth ? `${props.calendarWidth}px` : 'fit-content'};
+    flex-flow: column;
 `;
 
 const CalendarHeader = styled.div`
@@ -24,7 +33,14 @@ const CalendarHeader = styled.div`
 
 const CalendarTitle = styled.div`
     flex: 1 1;
-    padding-left: 15px;
+    span {
+        margin: 0;
+        padding-left: 5px;
+        margin-bottom: 10px;
+        font-weight: normal;
+        font-size: 1.5em;
+        display: inline-block;
+    }
 `;
 
 const CalendarControl = styled.div`
@@ -40,8 +56,8 @@ const SvgWrapper = styled.span`
 `;
 const Day = styled.td`
     text-align: center;
-    width: 30px;
-    height: 30px;
+    box-sizing: border-box;
+    padding: 0;
     &.current-day {
         background-color: ${Colors.mediumdark};
         color: #fff;
@@ -63,12 +79,18 @@ const Day = styled.td`
         text-decoration: none;
         font-size: 1em;
         padding: 5px;
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
         &:hover {
+            border: none;
             color: #fff !important;
         }
         &:active,
         &:focus {
-            border: solid 1px ${Colors.primary};
+            box-sizing: border-box;
+            background-color: ${Colors.primary};
+            color: #fff;
         }
         &:disabled:hover {
             color: inherit !important;
@@ -80,13 +102,11 @@ const Day = styled.td`
 const DayName = styled.th`
     text-align: center;
     padding: 5px;
+    width: 14%;
+    border-bottom: solid 1px ${Colors.medium};
 `;
 
-const Week = styled.tr`
-    &:nth-child(odd) {
-        background-color: ${Colors.medium};
-    }
-`;
+const Week = styled.tr``;
 dayjs.extend(localeDate);
 dayjs.extend(advancedFormat);
 dayjs.extend(duration);
@@ -94,8 +114,9 @@ dayjs.extend(duration);
 interface Props {
     onChange: (date: any) => void;
     selectedDate?: dayjs.Dayjs;
+    size?: number;
 }
-const Calendar = ({ onChange, selectedDate = dayjs() }: Props) => {
+const Calendar = ({ onChange, selectedDate = dayjs(), size }: Props) => {
     const [date, setDate] = useState(dayjs());
     const [daysOfTheWeek] = useState(dayjs().localeData().weekdaysShort());
     const [currentDay, setCurrentDay] = useState([]);
@@ -175,43 +196,46 @@ const Calendar = ({ onChange, selectedDate = dayjs() }: Props) => {
     };
 
     const calendarRows = calendar.map((row: any) => {
-        return (
-            <Week key={Math.random()}>
-                {row.map((item: any, index: number) => {
-                    return (
-                        <Day
-                            className={`${
-                                item.day.toString() === currentDay
-                                    ? `current-day`
-                                    : ''
-                            }${item.otherMonth ? 'other-month' : ''}${
-                                dayjs(item.date).format('MMMM/DD/YYYY') ===
-                                selectedDate.format('MMMM/DD/YYYY')
-                                    ? ' selected-day'
-                                    : ''
-                            }`}
-                            key={
-                                item.day
-                                    ? `day-${item.day}`
-                                    : `blank-day-${index}`
-                            }
-                        >
-                            <Button
-                                disabled={item.otherMonth}
-                                onClick={() => onChange(item.date)}
-                                as="a"
+        if (row.length > 0)
+            return (
+                <Week key={Math.random()}>
+                    {row.map((item: any, index: number) => {
+                        return (
+                            <Day
+                                className={`${
+                                    item.day.toString() === currentDay
+                                        ? `current-day`
+                                        : ''
+                                }${item.otherMonth ? 'other-month' : ''}${
+                                    dayjs(item.date).format('MMMM/DD/YYYY') ===
+                                    selectedDate.format('MMMM/DD/YYYY')
+                                        ? ' selected-day'
+                                        : ''
+                                }`}
+                                key={
+                                    item.day
+                                        ? `day-${item.day}`
+                                        : `blank-day-${index}`
+                                }
                             >
-                                {item.day}
-                            </Button>
-                        </Day>
-                    );
-                })}
-            </Week>
-        );
+                                <Button
+                                    disabled={item.otherMonth}
+                                    onClick={() => onChange(item.date)}
+                                    as="a"
+                                >
+                                    {item.day}
+                                </Button>
+                            </Day>
+                        );
+                    })}
+                </Week>
+            );
+        return null;
     });
 
     useEffect(() => {
         getWeeks();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [date]);
 
     const nextMonth = () => {
@@ -222,12 +246,12 @@ const Calendar = ({ onChange, selectedDate = dayjs() }: Props) => {
         setDate(date.subtract(1, 'month'));
     };
     return (
-        <CalendarWrapper>
+        <CalendarWrapper calendarWidth={size}>
             <CalendarHeader>
                 <CalendarTitle>
-                    <Heading as="h2">{`${date.format('MMMM')} ${date.format(
+                    <span>{`${date.format('MMMM')} ${date.format(
                         'YYYY'
-                    )}`}</Heading>
+                    )}`}</span>
                 </CalendarTitle>
                 <CalendarControl>
                     <Button as="a">
