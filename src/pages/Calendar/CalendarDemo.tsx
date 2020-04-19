@@ -4,16 +4,45 @@ import localeDate from 'dayjs/plugin/localeData';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 import duration from 'dayjs/plugin/duration';
 import styled from 'styled-components';
-import { Colors, Heading, Button } from '@adamwebster/fused-components';
+import { Colors, Heading, Button, Icon } from '@adamwebster/fused-components';
 import { darken } from 'polished';
 
 const Table = styled.table`
     padding: 0;
     border-collapse: collapse;
 `;
+
+const CalendarWrapper = styled.div`
+    width: 280px;
+    overflow: hidden;
+`;
+
+const CalendarHeader = styled.div`
+    display: flex;
+    align-items: center;
+`;
+
+const CalendarTitle = styled.div`
+    flex: 1 1;
+    padding-left: 15px;
+`;
+
+const CalendarControl = styled.div`
+    margin-left: 10px;
+    button:first-of-type {
+        margin-right: 15px;
+    }
+`;
+
+const SvgWrapper = styled.span`
+    width: 16px;
+    display: block;
+`;
 const Day = styled.td`
     text-align: center;
     padding: 5px;
+    width: 30px;
+    height: 30px;
     &.current-day {
         background-color: ${Colors.mediumdark};
         color: #fff;
@@ -171,13 +200,26 @@ const CalendarDemo = () => {
         setDate(date.subtract(1, 'month'));
     };
     return (
-        <div>
-            <Button onClick={() => previousMonth()}>Previous Month</Button>
-            <Button onClick={() => nextMonth()}>Next Month</Button>
-
-            <Heading as="h2">{`${date.format('MMMM')} ${date.format(
-                'YYYY'
-            )}`}</Heading>
+        <CalendarWrapper>
+            <CalendarHeader>
+                <CalendarTitle>
+                    <Heading as="h2">{`${date.format('MMMM')} ${date.format(
+                        'YYYY'
+                    )}`}</Heading>
+                </CalendarTitle>
+                <CalendarControl>
+                    <Button as="a">
+                        <SvgWrapper onClick={() => previousMonth()}>
+                            <Icon icon="chevron-left" />
+                        </SvgWrapper>
+                    </Button>
+                    <Button as="a" onClick={() => nextMonth()}>
+                        <SvgWrapper>
+                            <Icon icon="chevron-right" />
+                        </SvgWrapper>
+                    </Button>
+                </CalendarControl>
+            </CalendarHeader>
             <Table>
                 <thead>
                     <tr>{dayNames}</tr>
@@ -185,7 +227,7 @@ const CalendarDemo = () => {
                 <tbody>{calendarRows}</tbody>
             </Table>
             {selectedDate.format('MMMM Do, YYYY')}
-        </div>
+        </CalendarWrapper>
     );
 };
 
