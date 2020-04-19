@@ -7,8 +7,7 @@ import styled from 'styled-components';
 import {
     FCTheme,
     Colors,
-    Heading,
-    Card,
+    DatePicker,
     Input,
     FormField,
     Button,
@@ -73,6 +72,8 @@ interface toDoProps {
 const CalendarDemo = () => {
     const [date, setDate] = useState(dayjs());
     const [toDoItem, setToDoItem] = useState<toDoProps | undefined>(undefined);
+    const [datePickerDate, setDatePickerDate] = useState('');
+    const [selectedDate, setSelectedDate] = useState('');
     const theme = useContext(FCTheme);
     return (
         <Wrapper>
@@ -107,7 +108,16 @@ const CalendarDemo = () => {
                             />
                         </FormField>
                         <FormField htmlFor="duedate" label="Due date">
-                            <Input id="duedate" value={toDoItem.dateDue} />
+                            <DatePicker
+                                onChange={(date): void => {
+                                    setSelectedDate(date);
+                                    setDatePickerDate(
+                                        dayjs(date).format('MMMM Do, YYYY')
+                                    );
+                                }}
+                                value={datePickerDate}
+                                selectedDate={selectedDate}
+                            />
                         </FormField>
                         <FormField htmlFor="description" label="Description">
                             <StyledTextarea
