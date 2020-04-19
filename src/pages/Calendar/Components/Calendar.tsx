@@ -59,8 +59,15 @@ const Day = styled.td`
     box-sizing: border-box;
     padding: 0;
     &.current-day {
-        background-color: ${Colors.mediumdark};
-        color: #fff;
+        button {
+            border: solid 2px tomato;
+            box-sizing: border-box;
+            transition: none;
+            &:hover {
+                border-color: transparent;
+                border-width: none;
+            }
+        }
     }
     &.selected-day {
         background-color: tomato;
@@ -83,7 +90,6 @@ const Day = styled.td`
         height: 100%;
         border-radius: 0;
         &:hover {
-            border: none;
             color: #fff !important;
         }
         &:active,

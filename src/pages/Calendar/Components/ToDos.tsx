@@ -9,16 +9,19 @@ const toDoItems = [
         id: 0,
         title: 'Test',
         dateDue: dayjs().format('MMMM Do, YYYY'),
+        description: 'Hey this is where a description would go.',
     },
     {
         id: 1,
         title: 'Test 2',
         dateDue: dayjs().format('MMMM Do, YYYY'),
+        description: 'Hey this is where a description would go.',
     },
     {
         id: 2,
         title: 'Test 3',
         dateDue: dayjs().format('MMMM Do, YYYY'),
+        description: 'Hey this is where a description would go.',
     },
 ];
 
