@@ -204,7 +204,6 @@ const Calendar = ({ onChange, selectedDate = dayjs(), size }: Props) => {
             return (
                 <Week key={Math.random()}>
                     {row.map((item: any, index: number) => {
-                        console.log(item.date);
                         return (
                             <Day
                                 className={`${

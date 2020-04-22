@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
 import styled from 'styled-components';
-import { Colors, Card } from '@adamwebster/fused-components';
+import { Colors, Button } from '@adamwebster/fused-components';
 import dayjs from 'dayjs';
 import { darken } from 'polished';
+import { ToDoContext } from '../State';
 
 const toDoItems = [
     {
@@ -72,6 +73,7 @@ interface Props {
 }
 
 const ToDos = ({ onChange }: Props) => {
+    const { globalState, dispatch } = useContext(ToDoContext);
     const loadToDoKeyPress = (
         e: React.KeyboardEvent<HTMLLIElement>,
         id: number
@@ -86,8 +88,32 @@ const ToDos = ({ onChange }: Props) => {
         const toDo = toDoItems.find((item) => item.id === id);
         onChange(toDo);
     };
-    const items = toDoItems.map(
+
+    const createSampleToDo = () => {
+        const todo = {
+            id: 0,
+            title: 'Test',
+            dateDue: dayjs().format('MMMM Do, YYYY'),
+            description: 'Hey this is where a description would go.',
+        };
+        dispatch({
+            type: 'SET_TODOS',
+            payload: {
+                calendarTodoList: [todo],
+            },
+        });
+    };
+
+    useEffect(() => {
+        const localTodos = localStorage.getItem('calendarTodos');
+        if (!localTodos) {
+            localStorage.setItem('calendarTodos', JSON.stringify([]));
+        }
+    }, []);
+
+    const items = globalState.calendarTodoList.map(
         (item: { id: number; title: string; dateDue: string }) => {
+            console.log(globalState);
             return (
                 <ToDoItem
                     key={item.id}
@@ -105,7 +131,17 @@ const ToDos = ({ onChange }: Props) => {
             );
         }
     );
-    return <ToDoList>{items}</ToDoList>;
+    return (
+        <ToDoList>
+            {console.log(globalState)}
+            {items.length > 0 ? items : <span>You have nothing todo.</span>}
+            <p>
+                <Button onClick={() => createSampleToDo()}>
+                    Create a new todo
+                </Button>
+            </p>
+        </ToDoList>
+    );
 };
 
 export default ToDos;
