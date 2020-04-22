@@ -69,7 +69,7 @@ const DoneMarker = styled.button`
 `;
 
 interface Props {
-    onChange: (todo: any) => void;
+    onChange?: (todo: any) => void;
 }
 
 const ToDos = ({ onChange }: Props) => {
@@ -80,29 +80,18 @@ const ToDos = ({ onChange }: Props) => {
     ) => {
         if (e.charCode === 13 || e.charCode === 32) {
             const toDo = toDoItems.find((item) => item.id === id);
-            onChange(toDo);
+            if (onChange) {
+                onChange(toDo);
+            }
         }
     };
 
     const loadToDo = (id: number) => {
         const toDo = toDoItems.find((item) => item.id === id);
-        onChange(toDo);
+        if (onChange) {
+            onChange(toDo);
+        }
     };
-
-    // const createSampleToDo = () => {
-    //     const todo = {
-    //         id: 0,
-    //         title: 'Test',
-    //         dateDue: dayjs().format('MMMM Do, YYYY'),
-    //         description: 'Hey this is where a description would go.',
-    //     };
-    //     dispatch({
-    //         type: 'SET_TODOS',
-    //         payload: {
-    //             calendarTodoList: [todo],
-    //         },
-    //     });
-    // };
 
     useEffect(() => {
         const localTodos = localStorage.getItem('calendarTodos');
@@ -124,7 +113,6 @@ const ToDos = ({ onChange }: Props) => {
                     <DoneMarker title="mark as done" />
                     <ToDoContent>
                         <ToDoTitle>{item.title}</ToDoTitle>
-
                         <ToDoMeta>{item.dateDue}</ToDoMeta>
                     </ToDoContent>
                 </ToDoItem>
@@ -144,7 +132,19 @@ const ToDos = ({ onChange }: Props) => {
                         })
                     }
                 >
-                    Create a new todo {globalState.newToDoVisible.toString()}
+                    Create a new todo
+                </Button>
+            </p>
+            <p>
+                <Button
+                    onClick={() => {
+                        dispatch({
+                            type: 'SHOW_EDIT_TODO',
+                            payload: true,
+                        });
+                    }}
+                >
+                    Edit a new todo
                 </Button>
             </p>
         </ToDoList>

@@ -9,7 +9,6 @@ import {
 } from '@adamwebster/fused-components';
 import dayjs from 'dayjs';
 
-import ToDoEmptyState from './EmptyState';
 import styled from 'styled-components';
 
 const ToDoEditorStyled = styled.div`
@@ -31,30 +30,26 @@ const StyledTextarea = styled(Textarea)`
 `;
 
 interface Props {
-    toDoItem: any;
-    setToDoItem: (toDoItem: any) => void;
+    setToDoItem?: (toDoItem: any) => void;
 }
-const ToDoEditor = ({ toDoItem, setToDoItem }: Props) => {
+const ToDoEditor = ({ setToDoItem }: Props) => {
     const { globalState } = useContext(ToDoContext);
     const [datePickerDate, setDatePickerDate] = useState('');
     const [selectedDate, setSelectedDate] = useState('');
+    const { toDoItem } = globalState;
+    const [title, setTitle] = useState(toDoItem.title);
+    const [description, setDescription] = useState(toDoItem.description);
+
     return (
         <>
-            {globalState.newToDoVisible && <div>Create New Todo</div>}
-
-            {toDoItem ? (
+            {globalState.editToDoVisible && (
                 <ToDoEditorStyled>
                     <h2>Edit</h2>
                     <FormField htmlFor="title" label="Todo title">
                         <Input
                             id="title"
-                            onChange={(e: any) =>
-                                setToDoItem({
-                                    ...toDoItem,
-                                    title: e.target.value,
-                                })
-                            }
-                            value={toDoItem.title}
+                            onChange={(e: any) => setTitle(e.target.value)}
+                            value={title}
                         />
                     </FormField>
                     <FormField htmlFor="duedate" label="Due date">
@@ -73,12 +68,9 @@ const ToDoEditor = ({ toDoItem, setToDoItem }: Props) => {
                         <StyledTextarea
                             id="descriptions"
                             onChange={(e: any) =>
-                                setToDoItem({
-                                    ...toDoItem,
-                                    description: e.target.value,
-                                })
+                                setDescription(e.target.value)
                             }
-                            value={toDoItem.description}
+                            value={description}
                         />
                     </FormField>
                     <FormActions>
@@ -86,8 +78,6 @@ const ToDoEditor = ({ toDoItem, setToDoItem }: Props) => {
                         <Button>Reset</Button>
                     </FormActions>
                 </ToDoEditorStyled>
-            ) : (
-                <ToDoEmptyState />
             )}
         </>
     );

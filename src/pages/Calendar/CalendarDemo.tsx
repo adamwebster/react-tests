@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import styled from 'styled-components';
 import { FCTheme, Colors } from '@adamwebster/fused-components';
 import { ToDoContextProvider, ToDoContext } from './State';
-import ToDoEditor from './Components/ToDoEditor';
+import MainContent from './Components/MainContent';
 
 const Wrapper = styled.section`
     display: flex;
@@ -47,8 +47,6 @@ interface toDoProps {
 }
 const CalendarDemo = () => {
     const [date, setDate] = useState(dayjs());
-    const [toDoItem, setToDoItem] = useState<toDoProps | undefined>(undefined);
-
     const theme = useContext(FCTheme);
     const { globalState } = useContext(ToDoContext);
 
@@ -66,15 +64,12 @@ const CalendarDemo = () => {
                     <ToDoWrapper>
                         <h2>Todo items</h2>
 
-                        <ToDos onChange={(todoItem) => setToDoItem(todoItem)} />
+                        <ToDos />
                     </ToDoWrapper>
                 </Sidebar>
                 <Content>
                     {console.log(globalState)}
-                    <ToDoEditor
-                        toDoItem={toDoItem}
-                        setToDoItem={(value) => setToDoItem(value)}
-                    />
+                    <MainContent />
                 </Content>
             </Wrapper>
         </ToDoContextProvider>
