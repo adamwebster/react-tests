@@ -62,6 +62,25 @@ const ToDoEditor = ({ setToDoItem }: Props) => {
         });
     };
 
+    const deleteTodo = () => {
+        const localTodo = localStorage.getItem('calendarTodos');
+        const localTodoArray = JSON.parse(localTodo as string);
+        const toDoToDelete = localTodoArray.findIndex(
+            (item: any) => item.id === id
+        );
+        localTodoArray.splice(toDoToDelete, 1);
+        const toDoArrayToString = JSON.stringify(localTodoArray);
+        localStorage.setItem('calendarTodos', toDoArrayToString);
+        dispatch({
+            type: 'SET_TODOS',
+            payload: { calendarTodoList: localTodoArray },
+        });
+        dispatch({
+            type: 'SHOW_EDIT_TODO',
+            payload: false,
+        });
+    };
+
     return (
         <>
             {globalState.editToDoVisible && (
@@ -100,6 +119,9 @@ const ToDoEditor = ({ setToDoItem }: Props) => {
                             Save
                         </Button>
                         <Button>Reset</Button>
+                        <Button fcStyle="danger" onClick={() => deleteTodo()}>
+                            Delete
+                        </Button>
                     </FormActions>
                 </ToDoEditorStyled>
             )}

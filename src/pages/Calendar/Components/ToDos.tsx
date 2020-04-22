@@ -1,7 +1,6 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { Colors, Button } from '@adamwebster/fused-components';
-import dayjs from 'dayjs';
 import { darken } from 'polished';
 import { ToDoContext } from '../State';
 
@@ -86,6 +85,7 @@ const ToDos = ({ onChange }: Props) => {
                 payload: { calendarTodoList: stringToObject },
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const items = globalState.calendarTodoList.map(
