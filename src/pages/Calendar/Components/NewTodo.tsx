@@ -34,6 +34,19 @@ const NewTodo = () => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
 
+    const addToDo = () => {
+        const localTodo = localStorage.getItem('calendarTodos');
+        const localTodoArray = JSON.parse(localTodo as string);
+        const toDoToSave = {
+            id: localTodoArray.length + 1,
+            title,
+            dateDue: selectedDate,
+            description,
+        };
+        localTodoArray.push(toDoToSave);
+        const toDoArrayToString = JSON.stringify(localTodoArray);
+        localStorage.setItem('calendarTodos', toDoArrayToString);
+    };
     return (
         <>
             <ToDoEditorStyled>
@@ -65,7 +78,9 @@ const NewTodo = () => {
                     />
                 </FormField>
                 <FormActions>
-                    <Button primary>Save</Button>
+                    <Button onClick={() => addToDo()} primary>
+                        Add the todo
+                    </Button>
                     <Button>Reset</Button>
                 </FormActions>
             </ToDoEditorStyled>
