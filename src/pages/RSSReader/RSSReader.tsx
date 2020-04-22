@@ -167,9 +167,7 @@ const RSSReader = () => {
     const toggleRead = (guid: string) => {
         const itemsFiltered = feedItems.slice();
         const toToggle = itemsFiltered.filter((item) => item.guid === guid);
-        console.log(toToggle);
         toToggle[0].read = !toToggle[0].read;
-        console.log(itemsFiltered);
         if (toToggle[0].read) {
             setRead(guid);
         } else {

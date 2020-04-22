@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { ToDoContext } from '../State';
 import {
     DatePicker,
@@ -33,12 +33,34 @@ interface Props {
     setToDoItem?: (toDoItem: any) => void;
 }
 const ToDoEditor = ({ setToDoItem }: Props) => {
-    const { globalState } = useContext(ToDoContext);
+    const { dispatch, globalState } = useContext(ToDoContext);
     const [datePickerDate, setDatePickerDate] = useState('');
     const [selectedDate, setSelectedDate] = useState('');
     const { toDoItem } = globalState;
-    const [title, setTitle] = useState(toDoItem.title);
-    const [description, setDescription] = useState(toDoItem.description);
+    const [title, setTitle] = useState('');
+    const [id, setId] = useState(0);
+    const [description, setDescription] = useState('');
+
+    useEffect(() => {
+        setTitle(toDoItem.title);
+        setDescription(toDoItem.description);
+        setId(toDoItem.id);
+    }, [toDoItem]);
+
+    const updateToDo = () => {
+        const localTodo = localStorage.getItem('calendarTodos');
+        const localTodoArray = JSON.parse(localTodo as string);
+        const toDoToUpdate = localTodoArray.find((item: any) => item.id === id);
+        toDoToUpdate.title = title;
+        toDoToUpdate.dateDue = datePickerDate;
+        toDoToUpdate.description = description;
+        const toDoArrayToString = JSON.stringify(localTodoArray);
+        localStorage.setItem('calendarTodos', toDoArrayToString);
+        dispatch({
+            type: 'SET_TODOS',
+            payload: { calendarTodoList: localTodoArray },
+        });
+    };
 
     return (
         <>
@@ -74,7 +96,9 @@ const ToDoEditor = ({ setToDoItem }: Props) => {
                         />
                     </FormField>
                     <FormActions>
-                        <Button primary>Save</Button>
+                        <Button onClick={() => updateToDo()} primary>
+                            Save
+                        </Button>
                         <Button>Reset</Button>
                     </FormActions>
                 </ToDoEditorStyled>

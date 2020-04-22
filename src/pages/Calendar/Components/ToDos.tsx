@@ -90,7 +90,6 @@ const ToDos = ({ onChange }: Props) => {
 
     const items = globalState.calendarTodoList.map(
         (item: { id: number; title: string; dateDue: string }) => {
-            console.log(globalState);
             return (
                 <ToDoItem
                     key={item.id}
@@ -109,10 +108,10 @@ const ToDos = ({ onChange }: Props) => {
     );
     return (
         <ToDoList>
-            {console.log(globalState)}
             {items.length > 0 ? items : <span>You have nothing todo.</span>}
             <p>
                 <Button
+                    primary
                     onClick={() =>
                         dispatch({
                             type: 'SHOW_NEW_TODO',
@@ -121,18 +120,6 @@ const ToDos = ({ onChange }: Props) => {
                     }
                 >
                     Create a new todo
-                </Button>
-            </p>
-            <p>
-                <Button
-                    onClick={() => {
-                        dispatch({
-                            type: 'SHOW_EDIT_TODO',
-                            payload: true,
-                        });
-                    }}
-                >
-                    Edit a new todo
                 </Button>
             </p>
         </ToDoList>

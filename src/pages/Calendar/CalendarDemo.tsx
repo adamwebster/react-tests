@@ -68,7 +68,6 @@ const CalendarDemo = () => {
                     </ToDoWrapper>
                 </Sidebar>
                 <Content>
-                    {console.log(globalState)}
                     <MainContent />
                 </Content>
             </Wrapper>
