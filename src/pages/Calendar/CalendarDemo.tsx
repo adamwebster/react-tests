@@ -1,20 +1,12 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import Calendar from './Components/Calendar';
 import ToDos from './Components/ToDos';
 
 import dayjs from 'dayjs';
 import styled from 'styled-components';
-import {
-    FCTheme,
-    Colors,
-    DatePicker,
-    Input,
-    FormField,
-    Button,
-    Textarea,
-} from '@adamwebster/fused-components';
-import ToDoEmptyState from './Components/EmptyState';
+import { FCTheme, Colors } from '@adamwebster/fused-components';
 import { ToDoContextProvider, ToDoContext } from './State';
+import ToDoEditor from './Components/ToDoEditor';
 
 const Wrapper = styled.section`
     display: flex;
@@ -48,23 +40,6 @@ const Content = styled.div`
     flex: 1 1;
 `;
 
-const ToDoEditor = styled.div`
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 40px;
-`;
-
-const FormActions = styled.div`
-    button {
-        margin-right: 5px;
-    }
-`;
-
-const StyledTextarea = styled(Textarea)`
-    width: 100%;
-    resize: none;
-    height: 200px;
-`;
 interface toDoProps {
     title: string;
     dateDue: string;
@@ -73,8 +48,7 @@ interface toDoProps {
 const CalendarDemo = () => {
     const [date, setDate] = useState(dayjs());
     const [toDoItem, setToDoItem] = useState<toDoProps | undefined>(undefined);
-    const [datePickerDate, setDatePickerDate] = useState('');
-    const [selectedDate, setSelectedDate] = useState('');
+
     const theme = useContext(FCTheme);
     const { globalState } = useContext(ToDoContext);
 
@@ -97,58 +71,10 @@ const CalendarDemo = () => {
                 </Sidebar>
                 <Content>
                     {console.log(globalState)}
-                    {globalState.newToDoVisible && <div>Create New Todo</div>}
-
-                    {toDoItem ? (
-                        <ToDoEditor>
-                            <h2>Edit</h2>
-                            <FormField htmlFor="title" label="Todo title">
-                                <Input
-                                    id="title"
-                                    onChange={(e: any) =>
-                                        setToDoItem({
-                                            ...toDoItem,
-                                            title: e.target.value,
-                                        })
-                                    }
-                                    value={toDoItem.title}
-                                />
-                            </FormField>
-                            <FormField htmlFor="duedate" label="Due date">
-                                <DatePicker
-                                    onChange={(date): void => {
-                                        setSelectedDate(date);
-                                        setDatePickerDate(
-                                            dayjs(date).format('MMMM Do, YYYY')
-                                        );
-                                    }}
-                                    value={datePickerDate}
-                                    selectedDate={selectedDate}
-                                />
-                            </FormField>
-                            <FormField
-                                htmlFor="description"
-                                label="Description"
-                            >
-                                <StyledTextarea
-                                    id="descriptions"
-                                    onChange={(e: any) =>
-                                        setToDoItem({
-                                            ...toDoItem,
-                                            description: e.target.value,
-                                        })
-                                    }
-                                    value={toDoItem.description}
-                                />
-                            </FormField>
-                            <FormActions>
-                                <Button primary>Save</Button>
-                                <Button>Reset</Button>
-                            </FormActions>
-                        </ToDoEditor>
-                    ) : (
-                        <ToDoEmptyState />
-                    )}
+                    <ToDoEditor
+                        toDoItem={toDoItem}
+                        setToDoItem={(value) => setToDoItem(value)}
+                    />
                 </Content>
             </Wrapper>
         </ToDoContextProvider>

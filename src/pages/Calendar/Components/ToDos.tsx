@@ -89,20 +89,20 @@ const ToDos = ({ onChange }: Props) => {
         onChange(toDo);
     };
 
-    const createSampleToDo = () => {
-        const todo = {
-            id: 0,
-            title: 'Test',
-            dateDue: dayjs().format('MMMM Do, YYYY'),
-            description: 'Hey this is where a description would go.',
-        };
-        dispatch({
-            type: 'SET_TODOS',
-            payload: {
-                calendarTodoList: [todo],
-            },
-        });
-    };
+    // const createSampleToDo = () => {
+    //     const todo = {
+    //         id: 0,
+    //         title: 'Test',
+    //         dateDue: dayjs().format('MMMM Do, YYYY'),
+    //         description: 'Hey this is where a description would go.',
+    //     };
+    //     dispatch({
+    //         type: 'SET_TODOS',
+    //         payload: {
+    //             calendarTodoList: [todo],
+    //         },
+    //     });
+    // };
 
     useEffect(() => {
         const localTodos = localStorage.getItem('calendarTodos');
