@@ -1,30 +1,9 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import styled from 'styled-components';
 import { Colors, Button } from '@adamwebster/fused-components';
 import dayjs from 'dayjs';
 import { darken } from 'polished';
 import { ToDoContext } from '../State';
-
-const toDoItems = [
-    {
-        id: 0,
-        title: 'Test',
-        dateDue: dayjs().format('MMMM Do, YYYY'),
-        description: 'Hey this is where a description would go.',
-    },
-    {
-        id: 1,
-        title: 'Test 2',
-        dateDue: dayjs().format('MMMM Do, YYYY'),
-        description: 'Hey this is where a description would go.',
-    },
-    {
-        id: 2,
-        title: 'Test 3',
-        dateDue: dayjs().format('MMMM Do, YYYY'),
-        description: 'Hey this is where a description would go.',
-    },
-];
 
 const ToDoTitle = styled.span``;
 
@@ -79,24 +58,33 @@ const ToDos = ({ onChange }: Props) => {
         id: number
     ) => {
         if (e.charCode === 13 || e.charCode === 32) {
-            const toDo = toDoItems.find((item) => item.id === id);
-            if (onChange) {
-                onChange(toDo);
-            }
+            const toDo = globalState.calendarTodoList.find(
+                (item: { id: number }) => item.id === id
+            );
+            dispatch({ type: 'SET_TODO_ITEM', payload: toDo });
+            dispatch({ type: 'SHOW_EDIT_TODO', payload: true });
         }
     };
 
     const loadToDo = (id: number) => {
-        const toDo = toDoItems.find((item) => item.id === id);
-        if (onChange) {
-            onChange(toDo);
-        }
+        const toDo = globalState.calendarTodoList.find(
+            (item: { id: number }) => item.id === id
+        );
+        dispatch({ type: 'SET_TODO_ITEM', payload: toDo });
+        dispatch({ type: 'SHOW_EDIT_TODO', payload: true });
     };
 
     useEffect(() => {
         const localTodos = localStorage.getItem('calendarTodos');
         if (!localTodos) {
             localStorage.setItem('calendarTodos', JSON.stringify([]));
+        }
+        if (localTodos) {
+            const stringToObject = JSON.parse(localTodos as string);
+            dispatch({
+                type: 'SET_TODOS',
+                payload: { calendarTodoList: stringToObject },
+            });
         }
     }, []);
 

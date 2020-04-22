@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
     DatePicker,
     Input,
@@ -9,6 +9,7 @@ import {
 import dayjs from 'dayjs';
 
 import styled from 'styled-components';
+import { ToDoContext } from '../State';
 
 const ToDoEditorStyled = styled.div`
     max-width: 600px;
@@ -33,19 +34,23 @@ const NewTodo = () => {
     const [selectedDate, setSelectedDate] = useState('');
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-
+    const { dispatch } = useContext(ToDoContext);
     const addToDo = () => {
         const localTodo = localStorage.getItem('calendarTodos');
         const localTodoArray = JSON.parse(localTodo as string);
         const toDoToSave = {
             id: localTodoArray.length + 1,
             title,
-            dateDue: selectedDate,
+            dateDue: datePickerDate,
             description,
         };
         localTodoArray.push(toDoToSave);
         const toDoArrayToString = JSON.stringify(localTodoArray);
         localStorage.setItem('calendarTodos', toDoArrayToString);
+        dispatch({
+            type: 'SET_TODOS',
+            payload: { calendarTodoList: localTodoArray },
+        });
     };
     return (
         <>
