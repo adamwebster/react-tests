@@ -2,6 +2,7 @@ import React, { createContext, ReactElement } from 'react';
 
 const initialState = {
     calendarTodoList: [],
+    newToDoVisible: false,
 };
 
 export const ToDoContext = createContext({
@@ -17,6 +18,11 @@ const reducer = (state: any, action: { payload: any; type: any }) => {
             return {
                 ...state,
                 calendarTodoList: payload.calendarTodoList,
+            };
+        case 'SHOW_NEW_TODO':
+            return {
+                ...state,
+                newToDoVisible: payload,
             };
         default:
             return state;

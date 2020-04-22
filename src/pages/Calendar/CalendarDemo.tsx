@@ -14,7 +14,7 @@ import {
     Textarea,
 } from '@adamwebster/fused-components';
 import ToDoEmptyState from './Components/EmptyState';
-import { ToDoContextProvider } from './State';
+import { ToDoContextProvider, ToDoContext } from './State';
 
 const Wrapper = styled.section`
     display: flex;
@@ -76,6 +76,7 @@ const CalendarDemo = () => {
     const [datePickerDate, setDatePickerDate] = useState('');
     const [selectedDate, setSelectedDate] = useState('');
     const theme = useContext(FCTheme);
+    const { globalState } = useContext(ToDoContext);
 
     return (
         <ToDoContextProvider>
@@ -95,6 +96,9 @@ const CalendarDemo = () => {
                     </ToDoWrapper>
                 </Sidebar>
                 <Content>
+                    {console.log(globalState)}
+                    {globalState.newToDoVisible && <div>Create New Todo</div>}
+
                     {toDoItem ? (
                         <ToDoEditor>
                             <h2>Edit</h2>

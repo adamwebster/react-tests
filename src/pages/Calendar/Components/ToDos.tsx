@@ -136,8 +136,15 @@ const ToDos = ({ onChange }: Props) => {
             {console.log(globalState)}
             {items.length > 0 ? items : <span>You have nothing todo.</span>}
             <p>
-                <Button onClick={() => createSampleToDo()}>
-                    Create a new todo
+                <Button
+                    onClick={() =>
+                        dispatch({
+                            type: 'SHOW_NEW_TODO',
+                            payload: true,
+                        })
+                    }
+                >
+                    Create a new todo {globalState.newToDoVisible.toString()}
                 </Button>
             </p>
         </ToDoList>
