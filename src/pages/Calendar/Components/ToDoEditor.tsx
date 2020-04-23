@@ -6,6 +6,7 @@ import {
     FormField,
     Button,
     Textarea,
+    useToast,
 } from '@adamwebster/fused-components';
 import dayjs from 'dayjs';
 
@@ -40,7 +41,7 @@ const ToDoEditor = ({ setToDoItem }: Props) => {
     const [title, setTitle] = useState('');
     const [id, setId] = useState(0);
     const [description, setDescription] = useState('');
-
+    const toast = useToast();
     useEffect(() => {
         setTitle(toDoItem.title);
         setDescription(toDoItem.description);
@@ -56,6 +57,8 @@ const ToDoEditor = ({ setToDoItem }: Props) => {
         toDoToUpdate.description = description;
         const toDoArrayToString = JSON.stringify(localTodoArray);
         localStorage.setItem('calendarTodos', toDoArrayToString);
+        toast.addSuccess('To do has been updated');
+
         dispatch({
             type: 'SET_TODOS',
             payload: { calendarTodoList: localTodoArray },
@@ -71,6 +74,7 @@ const ToDoEditor = ({ setToDoItem }: Props) => {
         localTodoArray.splice(toDoToDelete, 1);
         const toDoArrayToString = JSON.stringify(localTodoArray);
         localStorage.setItem('calendarTodos', toDoArrayToString);
+        toast.addSuccess('To do has been deleted');
         dispatch({
             type: 'SET_TODOS',
             payload: { calendarTodoList: localTodoArray },

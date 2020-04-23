@@ -4,7 +4,7 @@ import ToDos from './Components/ToDos';
 
 import dayjs from 'dayjs';
 import styled from 'styled-components';
-import { FCTheme, Colors } from '@adamwebster/fused-components';
+import { FCTheme, Colors, ToastProvider } from '@adamwebster/fused-components';
 import { ToDoContextProvider } from './State';
 import MainContent from './Components/MainContent';
 
@@ -51,25 +51,27 @@ const CalendarDemo = () => {
 
     return (
         <ToDoContextProvider>
-            <Wrapper>
-                <Sidebar theme={theme?.theme}>
-                    <CalendarWrapper>
-                        <Calendar
-                            size={280}
-                            selectedDate={date}
-                            onChange={(date) => setDate(dayjs(date))}
-                        />
-                    </CalendarWrapper>
-                    <ToDoWrapper>
-                        <h2>Todo items</h2>
+            <ToastProvider position="top">
+                <Wrapper>
+                    <Sidebar theme={theme?.theme}>
+                        <CalendarWrapper>
+                            <Calendar
+                                size={280}
+                                selectedDate={date}
+                                onChange={(date) => setDate(dayjs(date))}
+                            />
+                        </CalendarWrapper>
+                        <ToDoWrapper>
+                            <h2>Todo items</h2>
 
-                        <ToDos />
-                    </ToDoWrapper>
-                </Sidebar>
-                <Content>
-                    <MainContent />
-                </Content>
-            </Wrapper>
+                            <ToDos />
+                        </ToDoWrapper>
+                    </Sidebar>
+                    <Content>
+                        <MainContent />
+                    </Content>
+                </Wrapper>
+            </ToastProvider>
         </ToDoContextProvider>
     );
 };

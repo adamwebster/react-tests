@@ -5,6 +5,7 @@ import {
     FormField,
     Button,
     Textarea,
+    useToast,
 } from '@adamwebster/fused-components';
 import dayjs from 'dayjs';
 
@@ -35,6 +36,7 @@ const NewTodo = () => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const { dispatch } = useContext(ToDoContext);
+    const toast = useToast();
     const addToDo = () => {
         const localTodo = localStorage.getItem('calendarTodos');
         const localTodoArray = JSON.parse(localTodo as string);
@@ -51,6 +53,7 @@ const NewTodo = () => {
             type: 'SET_TODOS',
             payload: { calendarTodoList: localTodoArray },
         });
+        toast.addSuccess('To do added');
     };
     return (
         <>
