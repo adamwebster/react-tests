@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import { ToDoContext } from '../State';
 import {
     DatePicker,
@@ -41,6 +41,11 @@ const ToDoEditor = ({ setToDoItem }: Props) => {
     const [title, setTitle] = useState('');
     const [id, setId] = useState(0);
     const [description, setDescription] = useState('');
+    const [titleErrorMessage, setTitleErrorMessage] = useState('');
+    const [dateErrorMessage, setDateErrorMessage] = useState('');
+    const titleRef = useRef<HTMLInputElement>(null);
+    const dateRef = useRef<HTMLInputElement>(null);
+
     const toast = useToast();
     useEffect(() => {
         setTitle(toDoItem.title);
@@ -50,6 +55,21 @@ const ToDoEditor = ({ setToDoItem }: Props) => {
     }, [toDoItem]);
 
     const updateToDo = () => {
+        const dateInputValue = dateRef?.current?.value;
+        const titleInputValue = titleRef?.current?.value;
+
+        !titleInputValue
+            ? setTitleErrorMessage('Title is required')
+            : setTitleErrorMessage('');
+
+        !dateInputValue
+            ? setDateErrorMessage('Due date is required')
+            : setDateErrorMessage('');
+
+        if (!dateInputValue || !titleInputValue) {
+            return false;
+        }
+
         const localTodo = localStorage.getItem('calendarTodos');
         const localTodoArray = JSON.parse(localTodo as string);
         const toDoToUpdate = localTodoArray.find((item: any) => item.id === id);
@@ -86,26 +106,50 @@ const ToDoEditor = ({ setToDoItem }: Props) => {
         });
     };
 
+    const resetForm = () => {
+        setTitle('');
+        setSelectedDate('');
+        setDatePickerDate('');
+        setTitleErrorMessage('');
+        setDateErrorMessage('');
+        setDescription('');
+    };
+
     return (
         <>
             {globalState.editToDoVisible && (
                 <ToDoEditorStyled>
                     <h2>Edit</h2>
-                    <FormField htmlFor="title" label="Todo title">
+                    <FormField
+                        required
+                        validationMessage={titleErrorMessage}
+                        htmlFor="title"
+                        label="Todo title"
+                    >
                         <Input
                             id="title"
+                            ref={titleRef}
                             onChange={(e: any) => setTitle(e.target.value)}
                             value={title}
                         />
                     </FormField>
-                    <FormField htmlFor="duedate" label="Due date">
+                    <FormField
+                        validationMessage={dateErrorMessage}
+                        required
+                        htmlFor="duedate"
+                        label="Due date"
+                    >
                         <DatePicker
+                            ref={dateRef}
                             onChange={(date): void => {
                                 console.log(date);
                                 setSelectedDate(date);
                                 setDatePickerDate(date);
                             }}
-                            value={selectedDate}
+                            value={
+                                selectedDate &&
+                                dayjs(selectedDate).format('MMMM Do, YYYY')
+                            }
                             selectedDate={selectedDate}
                         />
                     </FormField>
@@ -122,7 +166,7 @@ const ToDoEditor = ({ setToDoItem }: Props) => {
                         <Button onClick={() => updateToDo()} primary>
                             Save
                         </Button>
-                        <Button>Reset</Button>
+                        <Button onClick={() => resetForm()}>Reset</Button>
                         <Button fcStyle="danger" onClick={() => deleteTodo()}>
                             Delete
                         </Button>

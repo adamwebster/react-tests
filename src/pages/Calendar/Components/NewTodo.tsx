@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useRef } from 'react';
 import {
     DatePicker,
     Input,
@@ -34,10 +34,30 @@ const NewTodo = () => {
     const [datePickerDate, setDatePickerDate] = useState('');
     const [selectedDate, setSelectedDate] = useState('');
     const [title, setTitle] = useState('');
+    const [titleErrorMessage, setTitleErrorMessage] = useState('');
+    const [dateErrorMessage, setDateErrorMessage] = useState('');
+
     const [description, setDescription] = useState('');
     const { dispatch } = useContext(ToDoContext);
     const toast = useToast();
+    const titleRef = useRef<HTMLInputElement>(null);
+    const dateRef = useRef<HTMLInputElement>(null);
+
     const addToDo = () => {
+        const dateInputValue = dateRef?.current?.value;
+        const titleInputValue = titleRef?.current?.value;
+
+        !titleInputValue
+            ? setTitleErrorMessage('Title is required')
+            : setTitleErrorMessage('');
+
+        !dateInputValue
+            ? setDateErrorMessage('Due date is required')
+            : setDateErrorMessage('');
+
+        if (!dateInputValue || !titleInputValue) {
+            return false;
+        }
         const localTodo = localStorage.getItem('calendarTodos');
         const localTodoArray = JSON.parse(localTodo as string);
         const toDoToSave = {
@@ -53,26 +73,54 @@ const NewTodo = () => {
             type: 'SET_TODOS',
             payload: { calendarTodoList: localTodoArray },
         });
+        setTitle('');
+        setSelectedDate('');
+        setDatePickerDate('');
         toast.addSuccess('To do added');
     };
+
+    const resetForm = () => {
+        setTitle('');
+        setSelectedDate('');
+        setDatePickerDate('');
+        setTitleErrorMessage('');
+        setDateErrorMessage('');
+        setDescription('');
+    };
+
     return (
         <>
             <ToDoEditorStyled>
                 <h2>New</h2>
-                <FormField htmlFor="title" label="Todo title">
+                <FormField
+                    required
+                    validationMessage={titleErrorMessage}
+                    htmlFor="title"
+                    label="Todo title"
+                >
                     <Input
+                        ref={titleRef}
                         id="title"
                         onChange={(e: any) => setTitle(e.target.value)}
                         value={title}
                     />
                 </FormField>
-                <FormField htmlFor="duedate" label="Due date">
+                <FormField
+                    validationMessage={dateErrorMessage}
+                    required
+                    htmlFor="duedate"
+                    label="Due date"
+                >
                     <DatePicker
+                        ref={dateRef}
                         onChange={(date): void => {
                             setSelectedDate(date);
                             setDatePickerDate(date);
                         }}
-                        value={datePickerDate}
+                        value={
+                            datePickerDate &&
+                            dayjs(datePickerDate).format('MMMM Do, YYYY')
+                        }
                         selectedDate={selectedDate}
                     />
                 </FormField>
@@ -87,7 +135,7 @@ const NewTodo = () => {
                     <Button onClick={() => addToDo()} primary>
                         Add the todo
                     </Button>
-                    <Button>Reset</Button>
+                    <Button onClick={() => resetForm()}>Reset</Button>
                 </FormActions>
             </ToDoEditorStyled>
         </>

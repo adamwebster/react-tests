@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Colors, Button } from '@adamwebster/fused-components';
 import { darken } from 'polished';
 import { ToDoContext } from '../State';
+import dayjs from 'dayjs';
 
 const ToDoTitle = styled.span``;
 
@@ -100,7 +101,9 @@ const ToDos = ({ onChange }: Props) => {
                     <DoneMarker title="mark as done" />
                     <ToDoContent>
                         <ToDoTitle>{item.title}</ToDoTitle>
-                        <ToDoMeta>{item.dateDue}</ToDoMeta>
+                        <ToDoMeta>
+                            {dayjs(item.dateDue).format('MMMM Do, YYYY')}
+                        </ToDoMeta>
                     </ToDoContent>
                 </ToDoItem>
             );
