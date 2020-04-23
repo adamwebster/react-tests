@@ -70,9 +70,7 @@ const NewTodo = () => {
                     <DatePicker
                         onChange={(date): void => {
                             setSelectedDate(date);
-                            setDatePickerDate(
-                                dayjs(date).format('MMMM Do, YYYY')
-                            );
+                            setDatePickerDate(date);
                         }}
                         value={datePickerDate}
                         selectedDate={selectedDate}

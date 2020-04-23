@@ -46,6 +46,7 @@ const ToDoEditor = ({ setToDoItem }: Props) => {
         setTitle(toDoItem.title);
         setDescription(toDoItem.description);
         setId(toDoItem.id);
+        setSelectedDate(toDoItem.dateDue);
     }, [toDoItem]);
 
     const updateToDo = () => {
@@ -100,12 +101,11 @@ const ToDoEditor = ({ setToDoItem }: Props) => {
                     <FormField htmlFor="duedate" label="Due date">
                         <DatePicker
                             onChange={(date): void => {
+                                console.log(date);
                                 setSelectedDate(date);
-                                setDatePickerDate(
-                                    dayjs(date).format('MMMM Do, YYYY')
-                                );
+                                setDatePickerDate(date);
                             }}
-                            value={datePickerDate}
+                            value={selectedDate}
                             selectedDate={selectedDate}
                         />
                     </FormField>
