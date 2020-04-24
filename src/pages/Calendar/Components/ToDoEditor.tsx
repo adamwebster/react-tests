@@ -142,7 +142,6 @@ const ToDoEditor = ({ setToDoItem }: Props) => {
                         <DatePicker
                             ref={dateRef}
                             onChange={(date): void => {
-                                console.log(date);
                                 setSelectedDate(date);
                                 setDatePickerDate(date);
                             }}

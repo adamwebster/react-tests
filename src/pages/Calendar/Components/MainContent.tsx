@@ -12,7 +12,9 @@ const MainContent = () => {
                 <NewTodo />
             )}
             {globalState.editToDoVisible && <ToDoEditor />}
-            {!globalState.newToDoVisible && <ToDoEmptyState />}
+            {!globalState.newToDoVisible && !globalState.editToDoVisible && (
+                <ToDoEmptyState />
+            )}
         </>
     );
 };
