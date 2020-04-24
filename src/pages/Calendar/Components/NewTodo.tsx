@@ -32,7 +32,6 @@ const StyledTextarea = styled(Textarea)`
 
 const NewTodo = () => {
     const [datePickerDate, setDatePickerDate] = useState('');
-    const [selectedDate, setSelectedDate] = useState('');
     const [title, setTitle] = useState('');
     const [titleErrorMessage, setTitleErrorMessage] = useState('');
     const [dateErrorMessage, setDateErrorMessage] = useState('');
@@ -74,14 +73,12 @@ const NewTodo = () => {
             payload: { calendarTodoList: localTodoArray },
         });
         setTitle('');
-        setSelectedDate('');
         setDatePickerDate('');
         toast.addSuccess('To do added');
     };
 
     const resetForm = () => {
         setTitle('');
-        setSelectedDate('');
         setDatePickerDate('');
         setTitleErrorMessage('');
         setDateErrorMessage('');
@@ -117,7 +114,6 @@ const NewTodo = () => {
                     <DatePicker
                         ref={dateRef}
                         onChange={(date): void => {
-                            setSelectedDate(date);
                             setDatePickerDate(date);
                             dispatch({
                                 type: 'SET_SELECTED_DATE',
@@ -128,7 +124,9 @@ const NewTodo = () => {
                             datePickerDate &&
                             dayjs(datePickerDate).format('MMMM Do, YYYY')
                         }
-                        selectedDate={globalState.selectedDate}
+                        selectedDate={
+                            (globalState.selectedDate as unknown) as string
+                        }
                     />
                 </FormField>
                 <FormField htmlFor="description" label="Description">

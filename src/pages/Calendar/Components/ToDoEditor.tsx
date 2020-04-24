@@ -36,7 +36,6 @@ interface Props {
 const ToDoEditor = ({ setToDoItem }: Props) => {
     const { dispatch, globalState } = useContext(ToDoContext);
     const [datePickerDate, setDatePickerDate] = useState('');
-    const [selectedDate, setSelectedDate] = useState('');
     const { toDoItem } = globalState;
     const [title, setTitle] = useState('');
     const [id, setId] = useState(0);
@@ -51,7 +50,7 @@ const ToDoEditor = ({ setToDoItem }: Props) => {
         setTitle(toDoItem.title);
         setDescription(toDoItem.description);
         setId(toDoItem.id);
-        setSelectedDate(toDoItem.dateDue);
+        setDatePickerDate(toDoItem.dateDue);
     }, [toDoItem]);
 
     const updateToDo = () => {
@@ -108,7 +107,6 @@ const ToDoEditor = ({ setToDoItem }: Props) => {
 
     const resetForm = () => {
         setTitle('');
-        setSelectedDate('');
         setDatePickerDate('');
         setTitleErrorMessage('');
         setDateErrorMessage('');
@@ -142,14 +140,12 @@ const ToDoEditor = ({ setToDoItem }: Props) => {
                         <DatePicker
                             ref={dateRef}
                             onChange={(date): void => {
-                                setSelectedDate(date);
                                 setDatePickerDate(date);
                             }}
-                            value={
-                                selectedDate &&
-                                dayjs(selectedDate).format('MMMM Do, YYYY')
-                            }
-                            selectedDate={selectedDate}
+                            value={dayjs(datePickerDate).format(
+                                'MMMM Do, YYYY'
+                            )}
+                            selectedDate={datePickerDate}
                         />
                     </FormField>
                     <FormField htmlFor="description" label="Description">
