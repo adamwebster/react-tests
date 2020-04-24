@@ -1,12 +1,11 @@
-import React, { useState, useContext } from 'react';
-import Calendar from './Components/Calendar';
+import React, { useContext } from 'react';
 import ToDos from './Components/ToDos';
 
-import dayjs from 'dayjs';
 import styled from 'styled-components';
 import { FCTheme, Colors, ToastProvider } from '@adamwebster/fused-components';
 import { ToDoContextProvider } from './State';
 import MainContent from './Components/MainContent';
+import CalendarControl from './Components/CalendarControl';
 
 const Wrapper = styled.section`
     display: flex;
@@ -46,7 +45,6 @@ interface toDoProps {
     description: string;
 }
 const CalendarDemo = () => {
-    const [date, setDate] = useState(dayjs());
     const theme = useContext(FCTheme);
 
     return (
@@ -55,11 +53,7 @@ const CalendarDemo = () => {
                 <Wrapper>
                     <Sidebar theme={theme?.theme}>
                         <CalendarWrapper>
-                            <Calendar
-                                size={280}
-                                selectedDate={date}
-                                onChange={(date) => setDate(dayjs(date))}
-                            />
+                            <CalendarControl />
                         </CalendarWrapper>
                         <ToDoWrapper>
                             <h2>Todo items</h2>

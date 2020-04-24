@@ -5,6 +5,7 @@ const initialState = {
     calendarTodoList: [],
     newToDoVisible: false,
     editToDoVisible: false,
+    selectedDate: new Date().toString(),
     toDoItem: {
         id: 0,
         title: 'Test',
@@ -43,6 +44,11 @@ const reducer = (state: any, action: { payload: any; type: any }) => {
             return {
                 ...state,
                 toDoItem: payload,
+            };
+        case 'SET_SELECTED_DATE':
+            return {
+                ...state,
+                selectedDate: payload,
             };
         default:
             return state;

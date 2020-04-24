@@ -151,7 +151,10 @@ const Calendar = ({ onChange, selectedDate = dayjs(), size }: Props) => {
         for (let d = 1; d <= daysInTheMonth; d++) {
             daysInMonth.push({
                 day: d,
-                date: `${date.get('year')}-${date.get('month') + 1}-${d}`,
+                date: date.format(`YYYY-${date.get('month') + 1}-${d}`),
+                timeStamp: dayjs(
+                    `${date.get('year')}-${date.get('month') + 1}-${d}`
+                ).format(),
             });
         }
 
@@ -224,7 +227,7 @@ const Calendar = ({ onChange, selectedDate = dayjs(), size }: Props) => {
                             >
                                 <Button
                                     disabled={item.otherMonth}
-                                    onClick={() => onChange(item.date)}
+                                    onClick={() => onChange(item.timeStamp)}
                                     as="a"
                                 >
                                     {item.day}

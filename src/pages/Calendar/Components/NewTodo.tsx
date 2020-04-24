@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef } from 'react';
+import React, { useState, useContext, useRef, useEffect } from 'react';
 import {
     DatePicker,
     Input,
@@ -38,7 +38,7 @@ const NewTodo = () => {
     const [dateErrorMessage, setDateErrorMessage] = useState('');
 
     const [description, setDescription] = useState('');
-    const { dispatch } = useContext(ToDoContext);
+    const { globalState, dispatch } = useContext(ToDoContext);
     const toast = useToast();
     const titleRef = useRef<HTMLInputElement>(null);
     const dateRef = useRef<HTMLInputElement>(null);
@@ -88,6 +88,9 @@ const NewTodo = () => {
         setDescription('');
     };
 
+    useEffect(() => {
+        setDatePickerDate(globalState.selectedDate.toString());
+    }, [globalState.selectedDate]);
     return (
         <>
             <ToDoEditorStyled>
@@ -116,12 +119,16 @@ const NewTodo = () => {
                         onChange={(date): void => {
                             setSelectedDate(date);
                             setDatePickerDate(date);
+                            dispatch({
+                                type: 'SET_SELECTED_DATE',
+                                payload: date,
+                            });
                         }}
                         value={
                             datePickerDate &&
                             dayjs(datePickerDate).format('MMMM Do, YYYY')
                         }
-                        selectedDate={selectedDate}
+                        selectedDate={globalState.selectedDate}
                     />
                 </FormField>
                 <FormField htmlFor="description" label="Description">
