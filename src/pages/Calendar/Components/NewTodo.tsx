@@ -64,6 +64,7 @@ const NewTodo = () => {
             title,
             dateDue: datePickerDate,
             description,
+            completed: false,
         };
         localTodoArray.push(toDoToSave);
         const toDoArrayToString = JSON.stringify(localTodoArray);

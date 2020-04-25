@@ -16,6 +16,9 @@ const CalendarWrapper = styled.div<CWProps>`
     height: ${(props: any) =>
         props.calendarWidth ? `${props.calendarWidth}px` : 'fit-content'};
     flex-flow: column;
+    @media (max-width: 768px) {
+        width: 100%;
+    }
 `;
 
 const CalendarHeader = styled.div`
@@ -61,7 +64,7 @@ const Day = styled.td`
     padding: 0;
     vertical-align: top;
     &.has-todos {
-        &:after {
+        /* &:after {
             content: '';
             width: 8px;
             height: 8px;
@@ -70,7 +73,7 @@ const Day = styled.td`
             bottom: 5px;
             left: 16px;
             border-radius: 50%;
-        }
+        } */
     }
     &.current-day {
         button {
@@ -138,6 +141,16 @@ const DayName = styled.th`
     border-bottom: solid 1px ${Colors.medium};
 `;
 
+const TodDoMarker = styled.span`
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: turquoise;
+    display: inline-block;
+    position: relative;
+    top: 3px;
+`;
 const Week = styled.tr``;
 dayjs.extend(localeDate);
 dayjs.extend(advancedFormat);
@@ -273,6 +286,9 @@ const Calendar = ({
                                     <span className="day-number">
                                         {item.day}
                                     </span>
+                                    {hasToDos && hasToDos?.length > 0 && (
+                                        <TodDoMarker />
+                                    )}
                                 </button>
                             </Day>
                         );

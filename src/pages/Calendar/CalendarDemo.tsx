@@ -11,10 +11,16 @@ const Wrapper = styled.section`
     display: flex;
     height: calc(100vh - 42px);
     background-color: #fff;
+    @media (max-width: 768px) {
+        flex-direction: column;
+    }
 `;
 
 const Sidebar = styled.div`
     width: 300px;
+    @media (max-width: 768px) {
+        width: 100%;
+    }
     border-right: solid 1px ${Colors.border};
     background-color: #fff;
 `;
@@ -37,6 +43,7 @@ const ToDoWrapper = styled.div`
 
 const Content = styled.div`
     flex: 1 1;
+    background-color: ${Colors.lightest};
 `;
 
 interface toDoProps {

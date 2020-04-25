@@ -1,25 +1,25 @@
-import React, { useState } from 'react'
-import { Switch, Route, Link } from 'react-router-dom'
-import styled, { createGlobalStyle, css } from 'styled-components'
-import { Helmet } from 'react-helmet'
+import React, { useState } from 'react';
+import { Switch, Route, Link } from 'react-router-dom';
+import styled, { createGlobalStyle, css } from 'styled-components';
+import { Helmet } from 'react-helmet';
 
-import LoginPage from './pages/LoginPage'
-import About from './pages/About'
-import { FollowPage } from './pages/FollowPage'
-import followImg from './static/follow.png'
-import priceTableImg from './static/pricetable.jpg'
-import playlistImg from './static/playlist.jpg'
-import rssImage from './static/RSSReader.jpg'
+import LoginPage from './pages/LoginPage';
+import About from './pages/About';
+import { FollowPage } from './pages/FollowPage';
+import followImg from './static/follow.png';
+import priceTableImg from './static/pricetable.jpg';
+import playlistImg from './static/playlist.jpg';
+import rssImage from './static/RSSReader.jpg';
 
-import { FCThemeProvider, Colors } from '@adamwebster/fused-components'
-import loginImg from './static/login.png'
-import NewsFeed from './pages/NewsFeed'
-import PricingTable from './pages/PricingTable/PricingTable'
-import SpotifyPlaylist from './pages/SpotifyPlaylist'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import RSSReader from './pages/RSSReader/RSSReader'
-import { LazyComponent } from './pages/LazyComponents'
-import { CalendarDemo } from './pages/Calendar'
+import { FCThemeProvider, Colors } from '@adamwebster/fused-components';
+import loginImg from './static/login.png';
+import NewsFeed from './pages/NewsFeed';
+import PricingTable from './pages/PricingTable/PricingTable';
+import SpotifyPlaylist from './pages/SpotifyPlaylist';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import RSSReader from './pages/RSSReader/RSSReader';
+import { LazyComponent } from './pages/LazyComponents';
+import { CalendarDemo } from './pages/Calendar';
 const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
@@ -45,7 +45,7 @@ a{
   color:  ${(props) =>
       props.theme === 'dark' ? Colors.darkModeMedium : Colors.primary};
 }
-`
+`;
 
 const Grid = styled.div`
     display: grid;
@@ -57,7 +57,7 @@ const Grid = styled.div`
 
     padding: 10px;
     justify-items: center;
-`
+`;
 
 const GridItem = styled.div`
     box-sizing: border-box;
@@ -76,7 +76,7 @@ const GridItem = styled.div`
         width: 100%;
         text-align: center;
     }
-`
+`;
 
 const StyledLink = styled(Link)`
     background-image: url(${(props) => props.image});
@@ -91,13 +91,13 @@ const StyledLink = styled(Link)`
     &:hover {
         transform: scale(1.02);
     }
-`
+`;
 
 const WelcomeMessage = styled.div`
     width: 100%;
     text-align: center;
     margin: 50px auto;
-`
+`;
 
 const AppHeader = styled.div`
     width: 100%;
@@ -113,19 +113,19 @@ const AppHeader = styled.div`
             text-decoration: none;
         }
     }
-`
+`;
 const DarkModeToggle = styled.span`
     float: right;
-`
+`;
 function App() {
-    const [theme, setTheme] = useState('')
+    const [theme, setTheme] = useState('');
     const toggleDarkMode = () => {
         if (theme === 'dark') {
-            setTheme('')
+            setTheme('');
         } else {
-            setTheme('dark')
+            setTheme('dark');
         }
-    }
+    };
     return (
         <FCThemeProvider value={{ theme }}>
             <GlobalStyle theme={theme} />
@@ -217,7 +217,7 @@ function App() {
                 </Switch>
             </div>
         </FCThemeProvider>
-    )
+    );
 }
 
-export default App
+export default App;
