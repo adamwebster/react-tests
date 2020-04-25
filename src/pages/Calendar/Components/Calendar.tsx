@@ -6,14 +6,6 @@ import duration from 'dayjs/plugin/duration';
 import styled from 'styled-components';
 import { Colors, Button, Icon } from '@adamwebster/fused-components';
 
-const Table = styled.table`
-    padding: 0;
-    border-collapse: collapse;
-    width: 100%;
-    height: calc(100% - 32px);
-    border-spacing: 0;
-`;
-
 interface CWProps {
     calendarWidth: any;
 }
@@ -29,6 +21,14 @@ const CalendarWrapper = styled.div<CWProps>`
 const CalendarHeader = styled.div`
     display: flex;
     align-items: center;
+`;
+
+const Table = styled.table`
+    padding: 0;
+    border-collapse: collapse;
+    width: 100%;
+    height: calc(100% - 32px);
+    border-spacing: 0;
 `;
 
 const CalendarTitle = styled.div`
@@ -59,6 +59,7 @@ const Day = styled.td`
     box-sizing: border-box;
     position: relative;
     padding: 0;
+    vertical-align: top;
     &.has-todos {
         &:after {
             content: '';
@@ -72,40 +73,59 @@ const Day = styled.td`
         }
     }
     &.current-day {
-        background-color: ${Colors.medium};
-        transition: none;
+        button {
+            .day-number {
+                border: solid 1px tomato;
+            }
+        }
     }
     &.selected-day {
-        background-color: tomato;
-        color: #fff;
+        button {
+            .day-number {
+                background-color: tomato;
+                color: #fff;
+            }
+        }
     }
     &:hover:not(.selected-day):not(.other-month) {
-        background-color: ${Colors.primary};
-        color: #fff;
-        cursor: pointer;
+        button {
+            .day-number {
+                background-color: ${Colors.primary};
+                color: #fff;
+                cursor: pointer;
+            }
+        }
     }
     &.other-month {
         color: ${Colors.mediumdark};
     }
     button {
-        color: inherit;
-        text-decoration: none;
-        font-size: 1em;
-        padding: 5px;
-        width: 100%;
         height: 100%;
-        border-radius: 0;
-        &:hover {
+        width: 100%;
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+        background-color: transparent;
+        border: none;
+        .day-number {
+            width: 25px;
+            padding-top: 5px;
+            height: 25px;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        &:hover:not(:disabled) {
             color: #fff !important;
         }
-        &:active,
         &:focus {
-            box-sizing: border-box;
-            background-color: ${Colors.primary};
-            color: #fff;
+            outline: none;
+            .day-number {
+                box-sizing: border-box;
+                background-color: ${Colors.primary};
+                color: #fff;
+            }
         }
         &:disabled:hover {
-            color: inherit !important;
             cursor: default;
         }
     }
@@ -246,13 +266,14 @@ const Calendar = ({
                                         : `blank-day-${index}`
                                 }
                             >
-                                <Button
+                                <button
                                     disabled={item.otherMonth}
                                     onClick={() => onChange(item.timeStamp)}
-                                    as="a"
                                 >
-                                    {item.day}
-                                </Button>
+                                    <span className="day-number">
+                                        {item.day}
+                                    </span>
+                                </button>
                             </Day>
                         );
                     })}
