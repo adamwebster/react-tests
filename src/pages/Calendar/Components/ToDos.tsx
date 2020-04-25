@@ -91,8 +91,7 @@ const ToDos = ({ onChange }: Props) => {
     };
 
     const deleteTodo = (id: number) => {
-        const localTodo = localStorage.getItem('calendarTodos');
-        const localTodoArray = JSON.parse(localTodo as string);
+        const localTodoArray = globalState.allToDos.slice();
         const toDoToDelete = localTodoArray.findIndex(
             (item: any) => item.id === id
         );
@@ -113,20 +112,21 @@ const ToDos = ({ onChange }: Props) => {
         });
     };
     const markCompleted = (id: number) => {
-        const localTodo = localStorage.getItem('calendarTodos');
-        const localTodoArray = JSON.parse(localTodo as string);
-        const toDoToCompleted = localTodoArray.find(
+        const localTodoArray = globalState.allToDos;
+        const toDoToCompleted: any = localTodoArray.find(
             (item: any) => item.id === id
         );
-        toDoToCompleted.completed = !toDoToCompleted.completed;
+        if (toDoToCompleted) {
+            toDoToCompleted.completed = !toDoToCompleted.completed;
+        }
         const toDoArrayToString = JSON.stringify(localTodoArray);
-
         localStorage.setItem('calendarTodos', toDoArrayToString);
         const ToDosFiltered = localTodoArray.filter(
             (item: any) =>
                 dayjs(item.dateDue).format('MM-D-YYYY') ===
                 dayjs(globalState.selectedDate).format('MM-D-YYYY')
         );
+        console.log(localTodoArray);
         dispatch({
             type: 'SET_TODOS',
             payload: {
@@ -148,6 +148,10 @@ const ToDos = ({ onChange }: Props) => {
                     dayjs(item.dateDue).format('MM-D-YYYY') ===
                     dayjs(globalState.selectedDate).format('MM-D-YYYY')
             );
+            stringToObject.map(
+                (todo: any) => (todo.dateDue = new Date(todo.dateDue))
+            );
+            console.log(stringToObject);
             dispatch({
                 type: 'SET_TODOS',
                 payload: {
@@ -203,7 +207,7 @@ const ToDos = ({ onChange }: Props) => {
                         })
                     }
                 >
-                    Create a new todo
+                    Create a new to-do
                 </Button>
             </p>
         </ToDoList>

@@ -57,12 +57,11 @@ const NewTodo = () => {
         if (!dateInputValue || !titleInputValue) {
             return false;
         }
-        const localTodo = localStorage.getItem('calendarTodos');
-        const localTodoArray = JSON.parse(localTodo as string);
+        const localTodoArray: any = globalState.allToDos.slice();
         const toDoToSave = {
             id: localTodoArray.length + 1,
             title,
-            dateDue: datePickerDate,
+            dateDue: new Date(datePickerDate),
             description,
             completed: false,
         };
@@ -106,7 +105,7 @@ const NewTodo = () => {
                     required
                     validationMessage={titleErrorMessage}
                     htmlFor="title"
-                    label="Todo title"
+                    label="To-Do title"
                 >
                     <Input
                         ref={titleRef}
@@ -148,7 +147,7 @@ const NewTodo = () => {
                 </FormField>
                 <FormActions>
                     <Button onClick={() => addToDo()} primary>
-                        Add the todo
+                        Add the to-do
                     </Button>
                     <Button onClick={() => resetForm()}>Reset</Button>
                 </FormActions>

@@ -69,15 +69,14 @@ const ToDoEditor = ({ setToDoItem }: Props) => {
             return false;
         }
 
-        const localTodo = localStorage.getItem('calendarTodos');
-        const localTodoArray = JSON.parse(localTodo as string);
+        const localTodoArray: any = globalState.allToDos.slice();
         const toDoToUpdate = localTodoArray.find((item: any) => item.id === id);
         toDoToUpdate.title = title;
-        toDoToUpdate.dateDue = datePickerDate;
+        toDoToUpdate.dateDue = new Date(datePickerDate);
         toDoToUpdate.description = description;
         const toDoArrayToString = JSON.stringify(localTodoArray);
         localStorage.setItem('calendarTodos', toDoArrayToString);
-        toast.addSuccess('To do has been updated');
+        toast.addSuccess('To-Do has been updated');
         const ToDosFiltered = localTodoArray.filter(
             (item: any) =>
                 dayjs(item.dateDue).format('MM-D-YYYY') ===
@@ -101,7 +100,7 @@ const ToDoEditor = ({ setToDoItem }: Props) => {
         localTodoArray.splice(toDoToDelete, 1);
         const toDoArrayToString = JSON.stringify(localTodoArray);
         localStorage.setItem('calendarTodos', toDoArrayToString);
-        toast.addSuccess('To do has been deleted');
+        toast.addSuccess('To-Do has been deleted');
         const ToDosFiltered = localTodoArray.filter(
             (item: any) =>
                 dayjs(item.dateDue).format('MM-D-YYYY') ===
@@ -137,7 +136,7 @@ const ToDoEditor = ({ setToDoItem }: Props) => {
                         required
                         validationMessage={titleErrorMessage}
                         htmlFor="title"
-                        label="Todo title"
+                        label="To-Do title"
                     >
                         <Input
                             id="title"
