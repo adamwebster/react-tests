@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Card, Colors, Table } from '@adamwebster/fused-components';
+import { Card, Colors, Table, FCTheme } from '@adamwebster/fused-components';
 import styled, { css } from 'styled-components';
 import { darken } from 'polished';
 import { ToDoContext } from '../State';
@@ -49,6 +49,7 @@ const Widget = styled(Card)<WProps>`
 
 const ToDoWidgets = () => {
     const { globalState } = useContext(ToDoContext);
+    const theme = useContext(FCTheme);
     const [completed, setCompleted] = useState(0);
     const [dueToday, setDueToday] = useState([]);
     const [upcoming, setUpcoming] = useState([]);
@@ -97,7 +98,7 @@ const ToDoWidgets = () => {
             if (completedToDos) setCompleted(completedToDos.length);
             if (itemsDueNextSevenDays)
                 setDueNextSevenDays(itemsDueNextSevenDays.length);
-            if (itemsUpcoming) setUpcoming(sortedUpcoming);
+            if (itemsUpcoming) setUpcoming(sortedUpcoming.slice(0, 5));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [globalState.allToDos]);
@@ -134,6 +135,9 @@ const ToDoWidgets = () => {
             </Table.Row>
         );
     });
+
+    const TableWidgetColor =
+        theme && theme.theme === 'dark' ? Colors.darkModeDarker : Colors.light;
     return (
         <>
             <WidgetWrapper>
@@ -155,7 +159,7 @@ const ToDoWidgets = () => {
                 </Widget>
             </WidgetWrapper>
             <WidgetWrapper>
-                <Widget backgroundColor={Colors.light}>
+                <Widget backgroundColor={TableWidgetColor}>
                     <h3>Due today</h3>
                     <Table>
                         <Table.Header>
@@ -167,7 +171,7 @@ const ToDoWidgets = () => {
                         <Table.Body>{TableRows}</Table.Body>
                     </Table>
                 </Widget>
-                <Widget backgroundColor={Colors.light}>
+                <Widget backgroundColor={TableWidgetColor}>
                     <h3>Overdue to-dos</h3>
 
                     <Table>
@@ -180,7 +184,7 @@ const ToDoWidgets = () => {
                         <Table.Body>{TableRowsOver}</Table.Body>
                     </Table>
                 </Widget>
-                <Widget backgroundColor={Colors.light}>
+                <Widget backgroundColor={TableWidgetColor}>
                     <h3>Upcoming to-dos</h3>
                     <Table>
                         <Table.Header>

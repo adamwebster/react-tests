@@ -196,7 +196,7 @@ const ToDos = ({ onChange }: Props) => {
     );
     return (
         <ToDoList theme={theme?.theme}>
-            {items.length > 0 ? items : <span>You have nothing todo.</span>}
+            {items.length > 0 ? items : <span>You have nothing to-do.</span>}
             <p>
                 <Button
                     primary

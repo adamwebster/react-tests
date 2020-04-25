@@ -8,7 +8,9 @@ const MainContent = () => {
     const { globalState } = useContext(ToDoContext);
     return (
         <>
-            <ToDoWidgets />
+            {!globalState.newToDoVisible && !globalState.editToDoVisible && (
+                <ToDoWidgets />
+            )}
             {globalState.newToDoVisible && !globalState.editToDoVisible && (
                 <NewTodo />
             )}

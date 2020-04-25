@@ -11,6 +11,7 @@ import dayjs from 'dayjs';
 
 import styled from 'styled-components';
 import { ToDoContext } from '../State';
+import Breadcrumb from './Breadcrumb';
 
 const ToDoEditorStyled = styled.div`
     max-width: 600px;
@@ -99,6 +100,7 @@ const NewTodo = () => {
     }, [globalState.selectedDate]);
     return (
         <>
+            <Breadcrumb currentPageTitle="New To-Do" />
             <ToDoEditorStyled>
                 <h2>New</h2>
                 <FormField

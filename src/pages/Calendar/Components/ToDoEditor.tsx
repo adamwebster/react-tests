@@ -11,6 +11,7 @@ import {
 import dayjs from 'dayjs';
 
 import styled from 'styled-components';
+import Breadcrumb from './Breadcrumb';
 
 const ToDoEditorStyled = styled.div`
     max-width: 600px;
@@ -129,6 +130,7 @@ const ToDoEditor = ({ setToDoItem }: Props) => {
 
     return (
         <>
+            <Breadcrumb currentPageTitle="Edit To-Do" />
             {globalState.editToDoVisible && (
                 <ToDoEditorStyled>
                     <h2>Edit</h2>
