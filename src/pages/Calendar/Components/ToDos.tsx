@@ -112,7 +112,7 @@ const ToDos = ({ onChange }: Props) => {
         });
     };
     const markCompleted = (id: number) => {
-        const localTodoArray = globalState.allToDos;
+        const localTodoArray = globalState.allToDos.slice();
         const toDoToCompleted: any = localTodoArray.find(
             (item: any) => item.id === id
         );

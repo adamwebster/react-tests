@@ -12,6 +12,9 @@ const WidgetWrapper = styled.section`
     &:last-child {
         border-bottom: none;
     }
+    @media (max-width: 768px) {
+        flex-direction: column;
+    }
 `;
 
 interface WProps {
@@ -22,6 +25,10 @@ const Widget = styled(Card)<WProps>`
     flex: 1 1;
     margin-right: 10px;
     padding: 10px;
+    @media (max-width: 768px) {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
     h3 {
         margin: 0;
         font-size: 1.5em;
