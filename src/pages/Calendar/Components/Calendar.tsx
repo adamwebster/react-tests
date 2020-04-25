@@ -5,6 +5,7 @@ import advancedFormat from 'dayjs/plugin/advancedFormat';
 import duration from 'dayjs/plugin/duration';
 import styled from 'styled-components';
 import { Colors, Button, Icon } from '@adamwebster/fused-components';
+import { ToDoContext } from '../State';
 
 const Table = styled.table`
     padding: 0;
@@ -57,7 +58,20 @@ const SvgWrapper = styled.span`
 const Day = styled.td`
     text-align: center;
     box-sizing: border-box;
+    position: relative;
     padding: 0;
+    &.has-todos {
+        &:after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background-color: turquoise;
+            position: absolute;
+            bottom: 5px;
+            left: 16px;
+            border-radius: 50%;
+        }
+    }
     &.current-day {
         button {
             border: solid 2px tomato;
@@ -121,8 +135,14 @@ interface Props {
     onChange: (date: any) => void;
     selectedDate?: dayjs.Dayjs;
     size?: number;
+    datesWithToDos?: Array<any>;
 }
-const Calendar = ({ onChange, selectedDate = dayjs(), size }: Props) => {
+const Calendar = ({
+    onChange,
+    selectedDate = dayjs(),
+    datesWithToDos,
+    size,
+}: Props) => {
     const [date, setDate] = useState(dayjs());
     const [daysOfTheWeek] = useState(dayjs().localeData().weekdaysShort());
     const [currentDay, setCurrentDay] = useState([]);
@@ -207,11 +227,20 @@ const Calendar = ({ onChange, selectedDate = dayjs(), size }: Props) => {
             return (
                 <Week key={Math.random()}>
                     {row.map((item: any, index: number) => {
+                        const hasToDos = datesWithToDos?.filter(
+                            (todo) =>
+                                dayjs(todo.dateDue).format('MMMM/DD/YYYY') ===
+                                dayjs(item.date).format('MMMM/DD/YYYY')
+                        );
                         return (
                             <Day
                                 className={`${
+                                    hasToDos && hasToDos?.length > 0
+                                        ? `has-todos`
+                                        : ''
+                                }${
                                     item.day.toString() === currentDay
-                                        ? `current-day`
+                                        ? ` current-day`
                                         : ''
                                 }${item.otherMonth ? 'other-month' : ''}${
                                     dayjs(item.date).format('MMMM/DD/YYYY') ===

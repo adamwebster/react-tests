@@ -5,9 +5,10 @@ import { ToDoContext } from '../State';
 
 const CalendarControl = () => {
     const [date, setDate] = useState(dayjs());
-    const { dispatch } = useContext(ToDoContext);
+    const { globalState, dispatch } = useContext(ToDoContext);
     return (
         <Calendar
+            datesWithToDos={globalState.allToDos}
             size={280}
             selectedDate={date}
             onChange={(date) => {

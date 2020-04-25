@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 
 const initialState = {
     calendarTodoList: [],
+    allToDos: [],
     newToDoVisible: false,
     editToDoVisible: false,
     selectedDate: new Date().toString(),
@@ -27,7 +28,9 @@ const reducer = (state: any, action: { payload: any; type: any }) => {
             return {
                 ...state,
                 calendarTodoList: payload.calendarTodoList,
+                allToDos: payload.allToDos,
             };
+
         case 'SHOW_NEW_TODO':
             return {
                 ...state,

@@ -81,16 +81,17 @@ const ToDos = ({ onChange }: Props) => {
         }
         if (localTodos) {
             const stringToObject = JSON.parse(localTodos as string);
-            console.log(stringToObject, globalState);
             const ToDosFiltered = stringToObject.filter(
                 (item: any) =>
                     dayjs(item.dateDue).format('MM-D-YYYY') ===
                     dayjs(globalState.selectedDate).format('MM-D-YYYY')
             );
-            console.log(ToDosFiltered);
             dispatch({
                 type: 'SET_TODOS',
-                payload: { calendarTodoList: ToDosFiltered },
+                payload: {
+                    calendarTodoList: ToDosFiltered,
+                    allToDos: stringToObject,
+                },
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

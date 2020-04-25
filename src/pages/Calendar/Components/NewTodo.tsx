@@ -70,7 +70,10 @@ const NewTodo = () => {
         localStorage.setItem('calendarTodos', toDoArrayToString);
         dispatch({
             type: 'SET_TODOS',
-            payload: { calendarTodoList: localTodoArray },
+            payload: {
+                calendarTodoList: localTodoArray,
+                allToDos: localTodoArray,
+            },
         });
         setTitle('');
         setDatePickerDate('');

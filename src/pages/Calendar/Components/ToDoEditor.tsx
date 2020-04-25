@@ -81,7 +81,10 @@ const ToDoEditor = ({ setToDoItem }: Props) => {
 
         dispatch({
             type: 'SET_TODOS',
-            payload: { calendarTodoList: localTodoArray },
+            payload: {
+                calendarTodoList: localTodoArray,
+                allToDos: localTodoArray,
+            },
         });
     };
 
@@ -97,7 +100,10 @@ const ToDoEditor = ({ setToDoItem }: Props) => {
         toast.addSuccess('To do has been deleted');
         dispatch({
             type: 'SET_TODOS',
-            payload: { calendarTodoList: localTodoArray },
+            payload: {
+                calendarTodoList: localTodoArray,
+                allToDos: localTodoArray,
+            },
         });
         dispatch({
             type: 'SHOW_EDIT_TODO',
