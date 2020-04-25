@@ -81,7 +81,8 @@ const NewTodo = () => {
             },
         });
         setTitle('');
-        setDatePickerDate('');
+        // setDatePickerDate('');
+        setDescription('');
         toast.addSuccess('To do added');
     };
 
