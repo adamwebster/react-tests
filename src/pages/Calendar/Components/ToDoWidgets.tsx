@@ -3,7 +3,7 @@ import { Card, Colors, Table, FCTheme } from '@adamwebster/fused-components';
 import styled, { css } from 'styled-components';
 import { darken } from 'polished';
 import { ToDoContext } from '../State';
-import dayjs from '@adamwebster/fused-components/node_modules/dayjs';
+import dayjs from 'dayjs';
 
 const WidgetWrapper = styled.section`
     display: flex;
