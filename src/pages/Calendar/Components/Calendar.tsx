@@ -170,7 +170,7 @@ const Calendar = ({
     size,
 }: Props) => {
     const [date, setDate] = useState(dayjs());
-    const [daysOfTheWeek] = useState(dayjs().localeData().weekdaysShort());
+    const [daysOfTheWeek] = useState(['S', 'M', 'T', 'W', 'T', 'F', 'S']);
     const [currentDay, setCurrentDay] = useState([]);
 
     const [calendar, setCalendar] = useState([]);
