@@ -157,9 +157,10 @@ const ToDoEditor = ({ setToDoItem }: Props) => {
                             onChange={(date): void => {
                                 setDatePickerDate(date);
                             }}
-                            value={dayjs(datePickerDate).format(
-                                'MMMM Do, YYYY'
-                            )}
+                            value={
+                                datePickerDate &&
+                                dayjs(datePickerDate).format('MMMM Do, YYYY')
+                            }
                             selectedDate={datePickerDate}
                         />
                     </FormField>

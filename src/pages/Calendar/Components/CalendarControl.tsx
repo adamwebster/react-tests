@@ -13,6 +13,7 @@ const CalendarControl = () => {
             selectedDate={date}
             onChange={(date) => {
                 dispatch({ type: 'SET_SELECTED_DATE', payload: date });
+                dispatch({ type: 'SHOW_EDIT_TODO', payload: false });
                 setDate(dayjs(date));
             }}
         />
