@@ -68,10 +68,15 @@ const NewTodo = () => {
         localTodoArray.push(toDoToSave);
         const toDoArrayToString = JSON.stringify(localTodoArray);
         localStorage.setItem('calendarTodos', toDoArrayToString);
+        const ToDosFiltered = localTodoArray.filter(
+            (item: any) =>
+                dayjs(item.dateDue).format('MM-D-YYYY') ===
+                dayjs(globalState.selectedDate).format('MM-D-YYYY')
+        );
         dispatch({
             type: 'SET_TODOS',
             payload: {
-                calendarTodoList: localTodoArray,
+                calendarTodoList: ToDosFiltered,
                 allToDos: localTodoArray,
             },
         });

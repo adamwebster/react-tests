@@ -78,11 +78,15 @@ const ToDoEditor = ({ setToDoItem }: Props) => {
         const toDoArrayToString = JSON.stringify(localTodoArray);
         localStorage.setItem('calendarTodos', toDoArrayToString);
         toast.addSuccess('To do has been updated');
-
+        const ToDosFiltered = localTodoArray.filter(
+            (item: any) =>
+                dayjs(item.dateDue).format('MM-D-YYYY') ===
+                dayjs(globalState.selectedDate).format('MM-D-YYYY')
+        );
         dispatch({
             type: 'SET_TODOS',
             payload: {
-                calendarTodoList: localTodoArray,
+                calendarTodoList: ToDosFiltered,
                 allToDos: localTodoArray,
             },
         });
@@ -98,10 +102,15 @@ const ToDoEditor = ({ setToDoItem }: Props) => {
         const toDoArrayToString = JSON.stringify(localTodoArray);
         localStorage.setItem('calendarTodos', toDoArrayToString);
         toast.addSuccess('To do has been deleted');
+        const ToDosFiltered = localTodoArray.filter(
+            (item: any) =>
+                dayjs(item.dateDue).format('MM-D-YYYY') ===
+                dayjs(globalState.selectedDate).format('MM-D-YYYY')
+        );
         dispatch({
             type: 'SET_TODOS',
             payload: {
-                calendarTodoList: localTodoArray,
+                calendarTodoList: ToDosFiltered,
                 allToDos: localTodoArray,
             },
         });

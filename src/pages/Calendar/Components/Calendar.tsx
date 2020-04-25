@@ -5,7 +5,6 @@ import advancedFormat from 'dayjs/plugin/advancedFormat';
 import duration from 'dayjs/plugin/duration';
 import styled from 'styled-components';
 import { Colors, Button, Icon } from '@adamwebster/fused-components';
-import { ToDoContext } from '../State';
 
 const Table = styled.table`
     padding: 0;
