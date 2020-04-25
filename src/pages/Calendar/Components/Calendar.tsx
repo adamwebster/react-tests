@@ -175,8 +175,8 @@ const Calendar = ({
 
     const [calendar, setCalendar] = useState([]);
 
-    const dayNames = daysOfTheWeek.map((day: string) => {
-        return <DayName key={day}>{day}</DayName>;
+    const dayNames = daysOfTheWeek.map((day: string, index) => {
+        return <DayName key={`${day}-${index}`}>{day}</DayName>;
     });
     const getWeeks = () => {
         let blankDays = [];
@@ -184,11 +184,12 @@ const Calendar = ({
         let blankDaysEnd = [];
         const startOfMonth = date.startOf('month');
         const daysInTheMonth = date.daysInMonth();
-        const endOfMonth = date.endOf('month');
+        //    const endOfMonth = date.endOf('month');
 
         for (let d = 0; d < startOfMonth.day(); d++) {
             blankDays.push({
-                day: startOfMonth.subtract(d + 1, 'day').format('D'),
+                // day: startOfMonth.subtract(d + 1, 'day').format('D'),
+                day: '',
                 otherMonth: true,
                 date: null,
             });
@@ -214,7 +215,8 @@ const Calendar = ({
             d--, i++
         ) {
             blankDaysEnd.push({
-                day: endOfMonth.add(i + 1, 'day').format('D'),
+                // day: endOfMonth.add(i + 1, 'day').format('D'),
+                day: '',
                 otherMonth: true,
                 date: null,
             });

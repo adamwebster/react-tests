@@ -168,7 +168,6 @@ const ToDos = ({ onChange }: Props) => {
         }) => {
             return (
                 <ToDoItem key={item.id}>
-                    {console.log(theme)}
                     <DoneMarker
                         onClick={() => markCompleted(item.id)}
                         title="Mark as done"
