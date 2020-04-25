@@ -110,6 +110,7 @@ const Day = styled.td`
         align-items: center;
         background-color: transparent;
         border: none;
+        color: inherit;
         .day-number {
             width: 25px;
             padding-top: 5px;

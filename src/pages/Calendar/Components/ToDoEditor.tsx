@@ -7,7 +7,6 @@ import {
     Button,
     Textarea,
     useToast,
-    Colors,
 } from '@adamwebster/fused-components';
 import dayjs from 'dayjs';
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 import styled from 'styled-components';
-import { Colors, Button, Icon } from '@adamwebster/fused-components';
+import { Colors, Button, Icon, FCTheme } from '@adamwebster/fused-components';
 import { ToDoContext } from '../State';
 import dayjs from 'dayjs';
 
@@ -17,7 +17,8 @@ const ToDoList = styled.ul`
         }
         &:focus,
         &:hover {
-            background-color: ${Colors.mediumlight};
+            background-color: ${({ theme }) =>
+                theme === 'dark' ? Colors.darkModeDark : Colors.mediumlight};
         }
     }
 `;
@@ -67,6 +68,7 @@ interface Props {
 
 const ToDos = ({ onChange }: Props) => {
     const { globalState, dispatch } = useContext(ToDoContext);
+    const theme = useContext(FCTheme);
     const loadToDoKeyPress = (
         e: React.KeyboardEvent<HTMLDivElement>,
         id: number
@@ -160,6 +162,7 @@ const ToDos = ({ onChange }: Props) => {
         }) => {
             return (
                 <ToDoItem key={item.id}>
+                    {console.log(theme)}
                     <DoneMarker
                         onClick={() => markCompleted(item.id)}
                         title="Mark as done"
@@ -183,7 +186,7 @@ const ToDos = ({ onChange }: Props) => {
         }
     );
     return (
-        <ToDoList>
+        <ToDoList theme={theme?.theme}>
             {items.length > 0 ? items : <span>You have nothing todo.</span>}
             <p>
                 <Button
