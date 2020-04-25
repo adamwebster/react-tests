@@ -83,7 +83,7 @@ const CalendarDemo = () => {
                                 <CalendarControl />
                             </CalendarWrapper>
                             <ToDoWrapper>
-                                <h2>Todo items</h2>
+                                <h2>To-do items</h2>
 
                                 <ToDos />
                             </ToDoWrapper>
