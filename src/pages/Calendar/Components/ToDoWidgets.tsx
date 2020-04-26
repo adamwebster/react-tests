@@ -1,9 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, Suspense } from 'react';
 import { Card, Colors, Table, FCTheme } from '@adamwebster/fused-components';
 import styled, { css } from 'styled-components';
 import { darken } from 'polished';
 import { ToDoContext } from '../State';
 import dayjs from 'dayjs';
+import { CountWidgetLoading } from './CountWidget';
+
+const CountWidget = React.lazy(() => import('./CountWidget'));
 
 const WidgetWrapper = styled.section`
     display: flex;
@@ -148,22 +151,44 @@ const ToDoWidgets = () => {
     return (
         <>
             <WidgetWrapper>
-                <Widget foregroundColor="#fff" backgroundColor={Colors.green}>
-                    <h3>{completed}</h3>
-                    <span>Completed</span>
-                </Widget>
-                <Widget foregroundColor="#fff" backgroundColor={Colors.red}>
-                    <h3>{overdue.length}</h3>
-                    <span>Overdue</span>
-                </Widget>
-                <Widget foregroundColor="#fff" backgroundColor={Colors.yellow}>
-                    <h3>{dueToday.length}</h3>
-                    <span>Due today</span>
-                </Widget>
-                <Widget foregroundColor="#fff" backgroundColor={Colors.blue}>
-                    <h3>{dueNextSevenDays}</h3>
-                    <span>Due in the next week</span>
-                </Widget>
+                <Suspense fallback={<CountWidgetLoading />}>
+                    <CountWidget
+                        foregroundColor="#fff"
+                        backgroundColor={Colors.green}
+                    >
+                        <h3>{completed}</h3>
+                        <span>Completed</span>
+                    </CountWidget>
+                </Suspense>
+                <Suspense fallback={<CountWidgetLoading />}>
+                    <CountWidget
+                        foregroundColor="#fff"
+                        backgroundColor={Colors.red}
+                    >
+                        <h3>{overdue.length}</h3>
+                        <span>Overdue</span>
+                    </CountWidget>
+                </Suspense>
+
+                <Suspense fallback={<CountWidgetLoading />}>
+                    <CountWidget
+                        foregroundColor="#fff"
+                        backgroundColor={Colors.yellow}
+                    >
+                        <h3>{dueToday.length}</h3>
+                        <span>Due today</span>
+                    </CountWidget>
+                </Suspense>
+
+                <Suspense fallback={<CountWidgetLoading />}>
+                    <CountWidget
+                        foregroundColor="#fff"
+                        backgroundColor={Colors.blue}
+                    >
+                        <h3>{dueNextSevenDays}</h3>
+                        <span>Due in the next week</span>
+                    </CountWidget>
+                </Suspense>
             </WidgetWrapper>
             <WidgetWrapper>
                 <Widget backgroundColor={TableWidgetColor}>
