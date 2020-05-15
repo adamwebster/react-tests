@@ -1,8 +1,16 @@
 import React, { useEffect, useContext } from 'react';
 import styled from 'styled-components';
-import { Colors, Button, Icon, FCTheme } from '@adamwebster/fused-components';
+import {
+    Colors,
+    Button,
+    Icon,
+    FCTheme,
+    Tooltip,
+} from '@adamwebster/fused-components';
 import { ToDoContext } from '../State';
 import dayjs from 'dayjs';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faList, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 
 const ToDoTitle = styled.span``;
 
@@ -62,9 +70,30 @@ const RemoveButton = styled.button`
     cursor: pointer;
 `;
 
+const MobileListMenu = styled.ul`
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    li {
+        border-bottom: solid 1px ${Colors.border};
+        padding: 10px;
+        box-sizing: border-box;
+    }
+`;
+
 interface Props {
     onChange?: (todo: any) => void;
 }
+
+const ToDoWrapper = styled.div`
+    padding: 10px;
+    box-sizing: border-box;
+    border-bottom: solid 1px ${Colors.border};
+    h2 {
+        font-weight: normal;
+        margin: 0 0 10px 0;
+    }
+`;
 
 const ToDos = ({ onChange }: Props) => {
     const { globalState, dispatch } = useContext(ToDoContext);
@@ -195,22 +224,53 @@ const ToDos = ({ onChange }: Props) => {
         }
     );
     return (
-        <ToDoList theme={theme?.theme}>
-            {items.length > 0 ? items : <span>You have nothing to-do.</span>}
-            <p>
-                <Button
-                    primary
-                    onClick={() =>
-                        dispatch({
-                            type: 'SHOW_NEW_TODO',
-                            payload: true,
-                        })
-                    }
-                >
-                    Create a new to-do
-                </Button>
-            </p>
-        </ToDoList>
+        <>
+            {!globalState.sidebarCollapsed ? (
+                <ToDoWrapper>
+                    <h2>To-do items</h2>
+
+                    <ToDoList theme={theme?.theme}>
+                        {items.length > 0 ? (
+                            items
+                        ) : (
+                            <span>
+                                <Tooltip
+                                    triggerAs="span"
+                                    id="tooltip1"
+                                    content="Click create a new to-do to add one"
+                                >
+                                    You have nothing to-do.
+                                </Tooltip>
+                            </span>
+                        )}
+                    </ToDoList>
+                    <p>
+                        <Button
+                            primary
+                            onClick={() =>
+                                dispatch({
+                                    type: 'SHOW_NEW_TODO',
+                                    payload: true,
+                                })
+                            }
+                        >
+                            Create a new to-do
+                        </Button>
+                    </p>
+                </ToDoWrapper>
+            ) : (
+                <>
+                    <MobileListMenu>
+                        <li>
+                            <FontAwesomeIcon icon={faList} />
+                        </li>
+                        <li>
+                            <FontAwesomeIcon icon={faPlusCircle} />
+                        </li>
+                    </MobileListMenu>
+                </>
+            )}
+        </>
     );
 };
 

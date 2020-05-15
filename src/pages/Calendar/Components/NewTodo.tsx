@@ -96,7 +96,9 @@ const NewTodo = () => {
     };
 
     useEffect(() => {
-        setDatePickerDate(globalState.selectedDate.toString());
+        if (globalState.selectedDate) {
+            setDatePickerDate(globalState.selectedDate.toString());
+        }
     }, [globalState.selectedDate]);
     return (
         <>
@@ -123,8 +125,9 @@ const NewTodo = () => {
                     label="Due date"
                 >
                     <DatePicker
+                        id="datePicker"
                         ref={dateRef}
-                        onChange={(date): void => {
+                        onDateChange={(date): void => {
                             setDatePickerDate(date);
                             dispatch({
                                 type: 'SET_SELECTED_DATE',
@@ -134,9 +137,6 @@ const NewTodo = () => {
                         value={
                             datePickerDate &&
                             dayjs(datePickerDate).format('MMMM Do, YYYY')
-                        }
-                        selectedDate={
-                            (globalState.selectedDate as unknown) as string
                         }
                     />
                 </FormField>

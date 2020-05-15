@@ -1,22 +1,22 @@
-import React, { Suspense, useState } from 'react'
-import styled from 'styled-components'
-import { Button, DropdownButton } from '@adamwebster/fused-components'
+import React, { Suspense, useState } from 'react';
+import styled from 'styled-components';
+import { Button, DropdownButton } from '@adamwebster/fused-components';
 
-const HelloLazy = React.lazy(() => import('./components/HelloLazy'))
+const HelloLazy = React.lazy(() => import('./components/HelloLazy'));
 
 const Wrapper = styled.section`
     width: 500px;
     margin: 20px auto;
-`
+`;
 
 const StyledDropdownButton = styled.div`
     margin-right: 10px;
     float: left;
-`
+`;
 
 const LazyComponent = () => {
-    const [commentsLoaded, setCommentsLoaded] = useState(4)
-    const [commentsToLoad, setCommentsToLoad] = useState(4)
+    const [commentsLoaded, setCommentsLoaded] = useState(4);
+    const [commentsToLoad, setCommentsToLoad] = useState(4);
     return (
         <Wrapper>
             <Suspense fallback={<div>...loading</div>}>
@@ -27,7 +27,10 @@ const LazyComponent = () => {
                 <>
                     <StyledDropdownButton>
                         <span>Amount to load: </span>
-                        <DropdownButton label={commentsToLoad.toString()}>
+                        <DropdownButton
+                            id="button1"
+                            label={commentsToLoad.toString()}
+                        >
                             <DropdownButton.Menu>
                                 <DropdownButton.MenuItem
                                     onClick={() => setCommentsToLoad(4)}
@@ -59,7 +62,7 @@ const LazyComponent = () => {
                 </>
             )}
         </Wrapper>
-    )
-}
+    );
+};
 
-export default LazyComponent
+export default LazyComponent;

@@ -7,6 +7,7 @@ const initialState = {
     newToDoVisible: false,
     editToDoVisible: false,
     selectedDate: new Date().toString(),
+    sidebarCollapsed: false,
     toDoItem: {
         id: 0,
         title: 'Test',
@@ -52,6 +53,11 @@ const reducer = (state: any, action: { payload: any; type: any }) => {
             return {
                 ...state,
                 selectedDate: payload,
+            };
+        case 'SET_SIDEBAR_COLLAPSED':
+            return {
+                ...state,
+                sidebarCollapsed: payload,
             };
         default:
             return state;
