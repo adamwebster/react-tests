@@ -22,6 +22,7 @@ import { LazyComponent } from './pages/LazyComponents';
 import { CalendarDemo } from './pages/Calendar';
 import { AppContextProvider } from './State';
 import BodyStyles from './BodyStyles';
+import { Dashboard } from './pages/Dashboard';
 
 const Grid = styled.div`
     display: grid;
@@ -80,7 +81,7 @@ const AppHeader = styled.div`
     padding: 10px;
     border-bottom: solid 1px
         ${(props) =>
-            props.theme === 'dark' ? Colors.darkModeMediumDark : Colors.border};
+        props.theme === 'dark' ? Colors.darkModeMediumDark : Colors.border};
     box-sizing: border-box;
     h1 {
         display: inline;
@@ -195,6 +196,9 @@ function App() {
                         </Route>
                         <Route path="/calendar">
                             <CalendarDemo />
+                        </Route>
+                        <Route path="/dashboard">
+                            <Dashboard />
                         </Route>
                     </Switch>
                 </div>

@@ -2,6 +2,7 @@
 # yarn lockfile v1
 
 
+<<<<<<< Updated upstream
 "@adamwebster/fused-components@1.2.2":
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/@adamwebster/fused-components/-/fused-components-1.2.2.tgz#80d738a9d9e018410565bb46386541f0751fd81d"
@@ -11,6 +12,8 @@
     react-popper "^2.2.3"
     styled-components "^5.0.1"
 
+=======
+>>>>>>> Stashed changes
 "@babel/code-frame@7.8.3", "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.8.3":
   version "7.8.3"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.8.3.tgz#33e25903d7481181534e12ec0a25f16b6fcf419e"
@@ -10141,7 +10144,7 @@ style-loader@0.23.1:
     loader-utils "^1.1.0"
     schema-utils "^1.0.0"
 
-styled-components@^5.0.0, styled-components@^5.0.1:
+styled-components@^5.0.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/styled-components/-/styled-components-5.1.0.tgz#2e3985b54f461027e1c91af3229e1c2530872a4e"
   integrity sha512-0Qs2wEkFBXHFlysz6CV831VG6HedcrFUwChjnWylNivsx14MtmqQsohi21rMHZxzuTba063dEyoe/SR6VGJI7Q==
