@@ -14,7 +14,7 @@ const Wrapper = styled.section`
     height: calc(100vh - 98px);
     overflow: auto;
     @media (max-width: 768px) {
-        flex-direction: column;
+        flex-direction: column-reverse;
     }
     border-bottom: solid 1px ${Colors.border};
 `;

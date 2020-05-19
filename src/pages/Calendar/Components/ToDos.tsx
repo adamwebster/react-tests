@@ -89,6 +89,9 @@ const ToDoWrapper = styled.div`
     padding: 10px;
     box-sizing: border-box;
     border-bottom: solid 1px ${Colors.border};
+    @media (max-width: 768px) {
+        border-bottom: none;
+    }
     h2 {
         font-weight: normal;
         margin: 0 0 10px 0;

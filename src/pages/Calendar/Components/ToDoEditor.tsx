@@ -77,7 +77,7 @@ const ToDoEditor = ({ setToDoItem }: Props) => {
         toDoToUpdate.description = description;
         const toDoArrayToString = JSON.stringify(localTodoArray);
         localStorage.setItem('calendarTodos', toDoArrayToString);
-        toast.addSuccess('To-Do has been updated');
+        toast.addSuccess('To-do has been updated');
         const ToDosFiltered = localTodoArray.filter(
             (item: any) =>
                 dayjs(item.dateDue).format('MM-D-YYYY') ===
@@ -130,7 +130,7 @@ const ToDoEditor = ({ setToDoItem }: Props) => {
 
     return (
         <>
-            <Breadcrumb currentPageTitle="Edit To-Do" />
+            <Breadcrumb currentPageTitle="Edit To-do" />
             {globalState.editToDoVisible && (
                 <ToDoEditorStyled>
                     <h2>Edit</h2>
@@ -138,7 +138,7 @@ const ToDoEditor = ({ setToDoItem }: Props) => {
                         required
                         validationMessage={titleErrorMessage}
                         htmlFor="title"
-                        label="To-Do title"
+                        label="To-do title"
                     >
                         <Input
                             id="title"

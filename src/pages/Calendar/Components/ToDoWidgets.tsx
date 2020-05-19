@@ -14,6 +14,9 @@ const WidgetWrapper = styled.section`
     border-bottom: solid 1px ${Colors.border};
     &:last-child {
         border-bottom: none;
+        @media (max-width: 768px) {
+            border-bottom: solid 1px ${Colors.border};
+        }
     }
     @media (max-width: 768px) {
         flex-direction: column;

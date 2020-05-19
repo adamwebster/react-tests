@@ -10,6 +10,7 @@ import followImg from './static/follow.png';
 import priceTableImg from './static/pricetable.jpg';
 import playlistImg from './static/playlist.jpg';
 import rssImage from './static/RSSReader.jpg';
+import calendarImage from './static/calendar.jpg';
 
 import { FCThemeProvider, Colors } from '@adamwebster/fused-components';
 import loginImg from './static/login.png';
@@ -27,13 +28,17 @@ import { Dashboard } from './pages/Dashboard';
 const Grid = styled.div`
     display: grid;
     grid-gap: 20px;
-    width: 330px;
+    width: 495px;
     margin: 0 auto;
-    grid-template-columns: auto auto;
+    grid-template-columns: auto auto auto;
     grid-template-rows: auto;
 
     padding: 10px;
     justify-items: center;
+    @media (max-width: 768px) {
+        width: 330px;
+        grid-template-columns: auto auto;
+    }
 `;
 
 const GridItem = styled.div`
@@ -166,6 +171,12 @@ function App() {
                                     <StyledLink image={rssImage} to="/rss" />
                                     <Link to="/rss">
                                         <h3>RSS Reader</h3>
+                                    </Link>
+                                </GridItem>
+                                <GridItem>
+                                    <StyledLink image={calendarImage} to="/calendar" />
+                                    <Link to="/calendar">
+                                        <h3>To-do | Calendar</h3>
                                     </Link>
                                 </GridItem>
                             </Grid>

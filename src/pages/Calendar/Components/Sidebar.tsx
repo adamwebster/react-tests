@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 import CalendarControl from './CalendarControl';
-import CollapseButton from './CollapseButton';
 import ToDos from './ToDos';
 import { FCTheme, Colors } from '@adamwebster/fused-components';
 

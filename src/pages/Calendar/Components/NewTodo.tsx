@@ -84,7 +84,7 @@ const NewTodo = () => {
         setTitle('');
         // setDatePickerDate('');
         setDescription('');
-        toast.addSuccess('To do added');
+        toast.addSuccess('To-do added');
     };
 
     const resetForm = () => {
@@ -102,7 +102,7 @@ const NewTodo = () => {
     }, [globalState.selectedDate]);
     return (
         <>
-            <Breadcrumb currentPageTitle="New To-Do" />
+            <Breadcrumb currentPageTitle="New To-do" />
             <ToDoEditorStyled>
                 <h2>New</h2>
                 <FormField
