@@ -24,6 +24,7 @@ import { CalendarDemo } from './pages/Calendar';
 import { AppContextProvider } from './State';
 import BodyStyles from './BodyStyles';
 import { Dashboard } from './pages/Dashboard';
+import { FusedAllowance } from './pages/FusedAllowance';
 
 const Grid = styled.div`
     display: grid;
@@ -210,6 +211,9 @@ function App() {
                         </Route>
                         <Route path="/dashboard">
                             <Dashboard />
+                        </Route>
+                        <Route path="/fusedallowance">
+                            <FusedAllowance />
                         </Route>
                     </Switch>
                 </div>
