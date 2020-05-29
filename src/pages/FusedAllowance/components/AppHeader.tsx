@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
+import { FusedAllowanceContext } from '../state';
 
 const AppHeaderStyled = styled.header`
     width: 100%;
-    height: 44px;
+    height: 49px;
     background-color: tomato;
     color: #fff;
     display: flex;
@@ -13,7 +14,8 @@ const AppHeaderStyled = styled.header`
 `;
 
 const AppHeader = () => {
-    return <AppHeaderStyled>Fused Allowance</AppHeaderStyled>;
+    const { globalState } = useContext(FusedAllowanceContext);
+    return <AppHeaderStyled>{globalState.title}</AppHeaderStyled>;
 };
 
 export default AppHeader;

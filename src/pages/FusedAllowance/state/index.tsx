@@ -1,4 +1,4 @@
-import React, { createContext, ReactElement } from 'react';
+import React, { createContext, ReactNode } from 'react';
 
 const initialState = {
     title: 'Fused Allowance',
@@ -24,7 +24,7 @@ const reducer = (state: any, action: { payload: any; type: any }) => {
 };
 
 interface Props {
-    children: ReactElement;
+    children: ReactNode;
 }
 
 export const FusedAllowanceProvider = ({ children }: Props) => {
