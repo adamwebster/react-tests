@@ -25,6 +25,7 @@ import { AppContextProvider } from './State';
 import BodyStyles from './BodyStyles';
 import { Dashboard } from './pages/Dashboard';
 import { FusedAllowance } from './pages/FusedAllowance';
+import { FramerMotion } from './pages/FramerMotion';
 
 const Grid = styled.div`
     display: grid;
@@ -87,7 +88,7 @@ const AppHeader = styled.div`
     padding: 10px;
     border-bottom: solid 1px
         ${(props) =>
-        props.theme === 'dark' ? Colors.darkModeMediumDark : Colors.border};
+            props.theme === 'dark' ? Colors.darkModeMediumDark : Colors.border};
     box-sizing: border-box;
     h1 {
         display: inline;
@@ -175,7 +176,10 @@ function App() {
                                     </Link>
                                 </GridItem>
                                 <GridItem>
-                                    <StyledLink image={calendarImage} to="/calendar" />
+                                    <StyledLink
+                                        image={calendarImage}
+                                        to="/calendar"
+                                    />
                                     <Link to="/calendar">
                                         <h3>To-do | Calendar</h3>
                                     </Link>
@@ -214,6 +218,9 @@ function App() {
                         </Route>
                         <Route path="/fusedallowance">
                             <FusedAllowance />
+                        </Route>
+                        <Route path="/framermotion">
+                            <FramerMotion />
                         </Route>
                     </Switch>
                 </div>

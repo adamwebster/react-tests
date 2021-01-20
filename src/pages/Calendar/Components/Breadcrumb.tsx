@@ -39,7 +39,7 @@ const Breadcrumb = ({ currentPageTitle }: Props) => {
                 <button onClick={() => goToDashboard()}>Dashboard</button>
             </li>
             <li>
-                > <strong>{currentPageTitle}</strong>{' '}
+                {'>'} <strong>{currentPageTitle}</strong>{' '}
             </li>
         </BreadcrumbStyled>
     );

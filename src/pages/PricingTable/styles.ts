@@ -1,11 +1,11 @@
 import styled, { css } from 'styled-components'
 import { Card, Button, Toggle, Textarea } from '@adamwebster/fused-components'
 
-interface StyledCard {
+interface StyledCardProps {
     primary?: boolean;
     scale?: string;
 }
-export const StyledCard = styled(Card)<StyledCard>`
+export const StyledCard = styled(Card) <StyledCardProps>`
     width: 275px;
     padding: 30px;
     display: inline-block;

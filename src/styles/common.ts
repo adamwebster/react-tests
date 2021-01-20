@@ -8,6 +8,7 @@ export const ExampleFooterStyled = styled.div`
     color: #333;
     text-align: center;
     box-sizing: border-box;
+    color: ${({ theme }) => theme.name === 'dark' ? '#fff' : 'inherit'};
 `;
 
 export const ExampleFooterStyledFloating = styled.div`
@@ -19,7 +20,6 @@ export const ExampleFooterStyledFloating = styled.div`
     background-color: #ffffffee;
     border-left: solid 1px ${Colors.border};
     border-top: solid 1px ${Colors.border};
-
     border-top-left-radius: 5px;
     bottom: 0;
     right: 0;
