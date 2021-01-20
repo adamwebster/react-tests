@@ -9,6 +9,7 @@ interface GSProps {
 const GlobalStyle = createGlobalStyle<GSProps>`
   body {
    width:100%;
+   font-size: 100%;
   }
 #root{
   height: 100vh;
