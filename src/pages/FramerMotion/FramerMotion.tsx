@@ -18,6 +18,14 @@ import {
 
 import { faWindowMaximize } from '@fortawesome/free-regular-svg-icons';
 
+const StyledNavBar = styled.nav`
+    width: 100%;
+    height: 50px;
+    background-color: ${Colors.primary};
+    color: #fff;
+    padding: 16px;
+    box-sizing: border-box;
+`;
 const StyledHeaderContainer = styled.div`
     width: 100%;
     background-color: #bcdaff;
@@ -87,6 +95,7 @@ const StyledServicesGrid = styled.div`
     margin: 0 auto;
     display: grid;
     gap: 16px;
+    padding: 0 16px;
     grid-template-columns: repeat(3, 1fr);
 `;
 
@@ -107,6 +116,7 @@ const StyledServicesCard = styled(Card)`
 const FramerMotion = () => {
     return (
         <>
+            <StyledNavBar>Adam Webster</StyledNavBar>
             <StyledHeaderContainer>
                 <StyledHeaderContainerInner>
                     <AnimatedLogo />

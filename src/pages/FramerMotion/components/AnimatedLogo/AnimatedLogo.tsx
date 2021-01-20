@@ -20,7 +20,6 @@ const StyledContainer = styled.div`
     place-content: center;
     overflow: hidden;
     .item {
-        width: 56%;
         overflow: visible;
         stroke: rgba(0, 110, 245, 1);
         stroke-width: 2;
@@ -39,7 +38,7 @@ const AnimatedLogo = () => {
                 version="1.1"
                 className="item"
             >
-                <g transform="matrix(1,0,0,1,-1855.73,-13.6115)">
+                <g transform="matrix(1,0,0,1,-1860.73,-13.6115)">
                     <g transform="matrix(1,0,0,2.20208,1667.25,9.61153)">
                         <g transform="matrix(0.135956,0,0,0.0617399,188.484,1.8164)">
                             <g>
