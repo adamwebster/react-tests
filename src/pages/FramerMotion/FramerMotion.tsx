@@ -18,13 +18,29 @@ import {
 
 import { faWindowMaximize } from '@fortawesome/free-regular-svg-icons';
 
-const StyledNavBar = styled.nav`
+const StyledSiteHeader = styled.header`
     width: 100%;
     height: 50px;
     background-color: ${Colors.primary};
     color: #fff;
     padding: 16px;
     box-sizing: border-box;
+    display: flex;
+`;
+
+const StyledNav = styled.nav`
+    display: flex;
+    flex: 1 1;
+    justify-content: flex-end;
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        li {
+            padding: 0 8px;
+        }
+    }
 `;
 const StyledHeaderContainer = styled.div`
     width: 100%;
@@ -93,19 +109,23 @@ const StyledProjectsGrid = styled.div`
 const StyledServicesGrid = styled.div`
     max-width: 1200px;
     margin: 0 auto;
-    display: grid;
+    display: flex;
     gap: 16px;
     padding: 0 16px;
-    grid-template-columns: repeat(3, 1fr);
+    > div {
+        flex: 1 1;
+    }
 `;
 
 const StyledServicesCard = styled(Card)`
     padding: 32px 16px;
     border: none;
     display: flex;
+    position: relative;
     flex-flow: column;
     justify-content: center;
     align-items: center;
+    flex: 1 1;
     svg {
         margin-bottom: 32px;
         + svg {
@@ -113,10 +133,35 @@ const StyledServicesCard = styled(Card)`
         }
     }
 `;
+
+const Services = [
+    {
+        name: ' Front-end Development',
+        icons: [faCode],
+    },
+    {
+        name: ' Web & Mobile Design',
+        icons: [faMobileAlt, faWindowMaximize],
+    },
+    {
+        name: 'Logo Design & Branding',
+        icons: [faPalette],
+    },
+];
 const FramerMotion = () => {
     return (
         <>
-            <StyledNavBar>Adam Webster</StyledNavBar>
+            <StyledSiteHeader>
+                Adam Webster
+                <StyledNav>
+                    <ul>
+                        <li>Home</li>
+                        <li>Portfolio</li>
+                        <li>Blog</li>
+                        <li>Contact</li>
+                    </ul>
+                </StyledNav>
+            </StyledSiteHeader>
             <StyledHeaderContainer>
                 <StyledHeaderContainerInner>
                     <AnimatedLogo />
@@ -145,21 +190,31 @@ const FramerMotion = () => {
                 </StyledHeaderContainerInner>
             </StyledHeaderContainer>
             <StyledServicesGrid>
-                <StyledServicesCard>
-                    <FontAwesomeIcon size="5x" icon={faCode} />
-                    <span> Front-end Development</span>
-                </StyledServicesCard>
-                <StyledServicesCard>
-                    <div>
-                        <FontAwesomeIcon size="5x" icon={faMobileAlt} />
-                        <FontAwesomeIcon size="5x" icon={faWindowMaximize} />
-                    </div>
-                    Web & Mobile Design
-                </StyledServicesCard>
-                <StyledServicesCard>
-                    <FontAwesomeIcon size="5x" icon={faPalette} />
-                    <span>Logo Design & Branding</span>
-                </StyledServicesCard>
+                {Services.map((service, index) => {
+                    return (
+                        <motion.div
+                            style={{ position: 'relative' }}
+                            initial={{ opacity: 0, top: '-30px' }}
+                            animate={{ opacity: 1, top: '0px' }}
+                            transition={{
+                                default: { duration: 0.5, delay: index / 2 },
+                                top: { duration: 0.5, ease: 'easeInOut' },
+                            }}
+                        >
+                            <StyledServicesCard>
+                                <div>
+                                    {service.icons.map((icon) => (
+                                        <FontAwesomeIcon
+                                            size="5x"
+                                            icon={icon}
+                                        />
+                                    ))}
+                                </div>
+                                <span>{service.name}</span>
+                            </StyledServicesCard>
+                        </motion.div>
+                    );
+                })}
             </StyledServicesGrid>
             <StyledSkillsContainer>
                 <StyledSkillsGrid>
