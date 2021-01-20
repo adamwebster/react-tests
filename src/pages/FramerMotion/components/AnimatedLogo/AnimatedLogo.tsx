@@ -19,7 +19,6 @@ const StyledContainer = styled.div`
     display: flex;
     place-content: center;
     overflow: hidden;
-    border-radius: 30px;
     .item {
         width: 56%;
         overflow: visible;
@@ -36,7 +35,7 @@ const AnimatedLogo = () => {
             <motion.svg
                 width="100%"
                 height="100%"
-                viewBox="0 0 30 42"
+                viewBox="0 0 20 42"
                 version="1.1"
                 className="item"
             >
