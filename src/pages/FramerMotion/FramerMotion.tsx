@@ -1,7 +1,7 @@
 import { motion, AnimateSharedLayout, AnimatePresence } from 'framer-motion';
 import { AnimatedLogo } from './components/AnimatedLogo';
 import styled from 'styled-components';
-import { Card, Colors } from '@adamwebster/fused-components';
+import { Card, Colors, FCTheme } from '@adamwebster/fused-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faJsSquare,
@@ -17,7 +17,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import { faWindowMaximize } from '@fortawesome/free-regular-svg-icons';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { ProjectItem } from './components/ProjectItem';
 
 const StyledSiteHeader = styled.header`
@@ -123,7 +123,7 @@ const StyledSectionHeader = styled.h2`
         content: '';
         position: absolute;
         height: 5px;
-        background-color: ${Colors.primary};
+        background-color: ${Colors.medium};
         width: 75%;
         left: 50%;
         transform: translateX(-50%);
@@ -163,7 +163,7 @@ const StyledBlogPostCard = styled(Card)`
     flex: 1 1;
     overflow: hidden;
     padding-bottom: 30px;
-    box-shadow: 0 0 10px #ccc;
+    box-shadow: 0 0 10px ${({ theme }) => (theme === 'dark' ? '#000' : '#ccc')};
     z-index: 1;
 `;
 
@@ -193,7 +193,7 @@ const StyledServicesCard = styled(Card)`
     overflow: hidden;
     transition: all 0.2s ease 0s;
     padding-bottom: 30px;
-    box-shadow: 0 0 10px #ccc;
+    box-shadow: 0 0 10px ${({ theme }) => (theme === 'dark' ? '#000' : '#ccc')};
 
     &:hover {
         transform: scale(1.05);
@@ -218,7 +218,8 @@ const StyledServicesCardImageWrapper = styled.div`
 const StyledOverlay = styled.div`
     width: 100%;
     height: 100%;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: ${({ theme }) =>
+        theme === 'dark' ? 'rgba(0, 0, 0, 0.5)' : 'rgba(255, 255, 255, 0.5)'};
     position: fixed;
     top: 0;
     left: 0;
@@ -235,14 +236,15 @@ const StyledCardModal = styled.div`
     height: auto;
     max-width: 700px;
     pointer-events: none;
-    background-color: #fff;
+    background-color: ${({ theme }) =>
+        theme === 'dark' ? Colors.darkModeDark : '#fff'};
     border-radius: 8px;
-    box-shadow: 0 0 10px #ccc;
+    box-shadow: 0 0 10px ${({ theme }) => (theme === 'dark' ? '#000' : '#ccc')};
     z-index: 2;
 `;
 
 const StyledCardContent = styled.div`
-    padding: 16px;
+    padding: 16px 32px 32px;
 `;
 
 const StyledContentWrapper = styled.div`
@@ -258,7 +260,7 @@ const StyledImageWrapper = styled.div`
     align-items: flex-start;
     overflow: hidden;
     img {
-        max-width: 100%;
+        width: 100%;
     }
 `;
 
@@ -384,8 +386,10 @@ const blogPosts = [
 const FramerMotion = () => {
     const [selectedId, setSelectedID] = useState<number | null>(null);
     const [selectedService, setSelectedService] = useState<any | null>(null);
+    const { theme } = useContext(FCTheme);
     return (
         <>
+            {console.log(theme)}
             <StyledSiteHeader>
                 Adam Webster
                 <StyledNav>
@@ -449,8 +453,10 @@ const FramerMotion = () => {
                             >
                                 <motion.div
                                     layoutId={`card-container-${service.id}`}
+                                    exit={{ opacity: 0 }}
                                 >
                                     <StyledServicesCard
+                                        theme={theme}
                                         tabIndex={0}
                                         onKeyDown={(e) => {
                                             const { key } = e;
@@ -497,6 +503,7 @@ const FramerMotion = () => {
                     {selectedId && (
                         <>
                             <StyledOverlayMotion
+                                theme={theme}
                                 onClick={() => setSelectedID(null)}
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
@@ -509,6 +516,7 @@ const FramerMotion = () => {
                                 className="overlay"
                             >
                                 <StyledCardModalMotion
+                                    theme={theme}
                                     layoutId={`card-container-${selectedId}`}
                                 >
                                     <StyledImageWrapperMotion>
@@ -577,7 +585,7 @@ const FramerMotion = () => {
             </StyledContentWrapper>
             <StyledBlogPostGrid>
                 {blogPosts.map((post) => (
-                    <StyledBlogPostCard>
+                    <StyledBlogPostCard theme={theme}>
                         <StyledBlogPostFeaturedImageWrapper>
                             <img src={post.featuredImage} />
                         </StyledBlogPostFeaturedImageWrapper>
