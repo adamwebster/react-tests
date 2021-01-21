@@ -18,18 +18,17 @@ import {
 
 import { faWindowMaximize } from '@fortawesome/free-regular-svg-icons';
 import { useState } from 'react';
-import { LoremIpsum } from 'react-lorem-ipsum';
-const dotSize = 2;
-const dotSpace = 22;
+import { ProjectItem } from './components/ProjectItem';
 
 const StyledSiteHeader = styled.header`
     width: 100%;
-    height: 50px;
+    position: fixed;
     background-color: ${Colors.primary};
     color: #fff;
     padding: 16px;
     box-sizing: border-box;
     display: flex;
+    z-index: 2;
 `;
 
 const StyledNav = styled.nav`
@@ -48,17 +47,8 @@ const StyledNav = styled.nav`
 `;
 const StyledHeaderContainer = styled.div`
     width: 100%;
-    /* background: linear-gradient(
-                90deg,
-                #bcdaff ${dotSpace - dotSize}px,
-                transparent 1%
-            )
-            center,
-        linear-gradient(#bcdaff ${dotSpace - dotSize}px, transparent 1%) center,
-        #97b4d7;
-    background-size: ${dotSpace}px ${dotSpace}px; */
     background-image: url('https://images.unsplash.com/photo-1551503766-ac63dfa6401c?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2700&q=80');
-        background-size: cover;
+    background-size: cover;
     margin-bottom: 32px;
     border-bottom: solid 1px #ccc;
     background-position: center;
@@ -121,44 +111,77 @@ const StyledProjectsGrid = styled.div`
     margin: 0 auto;
 `;
 
-interface StyledFullWidthWrapperProps {
-    bgColor?: string;
-}
-const StyledFullWidthWrapper = styled.div<StyledFullWidthWrapperProps>`
-    background-color: ${({ bgColor }) => (bgColor ? bgColor : Colors.primary)};
-    padding: 32px 16px;
+const StyledSectionHeader = styled.h2`
+    font-weight: bolder;
+    font-size: 2.5rem;
+    text-align: center;
+    color: ${Colors.mediumdark};
+    position: relative;
+    width: fit-content;
+    margin: 64px auto;
+    &:after {
+        content: '';
+        position: absolute;
+        height: 5px;
+        background-color: ${Colors.primary};
+        width: 75%;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: -8px;
+    }
 `;
 
-const StyledSectionHeader = styled.h1`
-    font-weight: 300;
-    font-size: 2rem;
-`;
-interface StyledProjectItemInterface {
-    grid: number;
-}
-
-const StyledProjectItem = styled.div<StyledProjectItemInterface>`
-    display: flex;
-    gap: 16px;
-    padding: 16px;
-    color: #fff;
-    max-width: 1200px;
-    margin: 0 auto;
-`;
 const StyledServicesGrid = styled.div`
     max-width: 1200px;
     margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
+    gap: 64px;
     padding: 0 16px;
     > div {
         flex: 1 1;
     }
 `;
 
+const StyledBlogPostGrid = styled.div`
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 64px;
+    padding: 0 16px;
+    > div {
+        flex: 1 1;
+    }
+`;
+
+const StyledBlogPostCard = styled(Card)`
+    border: none;
+    display: flex;
+    position: relative;
+    flex-flow: column;
+    flex: 1 1;
+    overflow: hidden;
+    padding-bottom: 30px;
+    box-shadow: 0 0 10px #ccc;
+    z-index: 1;
+`;
+
+const StyledBlogPostFeaturedImageWrapper = styled.div`
+    height: 150px;
+    width: 100%;
+    overflow: hidden;
+    img {
+        width: 100%;
+        height: auto;
+    }
+`;
+
+const StyledBlogPostContent = styled.div`
+    padding: 16px;
+`;
+
 const StyledServicesCard = styled(Card)`
-    padding: 32px 16px;
     border: none;
     display: flex;
     position: relative;
@@ -167,7 +190,11 @@ const StyledServicesCard = styled(Card)`
     align-items: center;
     flex: 1 1;
     cursor: pointer;
+    overflow: hidden;
     transition: all 0.2s ease 0s;
+    padding-bottom: 30px;
+    box-shadow: 0 0 10px #ccc;
+
     &:hover {
         transform: scale(1.05);
     }
@@ -179,6 +206,15 @@ const StyledServicesCard = styled(Card)`
     }
 `;
 
+const StyledServicesCardImageWrapper = styled.div`
+    width: 100%;
+    height: 150px;
+    overflow: hidden;
+    margin-bottom: 32px;
+    img {
+        width: 100%;
+    }
+`;
 const StyledOverlay = styled.div`
     width: 100%;
     height: 100%;
@@ -189,6 +225,7 @@ const StyledOverlay = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 99;
 `;
 
 const StyledCardModal = styled.div`
@@ -201,6 +238,7 @@ const StyledCardModal = styled.div`
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 0 10px #ccc;
+    z-index: 2;
 `;
 
 const StyledCardContent = styled.div`
@@ -223,6 +261,16 @@ const StyledImageWrapper = styled.div`
         max-width: 100%;
     }
 `;
+
+const StyledFooter = styled.footer`
+    width: 100%;
+    height: 200px;
+    background-color: ${Colors.primary};
+    padding: 16px;
+    box-sizing: border-box;
+    color: #fff;
+    margin-top: 64px;
+`;
 const StyledOverlayMotion = motion.custom(StyledOverlay);
 const StyledCardModalMotion = motion.custom(StyledCardModal);
 const StyledImageWrapperMotion = motion.custom(StyledImageWrapper);
@@ -232,7 +280,8 @@ const Services = [
         id: 1,
         name: ' Front-end Development',
         icons: [faCode],
-        description: 'FE description',
+        description:
+            'This logo was designed for a Photographer that take photos in Ontario, Canada. He mainly takes photos of landscapes and animals. The circle and arrow part of the logo represents a compass with its needle pointing north and the tree represents the main subjects of his photos. You can take a look at his photos on his instagram @NorthernCaravan.',
         img:
             'https://images.unsplash.com/photo-1542831371-29b0f74f9713?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80',
     },
@@ -240,7 +289,8 @@ const Services = [
         id: 2,
         name: ' Web & Mobile Design',
         icons: [faMobileAlt, faWindowMaximize],
-        description: 'Web description',
+        description:
+            'This logo was designed for a Photographer that take photos in Ontario, Canada. He mainly takes photos of landscapes and animals. The circle and arrow part of the logo represents a compass with its needle pointing north and the tree represents the main subjects of his photos. You can take a look at his photos on his instagram @NorthernCaravan.',
         img:
             'https://adamwebster.me/static/1636c8ef247f3cee9f35b7f2900e97cc/f422e/NorthernCaravan.jpg',
     },
@@ -248,7 +298,8 @@ const Services = [
         id: 3,
         name: 'Logo Design & Branding',
         icons: [faPalette],
-        description: 'Logo description',
+        description:
+            'This logo was designed for a Photographer that take photos in Ontario, Canada. He mainly takes photos of landscapes and animals. The circle and arrow part of the logo represents a compass with its needle pointing north and the tree represents the main subjects of his photos. You can take a look at his photos on his instagram @NorthernCaravan.',
         img:
             'https://adamwebster.me/static/1636c8ef247f3cee9f35b7f2900e97cc/f422e/NorthernCaravan.jpg',
     },
@@ -257,23 +308,77 @@ const Services = [
 const projects = [
     {
         id: 1,
-        title: 'Project 1',
+        name: 'Norther Caravan Logo',
         bgColor: 'tomato',
+        software: 'Affinity Designer',
+        client: 'Norther Caravan',
+        bgImage:
+            'https://images.unsplash.com/photo-1523821741446-edb2b68bb7a0?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=3750&q=80',
+        description: `This logo was designed for a Photographer that take photos in Ontario, Canada. He mainly takes photos of landscapes and animals. The circle and arrow part of the logo represents a compass with its needle pointing north and the tree represents the main subjects of his photos.
+
+            You can take a look at his photos on his instagram @NorthernCaravan.`,
     },
     {
         id: 2,
-        title: 'Project 1',
+        name: 'Project 2',
         bgColor: Colors.primary,
+        bgImage:
+            'https://images.unsplash.com/photo-1551503766-ac63dfa6401c?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2700&q=80',
+        description: `This logo was designed for a Photographer that take photos in Ontario, Canada. He mainly takes photos of landscapes and animals. The circle and arrow part of the logo represents a compass with its needle pointing north and the tree represents the main subjects of his photos.
+
+            You can take a look at his photos on his instagram @NorthernCaravan.`,
     },
     {
         id: 3,
-        title: 'Project 1',
+        name: 'Project 3',
         bgColor: 'purple',
+        bgImage:
+            'https://images.unsplash.com/photo-1523821741446-edb2b68bb7a0?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=3750&q=80',
+        description: `This logo was designed for a Photographer that take photos in Ontario, Canada. He mainly takes photos of landscapes and animals. The circle and arrow part of the logo represents a compass with its needle pointing north and the tree represents the main subjects of his photos.
+
+            You can take a look at his photos on his instagram @NorthernCaravan.`,
     },
     {
         id: 4,
-        title: 'Project 1',
+        name: 'Project 4',
         bgColor: Colors.lighter,
+        bgImage:
+            'https://images.unsplash.com/photo-1551503766-ac63dfa6401c?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2700&q=80',
+        description: `This logo was designed for a Photographer that take photos in Ontario, Canada. He mainly takes photos of landscapes and animals. The circle and arrow part of the logo represents a compass with its needle pointing north and the tree represents the main subjects of his photos.
+
+            You can take a look at his photos on his instagram @NorthernCaravan.`,
+    },
+];
+
+const blogPosts = [
+    {
+        id: 1,
+        title: 'Norther Caravan Logo',
+        featuredImage:
+            'https://images.unsplash.com/photo-1523821741446-edb2b68bb7a0?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=3750&q=80',
+        content: `This logo was designed for a Photographer that take photos in Ontario, Canada. He mainly takes photos of landscapes and animals. The circle and arrow part of the logo represents a compass with its needle pointing north and the tree represents the main subjects of his photos.
+
+            You can take a look at his photos on his instagram @NorthernCaravan.`,
+    },
+    {
+        id: 2,
+        title: 'Project 2',
+        bgColor: Colors.primary,
+        featuredImage:
+            'https://images.unsplash.com/photo-1551503766-ac63dfa6401c?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2700&q=80',
+        content: `This logo was designed for a Photographer that take photos in Ontario, Canada. He mainly takes photos of landscapes and animals. The circle and arrow part of the logo represents a compass with its needle pointing north and the tree represents the main subjects of his photos.
+
+            You can take a look at his photos on his instagram @NorthernCaravan.`,
+    },
+    {
+        id: 3,
+        title: 'Project 3',
+        bgColor: 'purple',
+        featuredImage:
+            'https://images.unsplash.com/photo-1523821741446-edb2b68bb7a0?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=3750&q=80',
+        content: `This logo was designed for a Photographer that take photos in Ontario, Canada. He mainly takes photos of landscapes and animals. The circle and arrow part of the logo represents a compass with its needle pointing north and the tree represents the main subjects of his photos.
+
+            You can take a look at his photos on his instagram @NorthernCaravan.`,
     },
 ];
 const FramerMotion = () => {
@@ -364,21 +469,23 @@ const FramerMotion = () => {
                                             setSelectedService(service);
                                         }}
                                     >
-                                        <div>
-                                            {service.icons.map(
+                                        <StyledServicesCardImageWrapper>
+                                            <motion.img
+                                                src={service.img}
+                                                alt={service.name}
+                                                layoutId={`card-container-${service.id}-img`}
+                                            />
+                                            {/* {service.icons.map(
                                                 (icon, index) => (
-                                                    <FAMotion
-                                                        animate
+                                                    <FontAwesomeIcon
                                                         key={`icon_${index}`}
                                                         size="5x"
                                                         icon={icon}
                                                     />
                                                 )
-                                            )}
-                                        </div>
-                                        <motion.span animate>
-                                            {service.name}
-                                        </motion.span>
+                                            )} */}
+                                        </StyledServicesCardImageWrapper>
+                                        <span>{service.name}</span>
                                     </StyledServicesCard>
                                 </motion.div>
                             </motion.div>
@@ -408,6 +515,7 @@ const FramerMotion = () => {
                                         <motion.img
                                             src={selectedService.img}
                                             alt={selectedService.name}
+                                            layoutId={`card-container-${selectedService.id}-img`}
                                         />
                                     </StyledImageWrapperMotion>
                                     <StyledCardContent>
@@ -430,17 +538,14 @@ const FramerMotion = () => {
             </StyledContentWrapper>
             <StyledProjectsGrid>
                 {projects.map((project, index) => (
-                    <StyledFullWidthWrapper bgColor={project.bgColor}>
-                        <StyledProjectItem grid={index + 1}>
-                            <img src="https://adamwebster.me/static/1636c8ef247f3cee9f35b7f2900e97cc/f422e/NorthernCaravan.jpg" />
-                            <div>
-                                <LoremIpsum p={3} />
-                            </div>
-                        </StyledProjectItem>
-                    </StyledFullWidthWrapper>
+                    <ProjectItem
+                        index={index}
+                        key={`project${project.id}`}
+                        project={project}
+                    />
                 ))}
             </StyledProjectsGrid>
-            <StyledContentWrapper>
+            {/* <StyledContentWrapper>
                 <StyledSectionHeader>Skills</StyledSectionHeader>
             </StyledContentWrapper>
             <StyledSkillsContainer>
@@ -466,7 +571,25 @@ const FramerMotion = () => {
                         <span>Wordpress</span>
                     </div>
                 </StyledSkillsGrid>
-            </StyledSkillsContainer>
+            </StyledSkillsContainer> */}
+            <StyledContentWrapper>
+                <StyledSectionHeader>Latest Blog Posts</StyledSectionHeader>
+            </StyledContentWrapper>
+            <StyledBlogPostGrid>
+                {blogPosts.map((post) => (
+                    <StyledBlogPostCard>
+                        <StyledBlogPostFeaturedImageWrapper>
+                            <img src={post.featuredImage} />
+                        </StyledBlogPostFeaturedImageWrapper>
+                        <StyledBlogPostContent>
+                            {' '}
+                            <h2> {post.title}</h2>
+                            <p> {post.content}</p>
+                        </StyledBlogPostContent>
+                    </StyledBlogPostCard>
+                ))}
+            </StyledBlogPostGrid>
+            <StyledFooter>&copy; 2021 Adam Webster</StyledFooter>
         </>
     );
 };
