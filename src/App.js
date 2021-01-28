@@ -101,7 +101,8 @@ const AppHeader = styled.div`
 const DarkModeToggle = styled.span`
     float: right;
 `;
-function App() {
+
+const AppLayout = ({ children }) => {
     const [theme, setTheme] = useState('');
     const toggleDarkMode = () => {
         if (theme === 'dark') {
@@ -128,104 +129,132 @@ function App() {
                         />
                     </DarkModeToggle>
                 </AppHeader>
-                <div className="App">
-                    <Switch>
-                        <Route exact path="/">
-                            <WelcomeMessage>
-                                Click on of the pages to show examples
-                            </WelcomeMessage>
-                            <Grid>
-                                <GridItem>
-                                    <StyledLink image={loginImg} to="/login" />
-                                    <Link to="/Login">
-                                        <h3>Login Card</h3>
-                                    </Link>
-                                </GridItem>
-                                <GridItem>
-                                    <StyledLink
-                                        image={followImg}
-                                        to="/follow"
-                                    />
-                                    <Link to="/follow">
-                                        <h3>Social Profile Card</h3>
-                                    </Link>
-                                </GridItem>
-
-                                <GridItem>
-                                    <StyledLink
-                                        image={priceTableImg}
-                                        to="/pricingtable"
-                                    />
-                                    <Link to="/pricingtable">
-                                        <h3>Pricing Table</h3>
-                                    </Link>
-                                </GridItem>
-                                <GridItem>
-                                    <StyledLink
-                                        image={playlistImg}
-                                        to="/spotifyplaylist"
-                                    />
-                                    <Link to="/pricingtable">
-                                        <h3>Spotify Playlist Editor</h3>
-                                    </Link>
-                                </GridItem>
-                                <GridItem>
-                                    <StyledLink image={rssImage} to="/rss" />
-                                    <Link to="/rss">
-                                        <h3>RSS Reader</h3>
-                                    </Link>
-                                </GridItem>
-                                <GridItem>
-                                    <StyledLink
-                                        image={calendarImage}
-                                        to="/calendar"
-                                    />
-                                    <Link to="/calendar">
-                                        <h3>To-do | Calendar</h3>
-                                    </Link>
-                                </GridItem>
-                            </Grid>
-                        </Route>
-                        <Route path="/login">
-                            <LoginPage />
-                        </Route>
-                        <Route path="/about">
-                            <About />
-                        </Route>
-                        <Route path="/follow">
-                            <FollowPage />
-                        </Route>
-                        <Route path="/newsfeed">
-                            <NewsFeed />
-                        </Route>
-                        <Route path="/pricingtable">
-                            <PricingTable />
-                        </Route>
-                        <Route path="/spotifyplaylist">
-                            <SpotifyPlaylist />
-                        </Route>
-                        <Route path="/rss">
-                            <RSSReader />
-                        </Route>
-                        <Route path="/lazy">
-                            <LazyComponent />
-                        </Route>
-                        <Route path="/calendar">
-                            <CalendarDemo />
-                        </Route>
-                        <Route path="/dashboard">
-                            <Dashboard />
-                        </Route>
-                        <Route path="/fusedallowance">
-                            <FusedAllowance />
-                        </Route>
-                        <Route path="/framermotion">
-                            <FramerMotion />
-                        </Route>
-                    </Switch>
-                </div>
+                <div className="App">{children}</div>
             </AppContextProvider>
         </FCThemeProvider>
+    );
+};
+function App() {
+    return (
+        <>
+            <Switch>
+                <Route exact path="/">
+                    <AppLayout>
+                        <WelcomeMessage>
+                            Click on of the pages to show examples
+                        </WelcomeMessage>
+                        <Grid>
+                            <GridItem>
+                                <StyledLink image={loginImg} to="/login" />
+                                <Link to="/Login">
+                                    <h3>Login Card</h3>
+                                </Link>
+                            </GridItem>
+                            <GridItem>
+                                <StyledLink image={followImg} to="/follow" />
+                                <Link to="/follow">
+                                    <h3>Social Profile Card</h3>
+                                </Link>
+                            </GridItem>
+
+                            <GridItem>
+                                <StyledLink
+                                    image={priceTableImg}
+                                    to="/pricingtable"
+                                />
+                                <Link to="/pricingtable">
+                                    <h3>Pricing Table</h3>
+                                </Link>
+                            </GridItem>
+                            <GridItem>
+                                <StyledLink
+                                    image={playlistImg}
+                                    to="/spotifyplaylist"
+                                />
+                                <Link to="/pricingtable">
+                                    <h3>Spotify Playlist Editor</h3>
+                                </Link>
+                            </GridItem>
+                            <GridItem>
+                                <StyledLink image={rssImage} to="/rss" />
+                                <Link to="/rss">
+                                    <h3>RSS Reader</h3>
+                                </Link>
+                            </GridItem>
+                            <GridItem>
+                                <StyledLink
+                                    image={calendarImage}
+                                    to="/calendar"
+                                />
+                                <Link to="/calendar">
+                                    <h3>To-do | Calendar</h3>
+                                </Link>
+                            </GridItem>
+                        </Grid>
+                    </AppLayout>
+                </Route>
+                <Route path="/login">
+                    <AppLayout>
+                        <LoginPage />
+                    </AppLayout>
+                </Route>
+                <Route path="/about">
+                    <AppLayout>
+                        <About />
+                    </AppLayout>
+                </Route>
+                <Route path="/follow">
+                    <AppLayout>
+                        <FollowPage />
+                    </AppLayout>
+                </Route>
+                <Route path="/newsfeed">
+                    <AppLayout>
+                        <NewsFeed />
+                    </AppLayout>
+                </Route>
+                <Route path="/pricingtable">
+                    <AppLayout>
+                        <PricingTable />
+                    </AppLayout>
+                </Route>
+                <Route path="/spotifyplaylist">
+                    <AppLayout>
+                        <SpotifyPlaylist />
+                    </AppLayout>
+                </Route>
+                <Route path="/rss">
+                    <AppLayout>
+                        <RSSReader />
+                    </AppLayout>
+                </Route>
+                <Route path="/lazy">
+                    <AppLayout>
+                        <LazyComponent />
+                    </AppLayout>
+                </Route>
+                <Route path="/calendar">
+                    <AppLayout>
+                        <CalendarDemo />
+                    </AppLayout>
+                </Route>
+                <Route path="/dashboard">
+                    <AppLayout>
+                        <Dashboard />
+                    </AppLayout>
+                </Route>
+                <Route path="/fusedallowance">
+                    <AppLayout>
+                        <FusedAllowance />
+                    </AppLayout>
+                </Route>
+                <Route exact path="/framermotion">
+                    <AppLayout>
+                        <FramerMotion />
+                    </AppLayout>
+                </Route>
+            </Switch>
+        </>
     );
 }
 
