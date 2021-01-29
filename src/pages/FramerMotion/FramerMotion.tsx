@@ -52,43 +52,54 @@ const StyledBG = styled.div`
 `;
 
 const StyledForceScroll = styled.div`
-    height: 300vh;
+    height: 500vh;
 `;
 
 const FramerMotion = () => {
     const scrollElement = useRef<HTMLDivElement | null>(null);
     const fadeElement = useRef<HTMLDivElement | null>(null);
     const { scrollYProgress } = useElementScroll(scrollElement);
-    const scale = useTransform(scrollYProgress, [0, 0.3, 0.5], [0, 0.5, 1]);
-    const opacity = useTransform(scrollYProgress, [0, 0.5, 0.7], [0, 0, 1]);
-    const borderRadius = useTransform(scrollYProgress, [0, 0.5, 1], [0, 5, 10]);
-    const bottomOpacity = useTransform(
+
+    const helloOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
+    const helloY = useTransform(scrollYProgress, [0, 0.5], [0, -500]);
+
+    const imageOpacity = useTransform(
         scrollYProgress,
-        [0, 0.5, 0.7],
-        [0, 0.5, 1]
+        [0, 0.4, 0.7, 0.9],
+        [0, 1, 1, 0]
+    );
+    const imagePhoneLeft = useTransform(scrollYProgress, [0.5, 0.6], [0, -400]);
+    const imageBottom = useTransform(
+        scrollYProgress,
+        [0, 0.2, 0.3],
+        [600, 300, 0]
+    );
+    const imageScale = useTransform(scrollYProgress, [0, 0.2], [0, 1]);
+    const imageBorderRadius = useTransform(
+        scrollYProgress,
+        [0, 0.5, 1],
+        [0, 5, 10]
     );
 
-    const left = useTransform(scrollYProgress, [0.7, 1], [0, -400]);
-
-    const scaleBehind = useTransform(
+    const phoneScale = useTransform(
         scrollYProgress,
-        [0, 0.5, 0.5],
+        [0, 0.4, 0.5],
         [0, 1, 1.02]
     );
-
-    const textOpacity = useTransform(
+    const phoneOpacity = useTransform(
         scrollYProgress,
-        [0, 0.3, 0.5],
-        [1, 0.2, 0]
+        [0, 0.3, 0.4, 0.7, 0.9],
+        [0, 0, 1, 1, 0]
     );
 
-    const textY = useTransform(scrollYProgress, [0, 0.5], [0, -500]);
-    const bottom = useTransform(scrollYProgress, [0, 0.3, 0.5], [600, 300, 0]);
-
-    const opacityText = useTransform(scrollYProgress, [0.97, 1], [0, 1]);
+    const descriptionOpacity = useTransform(
+        scrollYProgress,
+        [0.6, 0.7, 0.9],
+        [0, 1, 0]
+    );
     const backgroundColor = useTransform(
         scrollYProgress,
-        [0.97, 1],
+        [0.5, 0.6],
         [Colors.primary, '#000000']
     );
     return (
@@ -100,7 +111,7 @@ const FramerMotion = () => {
             <StyledWrapperTest>
                 <motion.h1
                     className="hero-message"
-                    style={{ opacity: textOpacity, y: textY }}
+                    style={{ opacity: helloOpacity, y: helloY }}
                 >
                     Hello
                 </motion.h1>
@@ -111,10 +122,10 @@ const FramerMotion = () => {
                         backgroundColor: 'black',
                         width: '312px',
                         height: '619px',
-                        scale: scaleBehind,
-                        opacity: opacity,
+                        scale: phoneScale,
+                        opacity: phoneOpacity,
                         borderRadius: '15px',
-                        x: left,
+                        x: imagePhoneLeft,
                     }}
                 />
                 <motion.div
@@ -123,12 +134,12 @@ const FramerMotion = () => {
                         position: 'fixed',
                         width: '300px',
                         height: '600px',
-                        scale: scale,
-                        opacity: bottomOpacity,
-                        y: bottom,
-                        borderRadius,
+                        scale: imageScale,
+                        opacity: imageOpacity,
+                        y: imageBottom,
+                        borderRadius: imageBorderRadius,
                         overflow: 'hidden',
-                        x: left,
+                        x: imagePhoneLeft,
                         boxSizing: 'border-box',
                     }}
                 >
@@ -140,7 +151,7 @@ const FramerMotion = () => {
                         position: 'fixed',
                         color: '#fff',
                         width: '400px',
-                        opacity: opacityText,
+                        opacity: descriptionOpacity,
                     }}
                 >
                     <motion.h2 style={{ backgroundColor: backgroundColor }}>
@@ -151,6 +162,17 @@ const FramerMotion = () => {
             </StyledWrapperTest>
             <StyledScrollElement ref={scrollElement}>
                 <StyledForceScroll />
+                <div
+                    style={{
+                        width: '100vw',
+                        minHeight: '100vh',
+                        backgroundColor: '#fff',
+                        padding: '16px',
+                        boxSizing: 'border-box',
+                    }}
+                >
+                    <LoremIpsum p={9} />
+                </div>
             </StyledScrollElement>
         </>
     );
