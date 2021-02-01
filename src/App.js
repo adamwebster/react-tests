@@ -26,6 +26,7 @@ import BodyStyles from './BodyStyles';
 import { Dashboard } from './pages/Dashboard';
 import { FusedAllowance } from './pages/FusedAllowance';
 import { FramerMotion } from './pages/FramerMotion';
+import { FramerMotionAppIcons } from './pages/FramerMotion/AppIcons';
 
 const Grid = styled.div`
     display: grid;
@@ -251,6 +252,11 @@ function App() {
                 <Route exact path="/framermotion">
                     <AppLayout>
                         <FramerMotion />
+                    </AppLayout>
+                </Route>
+                <Route exact path="/framermotion/appicons">
+                    <AppLayout>
+                        <FramerMotionAppIcons />
                     </AppLayout>
                 </Route>
             </Switch>
