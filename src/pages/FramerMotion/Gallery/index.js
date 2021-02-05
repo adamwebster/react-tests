@@ -19,7 +19,7 @@ const StyledDiv = styled.div`
             align-items: center;
             justify-content: center;
         `}
-    width: calc(33.333% - 4px);
+    flex: 1 1 33%;
     margin: 2px;
     height: 400px;
     box-sizing: border-box;
@@ -31,9 +31,14 @@ const StyledDiv = styled.div`
         border-radius: 0;
     }
     &:nth-child(4),
-    &:nth-child(5) {
+    &:nth-child(5),
+    &:nth-child(9),
+    &:nth-child(10) {
         width: calc(50% - 4px);
         height: 400px;
+        flex: unset;
+
+
     }
     @media (max-width: 768px) {
         width: 100% !important;
