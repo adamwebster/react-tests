@@ -16,7 +16,7 @@ const GlobalStyle = createGlobalStyle<GSProps>`
 }
 
 .App{
-  height:calc(100vh - 50px);
+  height:calc(100vh - 45px);
   width: 100vw;
   float:left;
 }

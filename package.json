@@ -61,6 +61,7 @@
         ]
     },
     "devDependencies": {
-        "prettier": "2.0.4"
+        "prettier": "2.0.4",
+        "react-intersection-observer": "^8.31.0"
     }
 }

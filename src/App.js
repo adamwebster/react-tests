@@ -27,6 +27,7 @@ import { Dashboard } from './pages/Dashboard';
 import { FusedAllowance } from './pages/FusedAllowance';
 import { FramerMotion } from './pages/FramerMotion';
 import { FramerMotionAppIcons } from './pages/FramerMotion/AppIcons';
+import SpeciesGallery from './pages/FramerMotion/Gallery';
 
 const Grid = styled.div`
     display: grid;
@@ -259,6 +260,11 @@ function App() {
                         <FramerMotionAppIcons />
                     </AppLayout>
                 </Route>
+                <Route exact path="/framermotion/gallery">
+                    <AppLayout>
+                        <SpeciesGallery />
+                    </AppLayout>
+                </Route>{' '}
             </Switch>
         </>
     );
