@@ -1,11 +1,8 @@
-import { motion, AnimateSharedLayout } from 'framer-motion';
+import { motion } from 'framer-motion';
 import styled, { css } from 'styled-components';
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-    faArrowCircleLeft,
-    faSpinner,
-} from '@fortawesome/free-solid-svg-icons';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 const settings = {
     baseURLSpecies: 'http://canadianspeciesinitiative.temp.sentex.ca/species/',
@@ -114,7 +111,7 @@ const SpeciesGallery = () => {
                     setChildCategories(categories);
                     if (cameFromParentCategory) {
                         window.history.pushState(
-                            { galleryPage: true },
+                            { catID: catID },
                             '',
                             window.location.protocol +
                                 '//' +
@@ -125,10 +122,10 @@ const SpeciesGallery = () => {
                     }
                     setGalleryChosen(catID);
                 } else {
-                           if (cat) {
-                               window.location.href = `${settings.baseURLSpecies}${cat.slug}`;
-                           }
-                       }
+                    if (cat) {
+                        window.location.href = `${settings.baseURLSpecies}${cat.slug}`;
+                    }
+                }
             });
     };
 
@@ -140,6 +137,12 @@ const SpeciesGallery = () => {
     };
 
     const handleBack = (e) => {
+        console.log(e.state);
+        if (e.state) {
+            if (e.state.catID) {
+                loadChildCategories(e.state.catID);
+            }
+        }
         if (galleryChosen) {
             let url = new URL(window.location.href);
             let params = new URLSearchParams(url.search);
