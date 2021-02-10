@@ -28,6 +28,7 @@ import { FusedAllowance } from './pages/FusedAllowance';
 import { FramerMotion } from './pages/FramerMotion';
 import { FramerMotionAppIcons } from './pages/FramerMotion/AppIcons';
 import SpeciesGallery from './pages/FramerMotion/Gallery';
+import PhoneLandingPage from './pages/PhoneLandingPage/PhoneLandingPage';
 
 const Grid = styled.div`
     display: grid;
@@ -264,7 +265,10 @@ function App() {
                     <AppLayout>
                         <SpeciesGallery />
                     </AppLayout>
-                </Route>{' '}
+                </Route>
+                <Route exact path="/phonelandingpage">
+                    <PhoneLandingPage />
+                </Route>
             </Switch>
         </>
     );
