@@ -96,11 +96,11 @@ const StyledSquareMotion = motion.custom(StyledSquare);
 const PhoneLandingPage = () => {
     const [Section, SectionInView] = useInView({
         triggerOnce: false,
-        rootMargin: '-300px 0px',
+        rootMargin: '-50px 0px',
     });
     const [SecondSection, SecondSectionInView] = useInView({
         triggerOnce: false,
-        rootMargin: '-300px 0px',
+        rootMargin: '-50px 0px',
     });
 
     const { dispatchSite, siteState } = useContext(SiteContext);
@@ -169,8 +169,8 @@ const PhoneLandingPage = () => {
                         }}
                         transition={{
                             opacity: { duration: 1 },
-                            height: { delay: 0.5 },
-                            width: { delay: 1.3 },
+                            height: { delay: 1, duration: 0.2 },
+                            width: { delay: 1.2 },
                         }}
                     />
                     <StyleContentWrapperInner>
