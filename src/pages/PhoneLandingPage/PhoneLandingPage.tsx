@@ -14,7 +14,15 @@ import {
     faUsers,
 } from '@fortawesome/free-solid-svg-icons';
 import { useContext, useEffect } from 'react';
-import { SiteContext } from './context/Site';
+import { SiteContext, SiteContextProvider } from './context/Site';
+
+const PageWrapper = () => {
+    return (
+        <SiteContextProvider>
+            <PhoneLandingPage />
+        </SiteContextProvider>
+    );
+};
 const StyledContentWrapper = styled.div`
     max-width: 100%;
     margin: 0 auto;
@@ -224,4 +232,4 @@ const PhoneLandingPage = () => {
     );
 };
 
-export default PhoneLandingPage;
+export default PageWrapper;
