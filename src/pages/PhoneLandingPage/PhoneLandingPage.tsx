@@ -3,11 +3,12 @@ import { Hero } from './components/Hero';
 import { Layout } from './components/Layout';
 import styled, { css } from 'styled-components';
 import { useInView } from 'react-intersection-observer';
-import { motion } from 'framer-motion';
+import { animate, motion } from 'framer-motion';
 import SecondSectionImage from './assets/images/nathan-dumlao-kLmt1mpGJVg-unsplash.jpg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faClock,
+    faHome,
     faShieldAlt,
     faUsers,
 } from '@fortawesome/free-solid-svg-icons';
@@ -130,18 +131,58 @@ const RoundedImage = styled.img`
     border-radius: 16px;
 `;
 
+const StyledCardGrid = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 32px;
+`;
+
+const StyledCard = styled.div`
+    max-width: 400px;
+    padding: 64px 32px 32px 32px;
+    border-radius: 8px;
+    background-color: #fff;
+    box-sizing: border-box;
+    box-shadow: 0 0 20px #999;
+    position: relative;
+`;
+
+const StyledCardIcon = styled.div`
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: lightblue;
+    border: solid 8px ${darken(0.2, 'lightblue')};
+    position: absolute;
+    top: -48px;
+    left: calc(50% - 48px);
+    svg {
+        color: ${darken(0.5, 'lightblue')};
+    }
+`;
 const FirstSectionMotion = motion.custom(StyledContentWrapper);
 const SecondSectionMotion = motion.custom(StyledContentWrapper);
+const ThirdSectionMotion = motion.custom(StyledContentWrapper);
+
 const StyledScrollMotion = motion.custom(StyledScroll);
 const StyledSquareMotion = motion.custom(StyledSquare);
 const IconWrapperMotion = motion.custom(StyledIconWrapper);
-
+const StyledCardMotion = motion.custom(StyledCard);
+const StyledCardIconMotion = motion.custom(StyledCardIcon);
 const PhoneLandingPage = () => {
     const [Section, SectionInView] = useInView({
         triggerOnce: false,
         threshold: 0.5,
     });
     const [SecondSection, SecondSectionInView] = useInView({
+        triggerOnce: false,
+        threshold: 0.3,
+    });
+
+    const [ThirdSection, ThirdSectionInView] = useInView({
         triggerOnce: false,
         threshold: 0.3,
     });
@@ -229,11 +270,11 @@ const PhoneLandingPage = () => {
                 <SecondSectionMotion
                     animate={{
                         opacity: SecondSectionInView ? 1 : 0,
-                        x: SecondSectionInView ? 0 : -100,
+                        y: SecondSectionInView ? 0 : -100,
                     }}
                     transition={{
                         opacity: { duration: 1 },
-                        x: { duration: 1 },
+                        y: { duration: 1 },
                     }}
                     ref={SecondSection}
                 >
@@ -282,6 +323,64 @@ const PhoneLandingPage = () => {
                         </SectionGrid>
                     </StyleContentWrapperInner>
                 </SecondSectionMotion>
+                <ThirdSectionMotion ref={ThirdSection}>
+                    <StyledCardGrid>
+                        <StyledCardMotion
+                            initial={{ y: -100, opacity: 0 }}
+                            animate={{
+                                y: ThirdSectionInView ? 0 : -100,
+                                opacity: ThirdSectionInView ? 1 : 0,
+                            }}
+                            transition={{ duration: 1 }}
+                        >
+                            <StyledCardIconMotion>
+                                <FontAwesomeIcon icon={faHome} size="2x" />
+                            </StyledCardIconMotion>
+                            Third Section
+                            <LoremIpsum
+                                p={1}
+                                avgWordsPerSentence={5}
+                                random={false}
+                            />
+                        </StyledCardMotion>
+                        <StyledCardMotion
+                            initial={{ y: -100, opacity: 0 }}
+                            animate={{
+                                y: ThirdSectionInView ? 0 : -100,
+                                opacity: ThirdSectionInView ? 1 : 0,
+                            }}
+                            transition={{ duration: 1 }}
+                        >
+                            <StyledCardIconMotion>
+                                <FontAwesomeIcon icon={faHome} size="2x" />
+                            </StyledCardIconMotion>
+                            Third Section
+                            <LoremIpsum
+                                p={1}
+                                avgWordsPerSentence={5}
+                                random={false}
+                            />
+                        </StyledCardMotion>
+                        <StyledCardMotion
+                            initial={{ y: -100, opacity: 0 }}
+                            animate={{
+                                y: ThirdSectionInView ? 0 : -100,
+                                opacity: ThirdSectionInView ? 1 : 0,
+                            }}
+                            transition={{ duration: 1 }}
+                        >
+                            <StyledCardIconMotion>
+                                <FontAwesomeIcon icon={faHome} size="2x" />
+                            </StyledCardIconMotion>
+                            Third Section
+                            <LoremIpsum
+                                p={1}
+                                avgWordsPerSentence={5}
+                                random={false}
+                            />
+                        </StyledCardMotion>
+                    </StyledCardGrid>
+                </ThirdSectionMotion>
             </StyledScrollMotion>
         </Layout>
     );
