@@ -1,33 +1,39 @@
-import { useContext } from "react";
-import styled from "styled-components";
-import { SiteContext } from "../../context/Site";
-
-
+import { useContext } from 'react';
+import styled from 'styled-components';
+import { SiteContext } from '../../context/Site';
+import { motion } from 'framer-motion';
 
 const StyledHeader = styled.header`
-  width: 100%;
-  padding: 16px;
-  box-sizing: border-box;
+    width: 100%;
+    padding: 16px;
+    box-sizing: border-box;
 `;
 
-type StyledHeaderInnerProps = {
-    fontColor: string,
-}
-
-const StyledHeaderInner = styled.div<StyledHeaderInnerProps>`
-  margin: 0 auto;
-  position: relative;
-  max-width: 1200px;
-  color: ${({fontColor}) => fontColor}; 
+const StyledHeaderInner = styled.div`
+    margin: 0 auto;
+    position: relative;
+    max-width: 1200px;
 `;
+
+const StyledHeaderMotion = motion.custom(StyledHeader);
 
 const Header = () => {
     const { siteState } = useContext(SiteContext);
-  return (
-    <StyledHeader>
-      <StyledHeaderInner fontColor={siteState.fontColor}>Logo</StyledHeaderInner>
-    </StyledHeader>
-  );
+
+    return (
+        <StyledHeaderMotion
+            initial={{
+                backgroundColor: siteState.backgroundColor,
+                color: siteState.fontColor,
+            }}
+            animate={{
+                backgroundColor: siteState.backgroundColor,
+                color: siteState.fontColor,
+            }}
+        >
+            <StyledHeaderInner>Logo</StyledHeaderInner>
+        </StyledHeaderMotion>
+    );
 };
 
 export default Header;

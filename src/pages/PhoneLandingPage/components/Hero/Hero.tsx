@@ -17,10 +17,12 @@ const StyledHero = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
     position: relative;
     img {
         height: 70vh;
+        @media (max-height: 700px) and (max-width: 768px) {
+            height: 50vh;
+        }
     }
 `;
 
@@ -43,15 +45,31 @@ const StyledHeroGrid = styled.div`
     grid-template-columns: 1fr 1fr;
     justify-content: center;
     align-items: center;
+    z-index: 99;
+    grid-auto-flow: dense;
+    @media (max-width: 768px) {
+        margin-top: 80px;
+        grid-template-columns: 1fr;
+        justify-content: flex-start;
+        align-items: flex-start;
+        grid-template-rows: 400px;
+        ${StyledHeroMessage} {
+            grid-row: 2;
+        }
+    }
+    @media (max-height: 700px) and (max-width: 768px) {
+        grid-template-rows: 300px;
+    }
 `;
+
 const StyledHeroMotion = motion.custom(StyledHero);
 const StyledMotionCircle = motion.custom(StyledCircle);
-
+const StyledHeroGridMotion = motion.custom(StyledHeroGrid);
 const StyledHeroMessageMotion = motion.custom(StyledHeroMessage);
 const Hero = () => {
     return (
         <StyledHeroWrapper>
-           <StyledMotionCircle
+            <StyledMotionCircle
                 initial={{ opacity: 0, scale: 0 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{
@@ -60,7 +78,7 @@ const Hero = () => {
                     scale: { delay: 2.5 },
                 }}
             />
-            <StyledHeroGrid>
+            <StyledHeroGridMotion>
                 <StyledHeroMessageMotion
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -81,8 +99,7 @@ const Hero = () => {
                 >
                     <img src={PhoneMockup} alt="Hero" />
                 </StyledHeroMotion>
-            </StyledHeroGrid>
-           
+            </StyledHeroGridMotion>
         </StyledHeroWrapper>
     );
 };
