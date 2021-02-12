@@ -147,6 +147,15 @@ const StyledCard = styled.div`
     position: relative;
 `;
 
+const StyledCardDiagonal = styled.div`
+    max-width: 400px;
+    padding: 32px 32px 32px 32px;
+    border-radius: 8px;
+    background-color: #fff;
+    box-sizing: border-box;
+    box-shadow: 0 0 20px #999;
+`;
+
 const StyledCardIcon = styled.div`
     width: 96px;
     height: 96px;
@@ -166,11 +175,13 @@ const StyledCardIcon = styled.div`
 const FirstSectionMotion = motion.custom(StyledContentWrapper);
 const SecondSectionMotion = motion.custom(StyledContentWrapper);
 const ThirdSectionMotion = motion.custom(StyledContentWrapper);
+const FourthSectionMotion = motion.custom(StyledContentWrapper);
 
 const StyledScrollMotion = motion.custom(StyledScroll);
 const StyledSquareMotion = motion.custom(StyledSquare);
 const IconWrapperMotion = motion.custom(StyledIconWrapper);
 const StyledCardMotion = motion.custom(StyledCard);
+const StyledCardDiagonalMotion = motion.custom(StyledCardDiagonal);
 const StyledCardIconMotion = motion.custom(StyledCardIcon);
 const PhoneLandingPage = () => {
     const [Section, SectionInView] = useInView({
@@ -184,6 +195,10 @@ const PhoneLandingPage = () => {
 
     const [ThirdSection, ThirdSectionInView] = useInView({
         triggerOnce: false,
+        threshold: 0.3,
+    });
+    const [FourthSection, FourthSectionInView] = useInView({
+        triggerOnce: true,
         threshold: 0.3,
     });
 
@@ -381,6 +396,81 @@ const PhoneLandingPage = () => {
                         </StyledCardMotion>
                     </StyledCardGrid>
                 </ThirdSectionMotion>
+                <FourthSectionMotion ref={FourthSection}>
+                    <StyledCardDiagonalMotion
+                        style={{
+                            width: '300px',
+                            height: '500px',
+                            position: 'absolute',
+                            right: '215px',
+                            top: '270px',
+                        }}
+                        initial={{ y: -100, x: -50, opacity: 0, rotateZ: -15 }}
+                        animate={{
+                            y: FourthSectionInView ? 0 : -100,
+                            x: FourthSectionInView ? 0 : -50,
+                            opacity: FourthSectionInView ? 1 : 0,
+                        }}
+                        transition={{ duration: 1 }}
+                    >
+                        <LoremIpsum p={1} random={false} />
+                    </StyledCardDiagonalMotion>
+
+                    <StyledCardDiagonalMotion
+                        style={{
+                            width: '300px',
+                            height: '500px',
+                            position: 'absolute',
+                            right: '560px',
+                            top: '210px',
+                        }}
+                        initial={{ y: -100, x: -50, opacity: 0, rotateZ: -15 }}
+                        animate={{
+                            y: FourthSectionInView ? 0 : -100,
+                            x: FourthSectionInView ? 0 : -50,
+                            opacity: FourthSectionInView ? 1 : 0,
+                        }}
+                        transition={{ duration: 1, delay: 1 }}
+                    >
+                        <LoremIpsum p={1} random={false} />
+                    </StyledCardDiagonalMotion>
+                    <StyledCardDiagonalMotion
+                        style={{
+                            width: '300px',
+                            height: '500px',
+                            position: 'absolute',
+                            right: '350px',
+                            top: '-235px',
+                        }}
+                        initial={{ y: -100, x: -50, opacity: 0, rotateZ: -15 }}
+                        animate={{
+                            y: FourthSectionInView ? 0 : -100,
+                            x: FourthSectionInView ? 0 : -50,
+                            opacity: FourthSectionInView ? 1 : 0,
+                        }}
+                        transition={{ duration: 1, delay: 2 }}
+                    >
+                        <LoremIpsum p={1} random={false} />
+                    </StyledCardDiagonalMotion>
+                    <StyledCardDiagonalMotion
+                        style={{
+                            width: '300px',
+                            height: '500px',
+                            position: 'absolute',
+                            right: '-75px',
+                            top: '125px',
+                        }}
+                        initial={{ y: -100, x: -50, opacity: 0, rotateZ: -15 }}
+                        animate={{
+                            y: FourthSectionInView ? 0 : -100,
+                            x: FourthSectionInView ? 0 : -50,
+                            opacity: FourthSectionInView ? 1 : 0,
+                        }}
+                        transition={{ duration: 1, delay: 3 }}
+                    >
+                        <LoremIpsum p={1} random={false} />
+                    </StyledCardDiagonalMotion>
+                </FourthSectionMotion>
             </StyledScrollMotion>
         </Layout>
     );
