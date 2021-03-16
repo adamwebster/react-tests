@@ -43,7 +43,7 @@ const SignUpPage = () => {
                         transition={{
                             duration: 1,
                         }}
-                    />
+                    /> 
                 </StyledHeroContent>
             </StyledLayoutGrid>
         </>
