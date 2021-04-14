@@ -30,6 +30,8 @@ import { FramerMotionAppIcons } from './pages/FramerMotion/AppIcons';
 import PhoneLandingPage from './pages/PhoneLandingPage/PhoneLandingPage';
 import { MobileMotionMenu } from './pages/MobileMotionMenu';
 import { SignUpPage } from './pages/SignUpPage';
+import { AWMNext } from './pages/AWMNext';
+import ColorContrast from './pages/ColorContrast';
 
 const Grid = styled.div`
     display: grid;
@@ -272,6 +274,12 @@ function App() {
                 </Route>
                 <Route exact path="/signuppage">
                     <SignUpPage />
+                </Route>
+                <Route exact path="/AWMNext">
+                    <AWMNext />
+                </Route>
+                <Route exact path="/color-contrast">
+                    <ColorContrast />
                 </Route>
             </Switch>
         </>
