@@ -3,7 +3,7 @@ import { Hero } from './components/Hero';
 import { Layout } from './components/Layout';
 import styled, { css } from 'styled-components';
 import { useInView } from 'react-intersection-observer';
-import { animate, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import SecondSectionImage from './assets/images/nathan-dumlao-kLmt1mpGJVg-unsplash.jpg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -172,17 +172,17 @@ const StyledCardIcon = styled.div`
         color: ${darken(0.5, 'lightblue')};
     }
 `;
-const FirstSectionMotion = motion.custom(StyledContentWrapper);
-const SecondSectionMotion = motion.custom(StyledContentWrapper);
-const ThirdSectionMotion = motion.custom(StyledContentWrapper);
-const FourthSectionMotion = motion.custom(StyledContentWrapper);
+const FirstSectionMotion = motion(StyledContentWrapper);
+const SecondSectionMotion = motion(StyledContentWrapper);
+const ThirdSectionMotion = motion(StyledContentWrapper);
+const FourthSectionMotion = motion(StyledContentWrapper);
 
-const StyledScrollMotion = motion.custom(StyledScroll);
-const StyledSquareMotion = motion.custom(StyledSquare);
-const IconWrapperMotion = motion.custom(StyledIconWrapper);
-const StyledCardMotion = motion.custom(StyledCard);
-const StyledCardDiagonalMotion = motion.custom(StyledCardDiagonal);
-const StyledCardIconMotion = motion.custom(StyledCardIcon);
+const StyledScrollMotion = motion(StyledScroll);
+const StyledSquareMotion = motion(StyledSquare);
+const IconWrapperMotion = motion(StyledIconWrapper);
+const StyledCardMotion = motion(StyledCard);
+const StyledCardDiagonalMotion = motion(StyledCardDiagonal);
+const StyledCardIconMotion = motion(StyledCardIcon);
 const PhoneLandingPage = () => {
     const [Section, SectionInView] = useInView({
         triggerOnce: false,

@@ -1,4 +1,4 @@
-import { animate, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import img1 from '../static/images/jason-leung-poI7DelFiVA-unsplash.jpg';
@@ -137,10 +137,10 @@ const StyledPhoneScreen = styled.div`
         height: 100%;
     }
 `;
-const StyledWrapperMotion = motion.custom(StyledWrapper);
-const StyledAppIconMotion = motion.custom(StyledAppIcon);
-const StyledPhoneScreenMotion = motion.custom(StyledPhoneScreen);
-const StyledContentWrapperMotion = motion.custom(StyledContentWrapper);
+const StyledWrapperMotion = motion(StyledWrapper);
+const StyledAppIconMotion = motion(StyledAppIcon);
+const StyledPhoneScreenMotion = motion(StyledPhoneScreen);
+const StyledContentWrapperMotion = motion(StyledContentWrapper);
 const FramerMotionAppIcons = () => {
     const [backgroundColor, setBackgroundColor] = useState('#000');
     const [FP, FPInView] = useInView({

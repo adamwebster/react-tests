@@ -15,7 +15,7 @@ const StyledHeaderInner = styled.div`
     max-width: 1200px;
 `;
 
-const StyledHeaderMotion = motion.custom(StyledHeader);
+const StyledHeaderMotion = motion(StyledHeader);
 
 const Header = () => {
     const { siteState } = useContext(SiteContext);

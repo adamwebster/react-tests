@@ -62,10 +62,10 @@ const StyledHeroGrid = styled.div`
     }
 `;
 
-const StyledHeroMotion = motion.custom(StyledHero);
-const StyledMotionCircle = motion.custom(StyledCircle);
-const StyledHeroGridMotion = motion.custom(StyledHeroGrid);
-const StyledHeroMessageMotion = motion.custom(StyledHeroMessage);
+const StyledHeroMotion = motion(StyledHero);
+const StyledMotionCircle = motion(StyledCircle);
+const StyledHeroGridMotion = motion(StyledHeroGrid);
+const StyledHeroMessageMotion = motion(StyledHeroMessage);
 const Hero = () => {
     return (
         <StyledHeroWrapper>

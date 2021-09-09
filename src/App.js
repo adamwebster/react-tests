@@ -27,9 +27,11 @@ import { Dashboard } from './pages/Dashboard';
 import { FusedAllowance } from './pages/FusedAllowance';
 import { FramerMotion } from './pages/FramerMotion';
 import { FramerMotionAppIcons } from './pages/FramerMotion/AppIcons';
-import SpeciesGallery from './pages/FramerMotion/Gallery';
 import PhoneLandingPage from './pages/PhoneLandingPage/PhoneLandingPage';
-import { UseFormPage } from './pages/UseFormPage';
+import { MobileMotionMenu } from './pages/MobileMotionMenu';
+import { SignUpPage } from './pages/SignUpPage';
+import { AWMNext } from './pages/AWMNext';
+import ColorContrast from './pages/ColorContrast';
 
 const Grid = styled.div`
     display: grid;
@@ -262,18 +264,22 @@ function App() {
                         <FramerMotionAppIcons />
                     </AppLayout>
                 </Route>
-                <Route exact path="/framermotion/gallery">
-                    <AppLayout>
-                        <SpeciesGallery />
-                    </AppLayout>
-                </Route>
                 <Route exact path="/phonelandingpage">
                     <PhoneLandingPage />
                 </Route>
-                <Route exact path="/useformpage">
+                <Route exact path="/mobilemotionmenu">
                     <AppLayout>
-                        <UseFormPage />
+                        <MobileMotionMenu />
                     </AppLayout>
+                </Route>
+                <Route exact path="/signuppage">
+                    <SignUpPage />
+                </Route>
+                <Route exact path="/AWMNext">
+                    <AWMNext />
+                </Route>
+                <Route exact path="/color-contrast">
+                    <ColorContrast />
                 </Route>
             </Switch>
         </>
