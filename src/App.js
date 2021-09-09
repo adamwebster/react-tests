@@ -29,6 +29,7 @@ import { FramerMotion } from './pages/FramerMotion';
 import { FramerMotionAppIcons } from './pages/FramerMotion/AppIcons';
 import SpeciesGallery from './pages/FramerMotion/Gallery';
 import PhoneLandingPage from './pages/PhoneLandingPage/PhoneLandingPage';
+import { UseFormPage } from './pages/UseFormPage';
 
 const Grid = styled.div`
     display: grid;
@@ -268,6 +269,11 @@ function App() {
                 </Route>
                 <Route exact path="/phonelandingpage">
                     <PhoneLandingPage />
+                </Route>
+                <Route exact path="/useformpage">
+                    <AppLayout>
+                        <UseFormPage />
+                    </AppLayout>
                 </Route>
             </Switch>
         </>
