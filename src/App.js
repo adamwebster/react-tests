@@ -32,6 +32,7 @@ import { MobileMotionMenu } from './pages/MobileMotionMenu';
 import { SignUpPage } from './pages/SignUpPage';
 import { AWMNext } from './pages/AWMNext';
 import ColorContrast from './pages/ColorContrast';
+import { UseFormPage } from './pages/UseFormPage';
 
 const Grid = styled.div`
     display: grid;
@@ -280,6 +281,11 @@ function App() {
                 </Route>
                 <Route exact path="/color-contrast">
                     <ColorContrast />
+                </Route>
+                <Route exact path="/useformpage">
+                    <AppLayout>
+                        <UseFormPage />
+                    </AppLayout>
                 </Route>
             </Switch>
         </>
